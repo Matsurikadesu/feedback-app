@@ -1,0 +1,12 @@
+.feedback__container{
+    font-size: 13px;
+    padding-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @media screen and (min-width: 768px) {
+        width: 689px;
+        margin: 0 auto;
+    }
+}

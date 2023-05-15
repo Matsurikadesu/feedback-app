@@ -1,0 +1,181 @@
+@import '../abstracts/variables.scss';
+
+.aside{
+    position: relative;
+    display: flex;
+    
+    @media screen and (max-width: 767px) {
+        font-size: 13px;    
+    }
+    
+    @media screen and (min-width: 768px) {
+        width: 689px;
+        padding-top: 56px;
+        padding-bottom: 40px;
+        gap: 10px;
+        margin: 0 auto;
+        background-color: $darker-light;
+    }
+    
+    &__info{
+        background-image: url('../../../public/background-header.png');
+        background-size: cover;
+        padding: 15px 24px;
+        color: white;
+        
+        @media screen and (max-width: 767px) {
+            width: 100%;
+        }
+
+        @media screen and (min-width: 768px) {
+            width: 223px;
+            height: 178px;
+            border-radius: 10px;
+        }
+    }
+
+    .title{
+        font-size: 15px;
+
+        @media screen and (min-width: 768px) {
+            vertical-align: bottom;
+        }
+    }
+
+    &__btn-container{
+        display: none;
+    }
+
+    @media screen and (max-width: 767px) {
+        &__btn-container{
+            display: unset;
+            border: none;
+            background-color: inherit;
+            padding-bottom: 17px;
+            position: absolute;
+            right: 16px;
+            top: 25px;
+        }
+    
+        &__btn{
+            height: 3px;
+            width: 20px;
+            background-color: white;
+            border: none;
+            box-shadow: 0 7px 0 0 white,
+                        0 14px 0 0 white;
+        }
+    }
+}
+
+
+.aside.aside_active{
+    .aside__container{
+        @media screen and (max-width: 767px) {
+            visibility: visible;
+        }
+    }
+}
+
+.aside__container{
+    margin-left: auto;
+    background-color: #F7F8FD;
+    
+    @media screen and (max-width: 767px) {
+        padding-top: 24px;
+        position: absolute;
+        visibility: hidden;
+        right: 0;
+        top: 100%;
+        height: 100vh;
+        width: 271px;
+    }
+
+    @media screen and (min-width: 768px) {
+        display: flex;
+        gap: 10px;
+        height: 178px;
+        justify-content: space-between;
+    }
+}
+
+.aside__element{
+    background-color: white;
+    padding: 24px 18px 36px 24px;
+    border-radius: 10px;
+    
+    @media screen and (max-width: 767px) {
+        margin: 24px;
+        margin-top: 0;
+    }
+    
+    @media screen and (min-width: 768px) {
+        width: 223px;
+    }
+}
+
+.aside__tags{
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 8px;
+    row-gap: 14px;
+    list-style: none;
+
+    &-item{
+        background-color: $light-main;
+        padding: 6px 16px;
+        font-weight: 600;
+        flex-shrink: 0;
+        border-radius: 10px;
+        color: $blue-main;
+
+        &_active{
+            color: white;
+            background-color: $blue-main;
+        }
+    }
+}
+
+.roadmap__header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+
+    .title{
+        font-size: 18px;
+        color: $text-color;
+    }
+}
+
+.roadmap__btn{
+    color: $blue-main;
+
+    &:visited{
+        color: $blue-main;
+    }
+}
+
+.roadmap__list{
+    list-style: none;
+}
+
+.roadmap__item{
+    display: flex;
+    color: #647196;
+
+    &::before{
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: red;
+        align-self: center;
+        margin-right: 16px;
+    }
+
+    span{
+        margin-left: auto;
+        font-weight: 700;
+    }
+}

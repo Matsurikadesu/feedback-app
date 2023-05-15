@@ -1,0 +1,55 @@
+@import '../abstracts/variables.scss';
+
+.feedback__card{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: white;
+    border-radius: 10px;
+    width: calc(100% - 48px);
+    padding: 24px;
+    color: $text-color;
+    margin: 0 auto;
+    
+    @media screen and (min-width: 768px) {
+        width: 100%;
+    }
+
+    .aside__tags-item{
+        width: fit-content;
+        margin-bottom: 16px;
+    }
+}
+
+.card__controls{
+    display: flex;
+    justify-content: space-between;
+}
+
+.card__button-wrapper{
+    display: inline;
+    align-self: flex-start;
+}
+
+.card__upvote{
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    background-color: #F2F4FE;
+    gap: 10px;
+    padding: 7px 13px 7px 16px;
+    border-radius: 10px;
+}
+
+.card__text{
+    font-weight: 700;
+}
+
+.card__comment{
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background-color: inherit;
+    border: none;
+}
