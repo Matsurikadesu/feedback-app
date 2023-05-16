@@ -2,11 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     feedbacksLoadingStatus: 'idle',
-    feedbacks: []
+    feedbacks: [],
+    feedbackIndex: -1,
+    currentFeedback: false
 };
 
 const feedbackSlice = createSlice({
-    name: 'feedback',
+    name: 'feedbacks',
     initialState,
     reducers: {
         feedbacksFetching: state => {state.feedbacksLoadingStatus = 'loading'},
@@ -14,7 +16,11 @@ const feedbackSlice = createSlice({
             state.feedbacksLoadingStatus = 'idle';
             state.feedbacks = action.payload;
         },
-        feedbacksFetchingError: state => {state.feedbacksLoadingStatus = 'error'}
+        feedbacksFetchingError: state => {state.feedbacksLoadingStatus = 'error'},
+        feedbackOpened: (state, action) => {
+            state.feedbackIndex = action.payload.id;
+            state.currentFeedback = action.payload.feedback;
+        }
     }
 });
 
@@ -24,5 +30,6 @@ export default reducer;
 export const {
     feedbacksFetching,
     feedbacksFetched,
-    feedbacksFetchingError
+    feedbacksFetchingError,
+    feedbackOpened
 } = actions;

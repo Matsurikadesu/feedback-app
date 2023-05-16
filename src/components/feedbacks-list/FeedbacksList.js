@@ -1,16 +1,16 @@
 import './FeedbacksList.scss';
-import FeedbackItem from '../feedback-item';
+import FeedbackItem from '../feedback-item/FeedbackItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
-import { feedbacksFetched } from './feedbackSlice';
+import { feedbacksFetched } from './feedbacksSlice';
 
 const FeedbackList = () => {
     const dispatch = useDispatch();
     const feedbacks = useSelector(state => state.feedbacks);
 
-    const fetchPost = async () => {
+    const fetchFeedbacks = async () => {
         await getDocs(collection(db, "feedback"))
             .then((querySnapshot)=>{              
                 const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
@@ -18,8 +18,8 @@ const FeedbackList = () => {
             })
     }
 
-    useEffect(()=>{
-        fetchPost();
+    useEffect(() => {
+        fetchFeedbacks();
         // eslint-disable-next-line
     }, [])
 
@@ -33,6 +33,7 @@ const FeedbackList = () => {
                             description={item.description}
                             category={item.category}
                             upvotes={item.upvotes}
+                            id={item.id}
                             />
                     ))
             }

@@ -1,6 +1,7 @@
 import './aside.scss';
 
 const Aside = () => {
+    const options = ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
     return(
         <div className="aside">
             <div className="aside__info">
@@ -14,11 +15,9 @@ const Aside = () => {
                 <div className="aside__element">
                     <ul className="aside__tags">
                         <li className="aside__tags-item aside__tags-item_active ">All</li>
-                        <li className="aside__tags-item">UI</li>
-                        <li className="aside__tags-item">UX</li>
-                        <li className="aside__tags-item">Enhancement</li>
-                        <li className="aside__tags-item">Bug</li>
-                        <li className="aside__tags-item">Feature</li>
+                        {options.map((item, index) => {
+                            return <li className='aside__tags-item' key={index}>{item}</li>
+                        })}
                     </ul>
                 </div>
                 <div className="aside__element">

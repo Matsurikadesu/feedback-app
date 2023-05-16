@@ -42,13 +42,4 @@ const Todo = () => {
     )
 }
 
-// {
-//     todos?.map((todo,i)=>(
-//         <p key={i}>
-//             <h1>{todo.name}</h1>
-//             <img src={todo.avatar}alt="" />
-//         </p>
-//     ))
-// }
-
 export default Todo

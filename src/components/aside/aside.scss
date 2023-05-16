@@ -16,9 +16,18 @@
         margin: 0 auto;
         background-color: $darker-light;
     }
+
+    @media screen and (min-width: 1440px) {
+        flex-direction: column;
+        align-items: center;
+        width: 255px;
+        padding: 0;
+    }
     
     &__info{
-        background-image: url('../../../public/background-header.png');
+        display: flex;
+        flex-direction: column;
+        background: radial-gradient(128.88% 128.88% at 103.9% -10.39%, #E84D70 0%, #A337F6 53.09%, #28A7ED 100%);
         background-size: cover;
         padding: 15px 24px;
         color: white;
@@ -26,19 +35,36 @@
         @media screen and (max-width: 767px) {
             width: 100%;
         }
-
+        
         @media screen and (min-width: 768px) {
+            padding: 24px;
             width: 223px;
             height: 178px;
             border-radius: 10px;
+            justify-content: end;
+        }
+        
+        @media screen and (min-width: 1440px) {
+            width: 100%;
+            height: 137px;
         }
     }
 
     .title{
         font-size: 15px;
+        letter-spacing: -.25px;
 
         @media screen and (min-width: 768px) {
-            vertical-align: bottom;
+            font-size: 20px;
+        }
+    }
+
+    .subtitle{
+        font-size: 13px;
+        opacity: .75;
+
+        @media screen and (min-width: 768px) {
+            font-size: 15px;
         }
     }
 
@@ -97,6 +123,11 @@
         height: 178px;
         justify-content: space-between;
     }
+
+    @media screen and (min-width: 1440px) {
+        flex-direction: column;
+        margin: 0;
+    }
 }
 
 .aside__element{
@@ -111,6 +142,10 @@
     
     @media screen and (min-width: 768px) {
         width: 223px;
+    }
+
+    @media screen and (min-width: 1440px) {
+        width: 100%;
     }
 }
 
@@ -169,9 +204,25 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background-color: red;
         align-self: center;
         margin-right: 16px;
+    }
+
+    &:first-child{
+        &::before{
+            background-color: #F49F85;
+        }
+    }
+    
+    &:nth-child(2){
+        &::before{
+            background-color: #AD1FEA;
+        }
+    }
+    &:last-child{
+        &::before{
+            background-color: #62BCFA;
+        }
     }
 
     span{

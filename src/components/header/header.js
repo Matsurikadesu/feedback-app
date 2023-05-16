@@ -1,10 +1,7 @@
+import { Link } from 'react-router-dom';
 import './header.scss';
 
 const Header = () => {
-    const onAddFeedback = () => {
-
-    }
-
     return (
         <div className="header">
             <div className="header__suggestions">
@@ -17,9 +14,9 @@ const Header = () => {
                 <option value=""></option>
                 <option value=""></option>
             </select>
-            <button className="header__btn" onClick={onAddFeedback}>
+            <Link className="header__btn" to={'add'}>
                 + Add Feedback
-            </button>
+            </Link>
         </div>
     )
 }

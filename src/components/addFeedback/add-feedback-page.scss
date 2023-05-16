@@ -17,7 +17,7 @@
         padding-top: 92px;
     }
 
-    &__link:link{
+    &__link{
         font-size: 13px;
         font-weight: 700;
         color: #647196;
@@ -111,10 +111,14 @@
         font-size: 13px;
         font-weight: 700;
         cursor: pointer;
-        color: white;
+        color: #F2F4FE;
         padding: 12px;
         background-color: $text-color;
         
+        &:link{
+            text-decoration: none;
+        }
+
         &:hover{
             background-color: #647196;
         }

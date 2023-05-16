@@ -1,33 +1,15 @@
-import './add-feedback-page.scss';
-import { db } from "../../firebase";
-import { collection, addDoc } from "firebase/firestore";
 import { Link } from 'react-router-dom';
+import '../addFeedback/add-feedback-page.scss';
 
-const AddFeedBackPage = () => {
+const EditFeedbackPage = () => {
     const options = ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
     const selectOptions = options.map((item, index) => {
         return <option key={index}>{item}</option>
     })
 
-    const addFeedback = async (e) => {
-        e.preventDefault();
-        const form = e.target;
-        
-        try {
-            await addDoc(collection(db, "feedback"), {
-                title: form.title.value,
-                description: form.description.value,
-                category: form.category.value,
-                upvotes: 0    
-            })
-        } catch (e) {
-            console.error("Error adding document: ", e);
-        }
-    }
-
     return(
         <div className="popup">
-            <Link className="popup__link" to={'/'}>
+            <Link className="popup__link" href="/">
                 <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4.33447 9L0.334473 5L4.33447 1" stroke="#4661E6" strokeWidth="2"/>
                 </svg>
@@ -36,7 +18,7 @@ const AddFeedBackPage = () => {
             <div className="popup__body">
                 <img className='popup__icon' src="./add-feedback-icon.png" alt="shiny icon" />
                 <h1 className="popup__title">Create New Feedback</h1>
-                <form className="form" onSubmit={addFeedback}>
+                <form className="form">
                     <div className="form__element">
                         <label className="form__element-title" htmlFor="title">Feedback title</label>
                         <span className="form__element-description">Add a short, descriptive headline</span>
@@ -58,7 +40,7 @@ const AddFeedBackPage = () => {
 
                     <div className='form__buttons'>
                         <button type='submit' className='form__btn form__btn_accept'>Add Feedback</button>
-                        <Link className='form__btn' href='/'>Cancel</Link>
+                        <a className='form__btn' href='/'>Cancel</a>
                     </div>
                 </form>
             </div>
@@ -66,4 +48,4 @@ const AddFeedBackPage = () => {
     )
 }
 
-export default AddFeedBackPage;
+export default EditFeedbackPage;
