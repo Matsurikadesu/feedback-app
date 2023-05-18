@@ -3,11 +3,7 @@
 .aside{
     position: relative;
     display: flex;
-    
-    @media screen and (max-width: 767px) {
-        font-size: 13px;    
-    }
-    
+
     @media screen and (min-width: 768px) {
         width: 689px;
         padding-top: 56px;
@@ -52,7 +48,7 @@
 
     .title{
         font-size: 15px;
-        letter-spacing: -.25px;
+        color: white;
 
         @media screen and (min-width: 768px) {
             font-size: 20px;
@@ -192,12 +188,15 @@
 }
 
 .roadmap__list{
+    display: flex;
+    flex-direction: column-reverse;
     list-style: none;
 }
 
 .roadmap__item{
     display: flex;
     color: #647196;
+    text-transform: capitalize;
 
     &::before{
         content: '';
@@ -210,7 +209,7 @@
 
     &:first-child{
         &::before{
-            background-color: #F49F85;
+            background-color: #62BCFA;
         }
     }
     
@@ -221,7 +220,7 @@
     }
     &:last-child{
         &::before{
-            background-color: #62BCFA;
+            background-color: #F49F85;
         }
     }
 

@@ -2,9 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     feedbacksLoadingStatus: 'idle',
-    feedbacks: [],
+    feedbacks: false,
     feedbackIndex: -1,
-    currentFeedback: false
+    currentFeedback: false,
+    roadmap: false,
+    comments: false,
+    user: false
 };
 
 const feedbackSlice = createSlice({
@@ -20,6 +23,19 @@ const feedbackSlice = createSlice({
         feedbackOpened: (state, action) => {
             state.feedbackIndex = action.payload.id;
             state.currentFeedback = action.payload.feedback;
+        },
+        roadmapFetched: (state, action) => {
+            state.roadmap = action.payload;
+        },
+        commentsFetched: (state, action) => {
+            state.comments = action.payload;
+        },
+        userFetched: (state, action) => {
+            state.user = action.payload;
+        },
+        commentAdded: (state, action) => {
+            state.currentFeedback = action.payload.newFeedback;
+            state.comments.push(action.payload.comment);
         }
     }
 });
@@ -31,5 +47,9 @@ export const {
     feedbacksFetching,
     feedbacksFetched,
     feedbacksFetchingError,
-    feedbackOpened
+    feedbackOpened,
+    roadmapFetched,
+    commentsFetched,
+    userFetched,
+    commentAdded
 } = actions;

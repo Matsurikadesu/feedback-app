@@ -1,0 +1,40 @@
+@import '../abstracts/typography.scss';
+
+.empty-container{
+    width: calc(100% - 48px);
+    background-color: white;
+    border-radius: 10px;
+    padding: 76px 25px;
+    text-align: center;
+    margin: 0 auto;
+
+    .image{
+        margin-bottom: 39px;
+
+        @media screen and (min-width: 768px) {
+            margin-bottom: 53px;
+        }
+    }
+
+    .title-lg{
+        margin-bottom: 14px;
+
+        @media screen and (min-width: 768px) {
+            margin-bottom: 16px;
+        }
+    }
+
+    .text{
+        margin-bottom: 24px;
+
+        @media screen and (min-width: 768px) {
+            margin-bottom: 48px;
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        width: 100%;
+        padding: 110px 140px;
+        margin-bottom: 54px;
+    }
+}

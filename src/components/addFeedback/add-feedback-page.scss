@@ -17,21 +17,6 @@
         padding-top: 92px;
     }
 
-    &__link{
-        font-size: 13px;
-        font-weight: 700;
-        color: #647196;
-        text-decoration: none;
-
-        svg{
-            margin-right: 16px;
-        }
-
-        @media screen and (min-width: 768px) {
-            font-size: 14px;
-        }
-    }
-
     &__body{
         position: relative;
         background-color: white;
@@ -49,9 +34,13 @@
         position: absolute;
         left: 24px;
         top: -20px;
+        width: 40px;
+        height: 40px;
 
         @media screen and (min-width: 768px) {
             left: 42px;
+            width: auto;
+            height: auto;
         }
     }
 
@@ -93,6 +82,19 @@
         }
     }
 
+    textarea{
+        font-size: 13px;
+        color: #3A4374;
+        
+        @media screen and (min-width: 768px) {
+            font-size: 14px;
+        }
+
+        @media screen and (min-width: 1440px) {
+            font-size: 15px;
+        }
+    }
+
     &__buttons{
         margin-top: 40px;
         display: flex;
@@ -114,6 +116,7 @@
         color: #F2F4FE;
         padding: 12px;
         background-color: $text-color;
+        text-align: center;
         
         &:link{
             text-decoration: none;
@@ -135,5 +138,25 @@
                 background-color: $purple-main-hover;
             }
         }
+
+        &_delete{
+            background-color: $red-main;
+
+            @media screen and (min-width: 768px) {
+                margin-right: auto;
+            }
+
+            &:hover{
+                background-color: $red-main-hover;
+            }
+        }
     }
+}
+
+select{
+    text-transform: capitalize;
+}
+
+option{
+    text-transform: capitalize;
 }

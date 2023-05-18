@@ -1,0 +1,48 @@
+@import './variables.scss';
+
+@mixin text($size, $weight: normal, $spacing: 0, $color: $text-color){
+    font-size: $size;
+    font-weight: $weight;
+    letter-spacing: $spacing;
+    color: $color;
+}
+
+:root{
+    --title-size: 18px;
+
+    @media screen and (max-width: 767px) {
+        --text-size: 13px;
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 1439px) {
+        --text-size: 14px;
+    }
+    
+    @media screen and (min-width: 768px) {
+    }
+    
+    @media screen and (min-width: 1440px) {
+        --text-size: 16px;
+    }
+}
+
+html{
+    color: $text-color;;
+}
+
+.title{
+    @include text(var(--text-size), 700, -.2px);
+}
+
+.title-lg{
+    @include text(var(--title-size), 700, -.2px);
+}
+
+.text{
+    font-size: var(--text-size);
+    color: $text-color;
+}
+
+.page__title{
+    color: white;
+}

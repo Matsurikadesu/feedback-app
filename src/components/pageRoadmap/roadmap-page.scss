@@ -1,0 +1,236 @@
+@import '../abstracts/typography.scss';
+@import '../abstracts/variables.scss';
+
+.roadmap{
+    .back-btn{
+        color: white;
+
+        path{
+            stroke: #CDD2EE;
+        }
+    }
+
+    .page__title{
+        margin-top: 3px;
+
+        @media screen and (min-width: 1440px) {
+            margin-top: 4px;
+            font-size: 24px;
+            letter-spacing: -.33px;
+        }
+    }
+
+    .header{
+        padding: 24px;
+
+        &__btn{
+            padding: 11px 17px;
+
+            @media screen and (min-width: 1440px) {
+                padding: 12px 24px;
+            }
+        }
+
+        @media screen and (min-width: 1440px) {
+            width: 1100px;
+            padding: 32px;
+        }
+    }
+
+    &__switch{
+        @media screen and (min-width: 768px) {
+            display: none;
+        }
+
+        @media screen and (max-width: 767px) {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+
+            &-item{
+                position: relative;
+                background-color: transparent;
+                padding: 20px 0;
+                color: #3A4374;
+                border: none;
+                opacity: .4;
+                transition: opacity .4s;
+
+                &::after{
+                    position: absolute;
+                    content: '';
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    height: 1px;
+                    background-color: rgba(#8C92B3, .25);
+                    transition: height .4s;
+                }
+
+                &_active{
+                    opacity: 1;
+    
+                    &::after{
+                        height: 4px;
+                        background-color: $purple-main;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.roadmap__content{
+    margin: 0 auto;
+
+    @media screen and (min-width: 768px) {
+        display: flex;
+        flex-direction: row-reverse;
+        padding-top: 32px;
+        gap: 10px;
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 1439px) {
+        width: 689px;
+    }
+
+    @media screen and (min-width: 1440px) {
+        width: 1100px;
+        padding-top: 48px;
+        gap: 30px;
+    }
+}
+
+.roadmap__tasks-container{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .title-lg{
+        text-transform: capitalize;
+    }
+
+    &:first-child{
+        --color: #62BCFA;
+    }
+
+    &:nth-child(2){
+        --color: #AD1FEA;
+    }
+
+    &:last-child{
+        --color: #F49F85;
+    }
+
+    @media screen and (max-width: 767px) {
+        padding: 24px;
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 1439px) {
+        max-width: 223px;
+    }
+
+    @media screen and (min-width: 1440px) {
+        gap: 32px;
+    }
+}
+
+.roadmap__tasks{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .feedback__card{
+        width: 100%;
+        overflow: hidden;
+    }
+
+    @media screen and (min-width: 1440px) {
+        gap: 24px;
+    }
+}
+
+.card__header-dec{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--color);
+    height: 6px;
+}
+
+.card__header-status{
+    font-weight: 400;
+    margin-bottom: 14px;
+    text-transform: capitalize;
+
+    @media screen and (min-width: 1440px) {
+        margin-bottom: 8px;    
+    }
+
+    &::before{
+        display: inline-block;
+        content: '';
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        margin-right: 8px;
+        background-color: var(--color);
+        
+        @media screen and (min-width: 1440px) {
+            margin-right: 16px;
+        }
+    }
+
+}
+
+
+.feedback__card_roadmap{
+    @media screen and (min-width: 768px) {
+        padding: 20px;
+        flex-direction: column;
+
+        .card__upvote{
+            position: static;
+            flex-direction: row;
+            padding: 14px 16px;
+            width: auto;
+        }
+
+        .card__title{
+            font-size: 13px;
+        }
+
+        .card__description{
+            font-size: 13px;
+        }
+
+        .aside__tags-item{
+            margin-top: 24px;
+        }
+
+        .card__upvote{
+            padding: 6px 13px 7px 16px;
+        }
+
+        .card__controls{
+            margin-top: 16px;
+        }
+    }
+
+    @media screen and (min-width: 1440px) {
+        padding: 32px;
+    
+        .card__title{
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .card__description{
+            font-size: 16px;
+        }
+
+        .aside__tags-item{
+            margin-top: 16px;
+        }
+    }
+}

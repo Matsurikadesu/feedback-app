@@ -11,6 +11,7 @@ import App from './components/App/App';
 import FeedbackPage from './components/feedbackPage/FeedbackPage';
 import AddFeedBackPage from './components/addFeedback/AddFeedbackPage';
 import EditFeedbackPage from './components/editFeedbackPage.js/EditFeedbackPage';
+import RoadmapPage from './components/pageRoadmap/RoadmapPage';
 import './index.scss';
 
 const router = createBrowserRouter([
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: `:feedbackId`,
     element: <FeedbackPage/>
+  },
+  {
+    path: '/roadmap',
+    element: <RoadmapPage/>
   }
 ])
 

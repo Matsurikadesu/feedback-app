@@ -2,6 +2,7 @@ import './add-feedback-page.scss';
 import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { Link } from 'react-router-dom';
+import BackBtn from '../backBtn/BackBtn';
 
 const AddFeedBackPage = () => {
     const options = ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
@@ -27,12 +28,7 @@ const AddFeedBackPage = () => {
 
     return(
         <div className="popup">
-            <Link className="popup__link" to={'/'}>
-                <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4.33447 9L0.334473 5L4.33447 1" stroke="#4661E6" strokeWidth="2"/>
-                </svg>
-                Go Back
-            </Link>
+            <BackBtn/>
             <div className="popup__body">
                 <img className='popup__icon' src="./add-feedback-icon.png" alt="shiny icon" />
                 <h1 className="popup__title">Create New Feedback</h1>
