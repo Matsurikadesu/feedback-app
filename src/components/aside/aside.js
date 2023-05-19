@@ -1,40 +1,51 @@
 import { Link } from 'react-router-dom';
 import './aside.scss';
-import { useEffect} from 'react';
-import { db } from '../../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { roadmapFetched } from '../feedbacks-list/feedbacksSlice';
 import Loading from '../loading/Loading';
+import { filterSelected, roadmapFetched } from '../feedbacks-list/feedbacksSlice';
 
 const Aside = () => {
-    const options = ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
-    const roadmap = useSelector(state => state.roadmap);
     const dispatch = useDispatch();
 
-    const fetchRoadmap = async () => {
-        await getDocs(collection(db, "roadmap"))
-            .then((querySnapshot) => {              
-                const roadmap = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
-                dispatch(roadmapFetched(roadmap));
-            })
-    }
-    
-    useEffect(() => {
-        if(!roadmap) fetchRoadmap();
+    const options = ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
+    const feedbacks = useSelector(state => state.feedbacks);
+    const roadmap = useSelector(state => state.roadmap);
 
+    useEffect(() => {
+        if(feedbacks){
+            const newRoadmap = roadmap.map(item => {
+                const name = item.name;
+                return {
+                    name,
+                    amount: feedbacks.filter(item => item.status === name).length
+                }
+            });
+            if(roadmap !== newRoadmap) dispatch(roadmapFetched(newRoadmap));
+        } 
         //eslint-disable-next-line
-    },[])
-    
+    }, [feedbacks])
+
+    const onFilterSelect = (item) => {
+        dispatch(filterSelected(item))
+    }
+
+    const onFilterClick = (e) => {
+        if(!e.target.classList.contains('aside__tags-item')) return;
+        document.querySelectorAll('.aside__tags-item').forEach(item => item.classList.remove('aside__tags-item_active'));
+        e.target.classList.add('aside__tags-item_active');
+    }
+
     const optionsList = options
             .map((item, index) => {
-                return <li className='aside__tags-item' key={index}>{item}</li>
+                return <li className='aside__tags-item' onClick={() => onFilterSelect(item)} key={index}>{item}</li>
             })
     
     const roadmapList = roadmap ? roadmap
             .map((item, index) => {
-                return <li className="roadmap__item" key={index}>{item.name} <span>{item.feedbacks.length}</span></li>
+                return <li className="roadmap__item" key={index}>{item.name} <span>{item.amount}</span></li>
             }) : null; 
+    
 
     return(
         <div className="aside">
@@ -47,8 +58,8 @@ const Aside = () => {
             </button>
             <div className="aside__container">
                 <div className="aside__element">
-                    <ul className="aside__tags">
-                        <li className="aside__tags-item aside__tags-item_active ">All</li>
+                    <ul className="aside__tags" onClick={onFilterClick}>
+                        <li className="aside__tags-item aside__tags-item_active " onClick={() => onFilterSelect('all')}>All</li>
                         {optionsList}
                     </ul>
                 </div>

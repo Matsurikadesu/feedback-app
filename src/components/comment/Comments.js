@@ -9,9 +9,9 @@ const Comments = ({count}) => {
     const comments = useSelector(state => state.comments);
     const user = useSelector(state => state.user);
     const [nestedComments, setNested] = useState(false);
+    const feedbackId = window.location.href.split('/')[3];
 
     const fetchComments = async () => {
-        const feedbackId = window.location.href.split('/')[3];
             await getDocs(collection(db, 'feedback', feedbackId, 'comments'))
                 .then((querySnapshot) => {
                     const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
@@ -34,8 +34,6 @@ const Comments = ({count}) => {
     }, [])
 
     const Comment = ({text, isparent, id, replying}) => {
-        const feedbackId = window.location.href.split('/')[3];
-
         const fetchNestedComments = async () => {
             await getDocs(collection(db, 'feedback', feedbackId, 'comments', id, 'nestedcomments'))
                 .then((querySnapshot) => {
@@ -44,7 +42,7 @@ const Comments = ({count}) => {
                 })
         }
 
-        if(!nestedComments) fetchNestedComments();
+        if(isparent && !nestedComments) fetchNestedComments();
 
         return(
             <div className='comment'>
@@ -63,7 +61,7 @@ const Comments = ({count}) => {
                     ? 
 
                     <div className="comments__tree">
-                        {nestedComments ? nestedComments.map((item, inde) => (<Comment key={inde} text={item.text} isparent={false} id={item.id} replying={item.replyingTo}/>)): null}
+                        {nestedComments ? nestedComments.map((item, index) => (<Comment key={index} text={item.text} isparent={false} id={item.id} replying={item.replyingTo}/>)): null}
                     </div>
 
                     :null

@@ -1,11 +1,10 @@
-import { getDoc, doc, addDoc, collection} from 'firebase/firestore';
+import { getDoc, doc, addDoc, collection, updateDoc} from 'firebase/firestore';
 import { db } from "../../firebase";
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { feedbackOpened, commentAdded } from '../feedbacks-list/feedbacksSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import {push, ref, child, getDatabase} from 'firebase/database';
 import BackBtn from '../backBtn/BackBtn';
 import Comments from '../comment/Comments';
 import '../addFeedback/add-feedback-page.scss';
@@ -15,22 +14,23 @@ const FeedbackPage = () => {
     const dispatch = useDispatch();
     const feedback = useSelector(state => state.currentFeedback);
     const [counter, setCounter] = useState(250);
+    const feedbackId = window.location.href.split('/')[3];
 
-    const addComment = (e) => {
+    const addComment = async (e) => {
         e.preventDefault();
-        const db = getDatabase();
-        const feedbackId = window.location.href.split('/')[3];
         const form = e.target;
-        const newCommentKey = push(child(ref(db), `users`)).key;
-        const comment = {user: 1, isparent: false, text: form.comment.value, id: newCommentKey};
-        dispatch(commentAdded({comment, newFeedback: {...feedback, comments: feedback.comments++}}))
-        const updates = {};
-        updates[`/feedback/${feedbackId}/comments/${newCommentKey}`] = comment;
-        updates[`/feedback/${feedbackId}`] = {...feedback, comments: feedback.comments++};
+        const comment = {user: 1, isparent: false, text: form.comment.value};
+
+        try{
+            await addDoc(collection(db, 'feedback', feedbackId, 'comments'), comment).then(dispatch(commentAdded(comment)));
+            await updateDoc(doc(db, 'feedback', feedbackId), {comments: feedback.comments + 1});
+        }
+        catch{
+            console.log(e);
+        }
     }
 
     const fetchFeedback = async () => {
-        const feedbackId = window.location.href.split('/')[3];
             await getDoc(doc(db, 'feedback', feedbackId))
                 .then((querySnapshot) => {
                         const feedback = querySnapshot.data();
@@ -78,7 +78,7 @@ const FeedbackPage = () => {
         <div className="popup popup_feedback">
             <div className='page__header'>
                 <BackBtn/>
-                <Link className='form__btn' to={'/edit'}>
+                <Link className='form__btn' to={`/${feedbackId}/edit`}>
                     Edit Feedback
                 </Link>
             </div>

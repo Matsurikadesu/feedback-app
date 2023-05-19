@@ -19,7 +19,9 @@ const AddFeedBackPage = () => {
                 title: form.title.value,
                 description: form.description.value,
                 category: form.category.value,
-                upvotes: 0    
+                upvotes: 0,
+                status: 'planned',
+                comments: 0
             })
         } catch (e) {
             console.error("Error adding document: ", e);

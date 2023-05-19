@@ -3,16 +3,31 @@ import { db } from "../../firebase";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { feedbacksFetched, roadmapFetched, feedbackOpened } from "../feedbacks-list/feedbacksSlice";
+import { feedbacksFetched, feedbackOpened } from "../feedbacks-list/feedbacksSlice";
 import BackBtn from "../backBtn/BackBtn";
 import './roadmap-page.scss';
 import '../feedback-item/feedback.scss';
 
 const RoadmapPage = () => {
     const dispatch = useDispatch();
-
-    const roadmap = useSelector(state => state.roadmap);
+    // const roadmap = useSelector(state => state.roadmap);
     const feedbacks = useSelector(state => state.feedbacks);
+    let roadmap = false;
+    if(feedbacks) {
+        roadmap = [
+        {
+            name: 'planned', 
+            amount: feedbacks.filter(item => item.status === 'planned').length
+        }, 
+        {
+            name: 'in-progress',
+            amount: feedbacks.filter(item => item.status === 'in-progress').length
+        }, 
+        {
+            name: 'live',
+            amount: feedbacks.filter(item => item.status === 'live').length
+        }
+    ];}
 
     const fetchFeedbacks = async () => {
         await getDocs(collection(db, "feedback"))
@@ -21,18 +36,9 @@ const RoadmapPage = () => {
                 dispatch(feedbacksFetched(newData))
             })
         }
-    
-    const fetchRoadmap = async () => {
-        await getDocs(collection(db, "roadmap"))
-            .then((querySnapshot) => {              
-                const roadmap = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
-                dispatch(roadmapFetched(roadmap));
-            })
-    }
 
     useEffect(() => {
         if (!feedbacks) fetchFeedbacks();
-        if (!roadmap) fetchRoadmap();
         // eslint-disable-next-line
     }, [])
 
@@ -121,7 +127,7 @@ const RoadmapPage = () => {
                 <button className="roadmap__switch-item title">Live</button>
             </div>
             <div className="roadmap__content">
-                {roadmap ? roadmap.map((item, index) => (
+                {feedbacks ? roadmap.map((item, index) => (
                     <RoadmapItem
                         key={index}
                         title={item.name}/>

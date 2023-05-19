@@ -2,23 +2,39 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import BackBtn from '../backBtn/BackBtn';
 import '../addFeedback/add-feedback-page.scss';
+import { db } from '../../firebase';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 
 const EditFeedbackPage = () => {
     const optionsCategory = ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
-    const optionsStatus = ['planning', 'in-progress', 'live'];
-
+    const optionsStatus = ['planned', 'in-progress', 'live'];
     const selectOptions = (arr) => arr.map((item, index) => (<option key={index}>{item}</option>))
-    
+    const feedbackId = window.location.href.split('/')[3];
     const feedback = useSelector(state => state.currentFeedback);
     const {title, category, description, status} = feedback;
+    
+    const onSubmitChanges = async (e) => {
+        e.preventDefault();
+        const {title, category, status, description} = e.target;
+        await updateDoc(doc(db, `feedback/${feedbackId}`), {
+            title: title.value,
+            category: category.value,
+            status: status.value,
+            description: description.value
+        })
+    }
 
+    const onDelete = async () => {
+        await deleteDoc(doc(db, `feedback/${feedbackId}`));
+    }
+    
     return(
         <div className="popup">
             <BackBtn/>
             <div className="popup__body">
-                <img className='popup__icon' src="./edit-feedback-icon.png" alt="shiny icon" />
+                <img className='popup__icon' src="../edit-feedback-icon.png" alt="shiny icon" />
                 <h1 className="popup__title">Editing ‘{title}’</h1> 
-                <form className="form">
+                <form className="form" onSubmit={onSubmitChanges}>
                     <div className="form__element">
                         <label className="form__element-title" htmlFor="title">Feedback title</label>
                         <span className="form__element-description">Add a short, descriptive headline</span>
@@ -45,9 +61,9 @@ const EditFeedbackPage = () => {
                     </div>
 
                     <div className='form__buttons'>
-                        <button type='submit' className='form__btn form__btn_accept'>Add Feedback</button>
+                        <button type='submit' className='form__btn form__btn_accept'>Save Changes</button>
                         <Link className='form__btn' to='/'>Cancel</Link>
-                        <button className='form__btn form__btn_delete'>Delete</button>
+                        <Link className='form__btn form__btn_delete' onClick={onDelete} to={'/'}>Delete</Link>
                     </div>
                 </form>
             </div>

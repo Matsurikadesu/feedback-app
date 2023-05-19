@@ -10,6 +10,8 @@ import './FeedbacksList.scss';
 const FeedbackList = () => {
     const dispatch = useDispatch();
     const feedbacks = useSelector(state => state.feedbacks);
+    const applyingFilter = useSelector(state => state.filter);
+    const sorting = useSelector(state => state.sortingMethod);
 
     const fetchFeedbacks = async () => {
         await getDocs(collection(db, "feedback"))
@@ -23,21 +25,40 @@ const FeedbackList = () => {
         if (!feedbacks) fetchFeedbacks();
         // eslint-disable-next-line
     }, [])
+    let filteredFeedbacks = null;
+
+    if(feedbacks) {
+        const sortedFeedbacks = feedbacks.map(item => item).sort((a, b) => {
+            switch(sorting){
+                case 'mu':
+                    return b.upvotes - a.upvotes;
+                case 'lu':
+                    return a.upvotes - b.upvotes;
+                case 'mc':
+                    return b.comments - a.comments;
+                case 'lc':
+                    return a.comments - b.comments;
+                default:
+                    return 0;
+            }
+        }); 
+        filteredFeedbacks = sortedFeedbacks.filter(item => (item.category === applyingFilter || applyingFilter === 'all'));
+    }
 
     const elements = feedbacks 
-        ? feedbacks?.map((item, i) => (
-            <FeedbackItem 
-                {...item}
-                key={i}
-                />
-        ))
-        : null
+    ? filteredFeedbacks?.map((item, i) => (
+        <FeedbackItem 
+            {...item}
+            key={i}
+            />
+    ))
+    : null
 
 
     return(
         <div className="feedback__container">
             {
-                feedbacks ? elements : <EmptyFeedbacks/>
+                filteredFeedbacks ? elements : <EmptyFeedbacks/>
             }
         </div>
     )

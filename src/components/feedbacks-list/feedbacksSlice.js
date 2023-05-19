@@ -5,9 +5,11 @@ const initialState = {
     feedbacks: false,
     feedbackIndex: -1,
     currentFeedback: false,
-    roadmap: false,
+    roadmap: [{name: 'planned'}, {name: 'in-progress'}, {name: 'live'}],
     comments: false,
-    user: false
+    user: false,
+    filter: 'all',
+    sortingMethod: 'mu'
 };
 
 const feedbackSlice = createSlice({
@@ -34,8 +36,18 @@ const feedbackSlice = createSlice({
             state.user = action.payload;
         },
         commentAdded: (state, action) => {
-            state.currentFeedback = action.payload.newFeedback;
-            state.comments.push(action.payload.comment);
+            state.currentFeedback.comments++;
+            if(state.comments) {
+                state.comments.push(action.payload);
+            }else{
+                state.comments = [action.payload];
+            }
+        },
+        filterSelected: (state, action) => {
+            state.filter = action.payload;
+        },
+        sortingSelected: (state, action) => {
+            state.sortingMethod = action.payload;
         }
     }
 });
@@ -51,5 +63,7 @@ export const {
     roadmapFetched,
     commentsFetched,
     userFetched,
-    commentAdded
+    commentAdded,
+    filterSelected,
+    sortingSelected
 } = actions;
