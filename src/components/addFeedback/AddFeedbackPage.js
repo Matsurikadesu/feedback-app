@@ -3,14 +3,16 @@ import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { Link, useNavigate } from 'react-router-dom';
 import BackBtn from '../backBtn/BackBtn';
+import { useSelector } from 'react-redux';
 
 const AddFeedBackPage = () => {
-    const options = ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
+    const navigate = useNavigate();
+    const options = useSelector(state => state.tags);
+
     const selectOptions = options.map((item, index) => {
         return <option key={index}>{item}</option>
     })
 
-    const navigate = useNavigate();
     const addFeedback = async (e) => {
         e.preventDefault();
         const form = e.target;
@@ -23,7 +25,7 @@ const AddFeedBackPage = () => {
                 upvotes: 0,
                 status: 'planned',
                 comments: 0
-            }).then(navigate('/'));
+            }).then(() => navigate('/'));
         } catch (e) {
             console.error("Error adding document: ", e);
         }

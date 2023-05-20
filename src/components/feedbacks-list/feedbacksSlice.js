@@ -9,7 +9,8 @@ const initialState = {
     comments: false,
     user: false,
     filter: 'All',
-    sortingMethod: 'Most Upvotes'
+    sortingMethod: 'Most Upvotes',
+    tags: ['UI', 'UX', 'Enhancement', 'Bug', 'Feature']
 };
 
 const feedbackSlice = createSlice({

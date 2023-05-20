@@ -9,7 +9,7 @@ import { feedbackOpened } from '../feedbacks-list/feedbacksSlice';
 
 const EditFeedbackPage = () => {
     const navigate = useNavigate();
-    const optionsCategory = ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
+    const optionsCategory = useSelector(state => state.tags);
     const optionsStatus = ['planned', 'in-progress', 'live'];
     const selectOptions = (arr) => arr.map((item, index) => (<option key={index}>{item}</option>))
     const feedbackId = window.location.href.split('/')[3];
@@ -25,7 +25,7 @@ const EditFeedbackPage = () => {
             category: category.value,
             status: status.value,
             description: description.value
-        }).then(navigate(`/${feedbackId}`));
+        }).then(() => navigate(`/${feedbackId}`));
     }
 
     const fetchFeedback = async () => {
@@ -45,7 +45,7 @@ const EditFeedbackPage = () => {
     }, [])
 
     const onDelete = async () => {
-        await deleteDoc(doc(db, `feedback/${feedbackId}`)).then(navigate('/'));
+        await deleteDoc(doc(db, `feedback/${feedbackId}`)).then(() => navigate('/'));
     }
     
     return(
@@ -83,7 +83,7 @@ const EditFeedbackPage = () => {
                     <div className='form__buttons'>
                         <button type='submit' className='form__btn form__btn_accept'>Save Changes</button>
                         <Link className='form__btn' to='/'>Cancel</Link>
-                        <button className='form__btn form__btn_delete' onClick={onDelete}>Delete</button>
+                        <button type='button' className='form__btn form__btn_delete' onClick={onDelete}>Delete</button>
                     </div>
                 </form>
             </div>

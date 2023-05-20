@@ -22,7 +22,7 @@ const FeedbackList = () => {
         }
     
     useEffect(() => {
-        if (!feedbacks) fetchFeedbacks();
+        fetchFeedbacks();
         // eslint-disable-next-line
     }, [])
     let filteredFeedbacks = null;

@@ -6,7 +6,7 @@ import { feedbackOpened, commentAdded } from '../feedbacks-list/feedbacksSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import BackBtn from '../backBtn/BackBtn';
-import Comments from '../comment/Comments';
+import CommentsList from '../commentsList/CommentsList';
 import '../addFeedback/add-feedback-page.scss';
 import './feedback-page.scss';
 
@@ -91,7 +91,8 @@ const FeedbackPage = () => {
 
                 {
                     feedback.comments 
-                        ? <Comments count={feedback.comments}/>
+                        ? <CommentsList 
+                            count={feedback.comments}/>
                         : null
                 }
 

@@ -3,16 +3,17 @@ import { db } from "../../firebase";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { feedbacksFetched, feedbackOpened } from "../feedbacks-list/feedbacksSlice";
+import { feedbacksFetched } from "../feedbacks-list/feedbacksSlice";
 import BackBtn from "../backBtn/BackBtn";
+import RoadmapColumn from "../roadmap-column/RoadmapColumn";
 import './roadmap-page.scss';
 import '../feedback-item/feedback.scss';
 
 const RoadmapPage = () => {
     const dispatch = useDispatch();
-    // const roadmap = useSelector(state => state.roadmap);
     const feedbacks = useSelector(state => state.feedbacks);
     let roadmap = false;
+
     if(feedbacks) {
         roadmap = [
         {
@@ -38,77 +39,9 @@ const RoadmapPage = () => {
         }
 
     useEffect(() => {
-        if (!feedbacks) fetchFeedbacks();
+        fetchFeedbacks();
         // eslint-disable-next-line
     }, [])
-
-    const RoadmapFeedback = ({title, description, upvotes, category, status, id, comments}) => {
-
-        const onOpenFeedback = (e) => {
-            if(e.target.classList.contains('card__btn')) e.preventDefault();
-            dispatch(feedbackOpened({
-                id,
-                feedback: {
-                    title,
-                    description,
-                    upvotes,
-                    category,
-                    status,
-                    comments
-                }
-            }));
-        }
-
-        return(
-            <Link className="feedback__card feedback__card_roadmap" onClick={onOpenFeedback} to={`/${id}`}>
-                <div className="card__header-dec"></div>
-                <h3 className="card__header-status text">{status}</h3>
-                <div className='card__info'>
-                    <h3 className="card__title title-lg">{title}</h3>
-                    <p className="card__description">{description}</p>
-                    <div className="aside__tags-item">{category}</div>
-                </div>
-                <div className="card__controls">
-                    <div className="card__upvote card__btn">
-                        <img className="card__upvote-btn" src="upvote.svg" alt="123"/>
-                        <span className="card__text">{upvotes}</span>
-                    </div>
-                    <button className="card__comment card__btn">
-                        <img src="comment.svg" alt="comment"/>
-                        <span className="card__text">{comments}</span>
-                    </button>
-                </div>
-            </Link>
-        )
-    }
-
-    const RoadmapItem = ({title, description}) => {
-        const roadmapTasks = feedbacks.filter(item => item.status === title);
-
-        return(
-            <div className="roadmap__tasks-container">
-                    <div className="roadmap__tasks-header">
-                        <h2 className="title-lg">{title} ({roadmapTasks.length})</h2>
-                        <p className="text">{description}</p>
-                    </div>
-                    <div className="roadmap__tasks">
-                        {roadmapTasks 
-                            ? roadmapTasks.map((item, index) => (
-                                <RoadmapFeedback
-                                    key={index}
-                                    title={item.title}
-                                    description={item.description}
-                                    category={item.category}
-                                    upvotes={item.upvotes}
-                                    status={title}
-                                    id={item.id}
-                                    comments={item.comments}/>
-                            )) 
-                            : null}
-                    </div>
-            </div>
-        )
-    }   
 
     return(
         <div className="roadmap">
@@ -128,7 +61,7 @@ const RoadmapPage = () => {
             </div>
             <div className="roadmap__content">
                 {feedbacks ? roadmap.map((item, index) => (
-                    <RoadmapItem
+                    <RoadmapColumn
                         key={index}
                         title={item.name}/>
                 )) : null}
