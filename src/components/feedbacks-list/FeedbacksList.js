@@ -5,6 +5,7 @@ import { db } from "../../firebase";
 import { feedbacksFetched } from './feedbacksSlice';
 import FeedbackItem from '../feedback-item/FeedbackItem';
 import EmptyFeedbacks from '../emptyFeedbacks/EmptyFeedbacks';
+import FeedbacksLoading from '../loading-placeholders/FeedbacksLoading';
 import './FeedbacksList.scss';
 
 const FeedbackList = () => {
@@ -12,6 +13,7 @@ const FeedbackList = () => {
     const feedbacks = useSelector(state => state.feedbacks);
     const applyingFilter = useSelector(state => state.filter);
     const sorting = useSelector(state => state.sortingMethod);
+    const feedbacksLoadingStatus = useSelector(state => state.feedbacksLoadingStatus)
 
     const fetchFeedbacks = async () => {
         await getDocs(collection(db, "feedback"))
@@ -46,20 +48,34 @@ const FeedbackList = () => {
     }
 
     const elements = feedbacks 
-    ? filteredFeedbacks?.map((item, i) => (
-        <FeedbackItem 
-            {...item}
-            key={i}
-            />
-    ))
-    : null
+        ? filteredFeedbacks?.map((item, i) => (
+            <FeedbackItem 
+                {...item}
+                key={i}
+                />
+            ))
+        : null
 
+    const DisplayThis = () => {
+        if(feedbacksLoadingStatus === 'loading'){
+            return(
+                <FeedbacksLoading/>
+            )
+        }else if(feedbacksLoadingStatus === 'idle'){
+            if(filteredFeedbacks && filteredFeedbacks.length > 0){
+                return elements;
+            }else{
+                <EmptyFeedbacks/>
+            }
+        }
+    }
 
     return(
         <div className="feedback__container">
-            {
-                filteredFeedbacks ? elements : <EmptyFeedbacks/>
-            }
+            {/* {
+                // filteredFeedbacks && filteredFeedbacks.length > 0 ? elements : <EmptyFeedbacks/>
+            } */}
+            <DisplayThis/>
         </div>
     )
 }

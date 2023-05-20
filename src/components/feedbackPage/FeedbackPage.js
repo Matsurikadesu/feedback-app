@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import BackBtn from '../backBtn/BackBtn';
 import CommentsList from '../commentsList/CommentsList';
+import FeedbackLoading from '../loading-placeholders/FeedbackLoading';
 import '../addFeedback/add-feedback-page.scss';
 import './feedback-page.scss';
 
@@ -19,7 +20,7 @@ const FeedbackPage = () => {
     const addComment = async (e) => {
         e.preventDefault();
         const form = e.target;
-        const comment = {user: 1, isparent: false, text: form.comment.value};
+        const comment = {user: 1, text: form.comment.value};
 
         try{
             await addDoc(collection(db, 'feedback', feedbackId, 'comments'), comment).then(() => dispatch(commentAdded(comment)));
@@ -42,7 +43,7 @@ const FeedbackPage = () => {
     }
 
     useEffect(() => {
-        if(!feedback) fetchFeedback();
+        fetchFeedback();
         //eslint-disable-next-line
     },[])
 
@@ -86,15 +87,10 @@ const FeedbackPage = () => {
                 {
                     feedback 
                         ? <FeedbackCard/>
-                        : null
+                        : <FeedbackLoading/>
                 }
 
-                {
-                    feedback.comments 
-                        ? <CommentsList 
-                            count={feedback.comments}/>
-                        : null
-                }
+                <CommentsList count={feedback.comments}/>
 
                 <form className='comment-form' onSubmit={addComment}>
                     <label className='title' htmlFor='comment'>Add Comment</label>

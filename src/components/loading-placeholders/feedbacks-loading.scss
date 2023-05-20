@@ -1,0 +1,22 @@
+@keyframes loading{
+    0%{
+        background-color: white;
+    }
+    50%{
+        background-color: rgba(128, 128, 128, 0.2);
+    }
+
+    100%{
+        background-color: white;
+    }
+}
+
+.feedback__card_placeholder{
+    height: 120px;
+    animation: loading infinite 1s ease-in-out;
+}
+
+.comments-placeholder{
+    animation: loading infinite 1s ease-in-out;
+    height: 600px;
+}

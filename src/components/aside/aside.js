@@ -2,16 +2,15 @@ import { Link } from 'react-router-dom';
 import './aside.scss';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from '../loading/Loading';
 import { filterSelected, roadmapFetched } from '../feedbacks-list/feedbacksSlice';
 
 const Aside = () => {
     const dispatch = useDispatch();
-
     const options = ['All', 'UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
     const feedbacks = useSelector(state => state.feedbacks);
     const roadmap = useSelector(state => state.roadmap);
     const filter = useSelector(state => state.filter);
+    const loadingStatus = useSelector(state => state.feedbacksLoadingStatus);
 
     useEffect(() => {
         if(feedbacks){
@@ -46,7 +45,7 @@ const Aside = () => {
     
     const roadmapList = roadmap ? roadmap
             .map((item, index) => {
-                return <li className="roadmap__item" key={index}>{item.name} <span>{item.amount}</span></li>
+                return <li className="roadmap__item" key={index}>{item.name} <span>{loadingStatus === 'loading' ? 0 : item.amount}</span></li>
             }) : null; 
     
 
@@ -71,7 +70,7 @@ const Aside = () => {
                         <Link className="roadmap__btn" to="/roadmap">View</Link>
                     </div>
                     <ul className="roadmap__list">
-                        {roadmap ? roadmapList : <Loading/>}
+                        {roadmapList}
                     </ul>
                 </div>
             </div>

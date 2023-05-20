@@ -1,30 +1,15 @@
-import { addDoc, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { userFetched } from "../feedbacks-list/feedbacksSlice";
 import NestedComment from "../nested-comment/NestedComment";
 
-const Comment = ({text, isparent, id, replying}) => {
-    const dispatch = useDispatch()
+const Comment = ({text, id, replying}) => {
     const feedbackId = window.location.href.split('/')[3];
     const feedback = useSelector(state => state.currentFeedback)
     const user = useSelector(state => state.user);
     const [isReply, setIsReply] = useState(false);
     const [nestedComments, setNested] = useState(false);
-    
-    const fetchUser = async () => {
-        await getDoc(doc(db, 'users', '1'))
-            .then((querySnapshot) => {
-                const user = querySnapshot.data();
-                dispatch(userFetched(user));
-            })
-    }
-
-    useEffect(() => {
-        fetchUser();
-        //eslint-disable-next-line
-    }, [])
 
     const fetchNestedComments = async () => {
         await getDocs(collection(db, 'feedback', feedbackId, 'comments', id, 'nestedcomments'))
@@ -36,7 +21,6 @@ const Comment = ({text, isparent, id, replying}) => {
     
     const addNestedComment = async (nestedcomment) => {
         await addDoc(collection(db, 'feedback', feedbackId, 'comments', id, 'nestedcomments'), nestedcomment);
-        await updateDoc(doc(db, 'feedback', feedbackId, 'comments', id), {isparent: true});
         await updateDoc(doc(db, 'feedback', feedbackId), {comments: feedback.comments + 1});
     }
 
@@ -79,8 +63,6 @@ const Comment = ({text, isparent, id, replying}) => {
                     <button type='submit' className="header__btn">Post Reply</button>
                 </form> 
                 : null}
-            {isparent 
-                ? 
                 <div className="comments__tree">
                     {nestedComments 
                         ? nestedComments.map((item, index) => (
@@ -95,8 +77,6 @@ const Comment = ({text, isparent, id, replying}) => {
                         :null
                     }
                 </div>
-                :null
-            }
         </div>
     )
 }
