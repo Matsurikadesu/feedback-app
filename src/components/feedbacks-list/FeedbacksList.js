@@ -30,19 +30,19 @@ const FeedbackList = () => {
     if(feedbacks) {
         const sortedFeedbacks = feedbacks.map(item => item).sort((a, b) => {
             switch(sorting){
-                case 'mu':
+                case 'Most Upvotes':
                     return b.upvotes - a.upvotes;
-                case 'lu':
+                case 'Least Upvotes':
                     return a.upvotes - b.upvotes;
-                case 'mc':
+                case 'Most Comments':
                     return b.comments - a.comments;
-                case 'lc':
+                case 'Least Comments':
                     return a.comments - b.comments;
                 default:
                     return 0;
             }
         }); 
-        filteredFeedbacks = sortedFeedbacks.filter(item => (item.category === applyingFilter || applyingFilter === 'all'));
+        filteredFeedbacks = sortedFeedbacks.filter(item => (item.category === applyingFilter || applyingFilter === 'All'));
     }
 
     const elements = feedbacks 

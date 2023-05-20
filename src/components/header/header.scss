@@ -39,6 +39,11 @@
         font-family: 'Jost', sans-serif;
         border: none;
         color: #F2F4FE;
+        transition: background-color .4s;
+
+        &:hover{
+            background-color: $purple-main-hover;
+        }
 
         @media screen and (min-width: 768px) {
             padding: 12px 25px;

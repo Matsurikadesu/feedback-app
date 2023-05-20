@@ -1,18 +1,22 @@
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import BackBtn from '../backBtn/BackBtn';
 import '../addFeedback/add-feedback-page.scss';
 import { db } from '../../firebase';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useEffect } from 'react';
+import { feedbackOpened } from '../feedbacks-list/feedbacksSlice';
 
 const EditFeedbackPage = () => {
+    const navigate = useNavigate();
     const optionsCategory = ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
     const optionsStatus = ['planned', 'in-progress', 'live'];
     const selectOptions = (arr) => arr.map((item, index) => (<option key={index}>{item}</option>))
     const feedbackId = window.location.href.split('/')[3];
     const feedback = useSelector(state => state.currentFeedback);
     const {title, category, description, status} = feedback;
-    
+    const dispatch = useDispatch();
+
     const onSubmitChanges = async (e) => {
         e.preventDefault();
         const {title, category, status, description} = e.target;
@@ -21,11 +25,27 @@ const EditFeedbackPage = () => {
             category: category.value,
             status: status.value,
             description: description.value
-        })
+        }).then(navigate(`/${feedbackId}`));
     }
 
+    const fetchFeedback = async () => {
+        await getDoc(doc(db, 'feedback', feedbackId))
+            .then((querySnapshot) => {
+                    const feedback = querySnapshot.data();
+                    dispatch(feedbackOpened({
+                        id: feedbackId,
+                        feedback
+                    }))
+                })
+    }
+
+    useEffect(() => {
+        if(!feedback) fetchFeedback();
+        //eslint-disable-next-line
+    }, [])
+
     const onDelete = async () => {
-        await deleteDoc(doc(db, `feedback/${feedbackId}`));
+        await deleteDoc(doc(db, `feedback/${feedbackId}`)).then(navigate('/'));
     }
     
     return(
@@ -63,7 +83,7 @@ const EditFeedbackPage = () => {
                     <div className='form__buttons'>
                         <button type='submit' className='form__btn form__btn_accept'>Save Changes</button>
                         <Link className='form__btn' to='/'>Cancel</Link>
-                        <Link className='form__btn form__btn_delete' onClick={onDelete} to={'/'}>Delete</Link>
+                        <button className='form__btn form__btn_delete' onClick={onDelete}>Delete</button>
                     </div>
                 </form>
             </div>

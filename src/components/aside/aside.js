@@ -8,9 +8,10 @@ import { filterSelected, roadmapFetched } from '../feedbacks-list/feedbacksSlice
 const Aside = () => {
     const dispatch = useDispatch();
 
-    const options = ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
+    const options = ['All', 'UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
     const feedbacks = useSelector(state => state.feedbacks);
     const roadmap = useSelector(state => state.roadmap);
+    const filter = useSelector(state => state.filter);
 
     useEffect(() => {
         if(feedbacks){
@@ -38,7 +39,9 @@ const Aside = () => {
 
     const optionsList = options
             .map((item, index) => {
-                return <li className='aside__tags-item' onClick={() => onFilterSelect(item)} key={index}>{item}</li>
+                let clazz = 'aside__tags-item '
+                if(item === filter) clazz += 'aside__tags-item_active';
+                return <li className={clazz} onClick={() => onFilterSelect(item)} key={index}>{item}</li>
             })
     
     const roadmapList = roadmap ? roadmap
@@ -53,13 +56,12 @@ const Aside = () => {
                 <h1 className="title">Frontend Mentor</h1>
                 <p className="subtitle">Feedback Board</p>
             </div>
-            <button className="aside__btn-container">
+            <button className="aside__btn-container" onClick={(e) => e.target.closest('.aside').classList.toggle('aside_active')}>
                 <div className="aside__btn"></div>
             </button>
             <div className="aside__container">
                 <div className="aside__element">
                     <ul className="aside__tags" onClick={onFilterClick}>
-                        <li className="aside__tags-item aside__tags-item_active " onClick={() => onFilterSelect('all')}>All</li>
                         {optionsList}
                     </ul>
                 </div>

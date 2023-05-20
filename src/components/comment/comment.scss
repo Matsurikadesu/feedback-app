@@ -1,0 +1,12 @@
+.reply-form{
+    display: flex;
+    align-items: flex-start;
+    margin-top: 24px;
+    gap: 16px;
+    width: 100%;
+    padding-left: 72px;
+
+    &__input{
+        flex-grow: 1;
+    }
+}

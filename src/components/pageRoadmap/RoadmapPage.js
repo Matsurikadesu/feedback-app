@@ -117,7 +117,7 @@ const RoadmapPage = () => {
                     <BackBtn/>
                     <h1 className="page__title title-lg">Roadmap</h1>
                 </div>
-                <Link className="header__btn" to={'add'}>
+                <Link className="header__btn" to={'/add'}>
                     + Add Feedback
                 </Link>
             </div>

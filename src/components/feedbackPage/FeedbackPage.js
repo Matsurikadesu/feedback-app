@@ -22,7 +22,7 @@ const FeedbackPage = () => {
         const comment = {user: 1, isparent: false, text: form.comment.value};
 
         try{
-            await addDoc(collection(db, 'feedback', feedbackId, 'comments'), comment).then(dispatch(commentAdded(comment)));
+            await addDoc(collection(db, 'feedback', feedbackId, 'comments'), comment).then(() => dispatch(commentAdded(comment)));
             await updateDoc(doc(db, 'feedback', feedbackId), {comments: feedback.comments + 1});
         }
         catch{

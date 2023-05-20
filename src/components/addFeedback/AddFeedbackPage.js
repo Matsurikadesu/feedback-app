@@ -1,7 +1,7 @@
 import './add-feedback-page.scss';
 import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BackBtn from '../backBtn/BackBtn';
 
 const AddFeedBackPage = () => {
@@ -10,6 +10,7 @@ const AddFeedBackPage = () => {
         return <option key={index}>{item}</option>
     })
 
+    const navigate = useNavigate();
     const addFeedback = async (e) => {
         e.preventDefault();
         const form = e.target;
@@ -22,7 +23,7 @@ const AddFeedBackPage = () => {
                 upvotes: 0,
                 status: 'planned',
                 comments: 0
-            })
+            }).then(navigate('/'));
         } catch (e) {
             console.error("Error adding document: ", e);
         }

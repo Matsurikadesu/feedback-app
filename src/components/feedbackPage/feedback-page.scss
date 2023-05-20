@@ -60,6 +60,8 @@
 }
 
 .form__input{
+    resize: none;
+
     @media screen and (min-width: 1440px) {
         font-size: 15px;
     }
@@ -153,6 +155,7 @@
         border: none;
         background-color: transparent;
         color: $blue-main;
+        cursor: pointer;
         font-weight: 600;
 
         &:hover{

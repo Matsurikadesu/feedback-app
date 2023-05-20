@@ -8,8 +8,8 @@ const initialState = {
     roadmap: [{name: 'planned'}, {name: 'in-progress'}, {name: 'live'}],
     comments: false,
     user: false,
-    filter: 'all',
-    sortingMethod: 'mu'
+    filter: 'All',
+    sortingMethod: 'Most Upvotes'
 };
 
 const feedbackSlice = createSlice({

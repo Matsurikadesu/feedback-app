@@ -92,7 +92,7 @@
 
     @media screen and (min-width: 768px) {
         display: flex;
-        flex-direction: row-reverse;
+        flex-direction: row;
         padding-top: 32px;
         gap: 10px;
     }
@@ -119,7 +119,7 @@
     }
 
     &:first-child{
-        --color: #62BCFA;
+        --color: #F49F85;
     }
 
     &:nth-child(2){
@@ -127,7 +127,7 @@
     }
 
     &:last-child{
-        --color: #F49F85;
+        --color: #62BCFA;
     }
 
     @media screen and (max-width: 767px) {
