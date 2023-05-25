@@ -1,14 +1,16 @@
 import { addDoc, collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import NestedComment from "../nested-comment/NestedComment";
+import { feedbackOpened } from "../feedbacks-list/feedbacksSlice";
 
-const Comment = ({text, id, replying}) => {
+const Comment = ({text, id}) => {
+    const dispatch = useDispatch();
     const feedbackId = window.location.href.split('/')[3];
     const feedback = useSelector(state => state.currentFeedback)
     const user = useSelector(state => state.user);
-    const [isReply, setIsReply] = useState(false);
+    const [reply, setReply] = useState(false);
     const [nestedComments, setNested] = useState(false);
 
     const fetchNestedComments = async () => {
@@ -20,15 +22,18 @@ const Comment = ({text, id, replying}) => {
     }
     
     const addNestedComment = async (nestedcomment) => {
+        setReply(false);
+        dispatch(feedbackOpened({feedbackId, feedback: {...feedback, comments: feedback.comments + 1}}))
         await addDoc(collection(db, 'feedback', feedbackId, 'comments', id, 'nestedcomments'), nestedcomment);
         await updateDoc(doc(db, 'feedback', feedbackId), {comments: feedback.comments + 1});
+        fetchNestedComments();
     }
 
     const onReply = () => {
-        if(isReply !== id) {
-            setIsReply(id)
+        if(reply !== id) {
+            setReply(id)
         }else{
-            setIsReply(false);
+            setReply(false);
         }
     }
 
@@ -38,10 +43,22 @@ const Comment = ({text, id, replying}) => {
         addNestedComment(newNestedComment);
     }
 
+    const nestedCommentsList = nestedComments 
+        ? nestedComments.map((item, index) => (
+            <NestedComment
+                key={index}
+                text={item.text}
+                replying={item.replyingTo}
+                id={item.id}
+                parentId={id}
+                />
+        ))
+        :null
+
     useEffect(() => {
         fetchNestedComments();
         //eslint-disable-next-line
-    }, [])
+    }, [feedback.comments])
 
     return(
         <div className='comment'>
@@ -55,28 +72,21 @@ const Comment = ({text, id, replying}) => {
                 </div>
                 <button className='comment__reply' onClick={onReply}>Reply</button>
             </div>
-            <p className='comment__text'>{replying ? `@${user.tag} ` : null}{text}</p>
-            {isReply === id 
+            <p className='comment__text'>{text}</p>
+            {reply === id 
                 ? 
                 <form className="reply-form" onSubmit={onReplySubmit}>
                     <textarea className="reply-form__input form__input" name="nestedComment" id="nestedComment"></textarea>
                     <button type='submit' className="header__btn">Post Reply</button>
                 </form> 
                 : null}
-                <div className="comments__tree">
-                    {nestedComments 
-                        ? nestedComments.map((item, index) => (
-                            <NestedComment
-                                key={index}
-                                text={item.text}
-                                replying={item.replyingTo}
-                                id={item.id}
-                                parentId={id}
-                                />
-                        ))
-                        :null
-                    }
-                </div>
+    
+                {nestedCommentsList !== null && nestedCommentsList.length > 0 ?
+                    <div className="comments__tree">
+                        {nestedCommentsList}
+                    </div>
+                    : null
+                }
         </div>
     )
 }

@@ -51,12 +51,13 @@ const FeedbackList = () => {
         ? filteredFeedbacks?.map((item, i) => (
             <FeedbackItem 
                 {...item}
+                initialUpvotes={item.upvotes}
                 key={i}
                 />
             ))
         : null
 
-    const DisplayThis = () => {
+    const Feedbacks = () => {
         if(feedbacksLoadingStatus === 'loading'){
             return(
                 <FeedbacksLoading/>
@@ -72,10 +73,7 @@ const FeedbackList = () => {
 
     return(
         <div className="feedback__container">
-            {/* {
-                // filteredFeedbacks && filteredFeedbacks.length > 0 ? elements : <EmptyFeedbacks/>
-            } */}
-            <DisplayThis/>
+            <Feedbacks/>
         </div>
     )
 }

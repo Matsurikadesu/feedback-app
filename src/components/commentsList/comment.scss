@@ -1,12 +1,26 @@
+@import './../abstracts/variables.scss';
+
 .reply-form{
     display: flex;
     align-items: flex-start;
     margin-top: 24px;
     gap: 16px;
     width: 100%;
-    padding-left: 72px;
+
+    @media screen and (min-width: 768px) {
+        padding-left: 72px;
+    }
 
     &__input{
         flex-grow: 1;
     }
+}
+
+.reply__accent{
+    color: $purple-main;
+}
+
+.comments__tree{
+    display: flex;
+    flex-direction: column-reverse;
 }

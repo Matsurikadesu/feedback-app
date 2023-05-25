@@ -1,23 +1,27 @@
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../firebase";
+import { feedbackOpened } from "../feedbacks-list/feedbacksSlice";
 
 const NestedComment = ({text, replying, id, parentId}) => {
+    const dispatch = useDispatch(); 
     const user = useSelector(state => state.user);
-    const [isReply, setIsReply] = useState(false);
     const feedbackId = window.location.href.split('/')[3];
     const feedback = useSelector(state => state.currentFeedback);
+    const [reply, setReply] = useState(false);
 
     const onReply = () => {
-        if(isReply !== id) {
-            setIsReply(id)
+        if(reply !== id) {
+            setReply(id)
         }else{
-            setIsReply(false);
+            setReply(false);
         }
     }
 
     const addNestedComment = async (nestedcomment) => {
+        setReply(false)
+        dispatch(feedbackOpened({feedbackId, feedback: {...feedback, comments: feedback.comments + 1}}))
         await addDoc(collection(db, 'feedback', feedbackId, 'comments', parentId, 'nestedcomments'), nestedcomment);
         await updateDoc(doc(db, 'feedback', feedbackId), {comments: feedback.comments + 1});
     }
@@ -40,8 +44,8 @@ const NestedComment = ({text, replying, id, parentId}) => {
                 </div>
                 <button className='comment__reply' onClick={onReply}>Reply</button>
             </div>
-            <p className='comment__text'>{replying ? `@${user.tag} ` : null}{text}</p>
-            {isReply === id 
+            <p className='comment__text'>{replying ? <span className="reply__accent">@{user.tag}</span> : null} {text}</p>
+            {reply === id 
                 ? 
                 <form className="reply-form" onSubmit={onReplySubmit}>
                     <textarea className="reply-form__input form__input" name="nestedComment" id="nestedComment"></textarea>

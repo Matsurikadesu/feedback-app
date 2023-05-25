@@ -59,7 +59,7 @@ const AddFeedBackPage = () => {
 
                     <div className='form__buttons'>
                         <button type='submit' className='form__btn form__btn_accept'>Add Feedback</button>
-                        <Link className='form__btn' href='/'>Cancel</Link>
+                        <Link className='form__btn' to='/'>Cancel</Link>
                     </div>
                 </form>
             </div>

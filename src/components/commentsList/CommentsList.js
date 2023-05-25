@@ -1,24 +1,23 @@
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
-import { useEffect} from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { commentsFetched, userFetched } from "../feedbacks-list/feedbacksSlice";
+import { useEffect, useState} from "react";
+import { useDispatch,  } from "react-redux";
+import { userFetched } from "../feedbacks-list/feedbacksSlice";
 import CommentsLoading from "../loading-placeholders/CommentsLoading";
 import Comment from "../comment/comment";
 import './comment.scss';
 
 const CommentsList = ({count}) => {
     const dispatch = useDispatch();
-    const comments = useSelector(state => state.comments);
     const feedbackId = window.location.href.split('/')[3];
-    const loadingStatus = useSelector(state => state.feedbackPageLoadingStatus)
+    const [comments, setComments] = useState(false)
 
     const fetchComments = async () => {
-            await getDocs(collection(db, 'feedback', feedbackId, 'comments'))
-                .then((querySnapshot) => {
-                    const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
-                    dispatch(commentsFetched(newData));
-                })
+        await getDocs(collection(db, 'feedback', feedbackId, 'comments'))
+            .then((querySnapshot) => {
+                const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
+                setComments(newData);
+            })
     }
 
     const fetchUser = async () => {
@@ -32,11 +31,10 @@ const CommentsList = ({count}) => {
     useEffect(() => {
         fetchComments();
         fetchUser();
-
         //eslint-disable-next-line
-    }, [])
+    }, [count])
 
-    const commentsList = comments 
+    const commentsList = comments
         ? comments.map((item, index) => (
             <Comment
                 key={index}
@@ -46,11 +44,11 @@ const CommentsList = ({count}) => {
         ))
         : null;
 
-    if(loadingStatus === 'loading'){
+    if(!comments){
         return(
             <CommentsLoading/>
         )
-    }else if (loadingStatus === 'idle'){
+    }else{
         return(
             <div className='comments'>
                 <b className='title'>{count} Comments</b>

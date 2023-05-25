@@ -23,8 +23,9 @@ const FeedbackPage = () => {
         const comment = {user: 1, text: form.comment.value};
 
         try{
-            await addDoc(collection(db, 'feedback', feedbackId, 'comments'), comment).then(() => dispatch(commentAdded(comment)));
-            await updateDoc(doc(db, 'feedback', feedbackId), {comments: feedback.comments + 1});
+            dispatch(commentAdded(comment))
+            await addDoc(collection(db, 'feedback', feedbackId, 'comments'), comment);
+            await updateDoc(doc(db, 'feedback', feedbackId), {comments: feedback.comments + 1})
         }
         catch{
             console.log(e);
@@ -32,14 +33,14 @@ const FeedbackPage = () => {
     }
 
     const fetchFeedback = async () => {
-            await getDoc(doc(db, 'feedback', feedbackId))
-                .then((querySnapshot) => {
-                        const feedback = querySnapshot.data();
-                        dispatch(feedbackOpened({
-                            id: feedbackId,
-                            feedback
-                        }))
-                    })
+        await getDoc(doc(db, 'feedback', feedbackId))
+            .then((querySnapshot) => {
+                    const feedback = querySnapshot.data();
+                    dispatch(feedbackOpened({
+                        id: feedbackId,
+                        feedback
+                    }))
+                })
     }
 
     useEffect(() => {
@@ -85,7 +86,7 @@ const FeedbackPage = () => {
             </div>
             <div className='popup__body body_page'>
                 {
-                    feedback 
+                    feedback
                         ? <FeedbackCard/>
                         : <FeedbackLoading/>
                 }

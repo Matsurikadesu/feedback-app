@@ -1,12 +1,16 @@
 import { useSelector } from "react-redux";
 import RoadmapFeedback from "../roadmap-feedback/RoadmapFeedback";
 
-const RoadmapColumn = ({title, description}) => {
+const RoadmapColumn = ({title, description, filter}) => {
     const feedbacks = useSelector(state => state.feedbacks)
     const roadmapTasks = feedbacks.filter(item => item.status === title);
 
+    let filterClass = '';
+    if(filter.toLowerCase() !== title.toLowerCase()){
+        filterClass = 'roadmap__tasks-container_hidden';
+    }
     return(
-        <div className="roadmap__tasks-container">
+        <div className={`roadmap__tasks-container ${filterClass}`}>
                 <div className="roadmap__tasks-header">
                     <h2 className="title-lg">{title} ({roadmapTasks.length})</h2>
                     <p className="text">{description}</p>

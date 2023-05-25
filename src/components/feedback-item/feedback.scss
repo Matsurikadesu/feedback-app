@@ -74,6 +74,19 @@
         background-color: $light-main-hover;
     }
 
+    &_active{
+        background-color: #4661E6;
+        color: white;
+
+        path{
+            stroke: white;
+        }
+
+        &:hover{
+            background-color: lighten(#4661E6, 5%);
+        }
+    }
+
     @media screen and (min-width: 768px) {
         position: absolute;
         flex-direction: column;
@@ -106,8 +119,4 @@
     gap: 4px;
     background-color: inherit;
     border: none;
-
-    // @media screen and (min-width: 768px) {
-    //     align-items: start;
-    // }
 }

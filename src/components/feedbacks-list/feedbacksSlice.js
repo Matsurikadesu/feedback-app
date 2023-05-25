@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+// нужен рефакторинг
 const initialState = {
     feedbacksLoadingStatus: 'loading',
     feedbackPageLoadingStatus: 'loading',
+    commentsLoadingStatus: 'loading',
     feedbacks: false,
     feedbackIndex: -1,
     currentFeedback: false,
@@ -35,7 +36,7 @@ const feedbackSlice = createSlice({
             state.comments = action.payload;
         },
         userFetched: (state, action) => {
-            state.feedbackPageLoadingStatus = 'idle';
+            state.commentsLoadingStatus = 'idle';
             state.user = action.payload;
         },
         commentAdded: (state, action) => {
