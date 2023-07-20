@@ -32,4 +32,4 @@ You can visit website by clicking [this link](https://github.com)
 
 1. Clone the repository: `git clone https://github.com/kanae367/feedback-app`
 2. Install all dependencies: `npm install`
-3. Runt the app: `npm start`
+3. Run the app: `npm start`
