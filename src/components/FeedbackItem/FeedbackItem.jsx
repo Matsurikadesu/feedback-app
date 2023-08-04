@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { feedbackOpened} from '../FeedbacksList/feedbacksSlice';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../../firebase/firebase';
 import { useState } from 'react';
 
 const FeedbackItem = ({title, description, initialUpvotes, category, id, status, comments}) => {
@@ -41,7 +41,7 @@ const FeedbackItem = ({title, description, initialUpvotes, category, id, status,
     }
 
     return(
-        <Link className="feedback__card" onClick={onOpenFeedback} to={`${id}`}>
+        <Link className="feedback__card" onClick={onOpenFeedback} to={`feedbacks/${id}`}>
             <div className='card__info'>
                 <h3 className="card__title">{title}</h3>
                 <p className="card__description">{description}</p>

@@ -1,5 +1,5 @@
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../firebase/firebase";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import { feedbacksFetched } from "../FeedbacksList/feedbacksSlice";
 import BackBtn from "../BackBtn/BackBtn";
 import RoadmapColumn from "../RoadmapColumn/RoadmapColumn";
 import './roadmap-page.scss';
-import '../feedback-item/feedback.scss';
+import '../FeedbackItem/feedback.scss';
 
 const RoadmapPage = () => {
     const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../firebase/firebase";
 import { feedbacksFetched } from './feedbacksSlice';
 import FeedbackItem from '../FeedbackItem/FeedbackItem';
 import EmptyFeedbacks from '../EmptyFeedbacks/EmptyFeedbacks';

@@ -1,5 +1,5 @@
 import { addDoc, collection, doc, getDocs, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import NestedComment from "../NestedComment/NestedComment";
@@ -81,11 +81,10 @@ const Comment = ({text, id}) => {
                 </form> 
                 : null}
     
-                {nestedCommentsList !== null && nestedCommentsList.length > 0 ?
+                {nestedCommentsList !== null && nestedCommentsList.length > 0 &&
                     <div className="comments__tree">
                         {nestedCommentsList}
                     </div>
-                    : null
                 }
         </div>
     )

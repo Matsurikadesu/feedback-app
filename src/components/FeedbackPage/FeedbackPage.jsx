@@ -1,5 +1,5 @@
 import { getDoc, doc, addDoc, collection, updateDoc} from 'firebase/firestore';
-import { db } from "../../firebase";
+import { db } from "../../firebase/firebase";
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { feedbackOpened, commentAdded } from '../FeedbacksList/feedbacksSlice';
@@ -15,7 +15,7 @@ const FeedbackPage = () => {
     const dispatch = useDispatch();
     const feedback = useSelector(state => state.currentFeedback);
     const [counter, setCounter] = useState(250);
-    const feedbackId = window.location.href.split('/')[3];
+    const feedbackId = window.location.href.split('/')[4];
 
     const addComment = async (e) => {
         e.preventDefault();
@@ -58,11 +58,11 @@ const FeedbackPage = () => {
                 </div>
                 <div className="card__controls">
                     <div className="card__upvote card__btn">
-                        <img className="card__upvote-btn" src="upvote.svg" alt="123"/>
+                        <img className="card__upvote-btn" src="../upvote.svg" alt="123"/>
                         <span className="card__text">{feedback.upvotes}</span>
                     </div>
                     <button className="card__comment card__btn">
-                        <img src="comment.svg" alt="comment"/>
+                        <img src="../comment.svg" alt="comment"/>
                         <span className="card__text">{feedback.comments}</span>
                     </button>
                 </div>

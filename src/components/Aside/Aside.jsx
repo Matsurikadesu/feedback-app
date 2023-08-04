@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import './aside.scss';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filterSelected, roadmapFetched } from '../feedbacks-list/feedbacksSlice';
-
+import { filterSelected, roadmapFetched } from '../FeedbacksList/feedbacksSlice';
+console.log(1)
 const Aside = () => {
     const dispatch = useDispatch();
     const options = ['All', 'UI', 'UX', 'Enhancement', 'Bug', 'Feature'];

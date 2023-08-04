@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import BackBtn from '../BackBtn/BackBtn';
-import '../addFeedback/AddFeedbackPage.scss';
-import { db } from '../../firebase';
+import '../AddFeedback/add-feedback-page.scss';
+import { db } from '../../firebase/firebase';
 import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { feedbackOpened } from '../FeedbacksList/feedbacksSlice';

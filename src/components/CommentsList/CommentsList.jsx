@@ -1,8 +1,8 @@
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../firebase/firebase";
 import { useEffect, useState} from "react";
 import { useDispatch,  } from "react-redux";
-import { userFetched } from "../FeedbacksList/FeedbacksSlice";
+import { userFetched } from "../FeedbacksList/feedbacksSlice";
 import CommentsLoading from "../LoadingPlaceholders/CommentsLoading";
 import Comment from "../Comment/Comment";
 import './comment.scss';

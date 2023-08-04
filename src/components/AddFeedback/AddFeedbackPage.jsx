@@ -1,8 +1,8 @@
 import './add-feedback-page.scss';
-import { db } from "../../firebase";
+import { db } from "../../firebase/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { Link, useNavigate } from 'react-router-dom';
-import BackBtn from '../backBtn/BackBtn';
+import BackBtn from '../BackBtn/BackBtn';
 import { useSelector } from 'react-redux';
 
 const AddFeedBackPage = () => {

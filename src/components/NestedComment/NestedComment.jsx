@@ -1,8 +1,7 @@
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { db } from "../../firebase";
 import { feedbackOpened } from "../FeedbacksList/feedbacksSlice";
+import { addNewComment, updateFeedback } from "../../firebase/services";
 
 const NestedComment = ({text, replying, id, parentId}) => {
     const dispatch = useDispatch(); 
@@ -22,8 +21,8 @@ const NestedComment = ({text, replying, id, parentId}) => {
     const addNestedComment = async (nestedcomment) => {
         setReply(false)
         dispatch(feedbackOpened({feedbackId, feedback: {...feedback, comments: feedback.comments + 1}}))
-        await addDoc(collection(db, 'feedback', feedbackId, 'comments', parentId, 'nestedcomments'), nestedcomment);
-        await updateDoc(doc(db, 'feedback', feedbackId), {comments: feedback.comments + 1});
+        addNewComment(feedbackId, parentId, nestedcomment);
+        updateFeedback(feedbackId, {comments: feedback.comments + 1})
     }
 
     const onReplySubmit = (e) => {

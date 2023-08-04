@@ -1,4 +1,4 @@
-import '../feedback-item/feedback.scss';
+import '../FeedbackItem/feedback.scss';
 import './feedbacks-loading.scss';
 
 const FeedbacksLoading = () => {
