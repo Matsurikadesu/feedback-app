@@ -2,13 +2,13 @@ import { getDoc, doc, addDoc, collection, updateDoc} from 'firebase/firestore';
 import { db } from "../../firebase";
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { feedbackOpened, commentAdded } from '../feedbacks-list/feedbacksSlice';
+import { feedbackOpened, commentAdded } from '../FeedbacksList/feedbacksSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import BackBtn from '../backBtn/BackBtn';
-import CommentsList from '../commentsList/CommentsList';
-import FeedbackLoading from '../loading-placeholders/FeedbackLoading';
-import '../addFeedback/add-feedback-page.scss';
+import BackBtn from '../BackBtn/BackBtn';
+import CommentsList from '../CommentsList/CommentsList';
+import FeedbackLoading from '../LoadingPlaceholders/FeedbackLoading';
+import '../AddFeedback/add-feedback-page.scss';
 import './feedback-page.scss';
 
 const FeedbackPage = () => {
@@ -77,14 +77,14 @@ const FeedbackPage = () => {
     }
 
     return(
-        <div className="popup popup_feedback">
+        <div className="page page_feedback">
             <div className='page__header'>
                 <BackBtn/>
                 <Link className='form__btn' to={`/${feedbackId}/edit`}>
                     Edit Feedback
                 </Link>
             </div>
-            <div className='popup__body body_page'>
+            <div className='page__body body_page'>
                 {
                     feedback
                         ? <FeedbackCard/>

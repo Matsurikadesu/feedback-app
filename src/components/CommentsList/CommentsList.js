@@ -2,9 +2,9 @@ import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useEffect, useState} from "react";
 import { useDispatch,  } from "react-redux";
-import { userFetched } from "../feedbacks-list/feedbacksSlice";
-import CommentsLoading from "../loading-placeholders/CommentsLoading";
-import Comment from "../comment/comment";
+import { userFetched } from "../FeedbacksList/FeedbacksSlice";
+import CommentsLoading from "../LoadingPlaceholders/CommentsLoading";
+import Comment from "../Comment/Comment";
 import './comment.scss';
 
 const CommentsList = ({count}) => {

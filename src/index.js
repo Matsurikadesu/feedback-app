@@ -8,10 +8,10 @@ import {
 } from "react-router-dom";
 
 import App from './components/App/App';
-import FeedbackPage from './components/feedbackPage/FeedbackPage';
-import AddFeedBackPage from './components/addFeedback/AddFeedbackPage';
-import EditFeedbackPage from './components/editFeedbackPage.js/EditFeedbackPage';
-import RoadmapPage from './components/pageRoadmap/RoadmapPage';
+import FeedbackPage from './components/FeedbackPage/FeedbackPage';
+import AddFeedBackPage from './components/AddFeedback/AddFeedbackPage';
+import EditFeedbackPage from './components/EditFeedbackPage/EditFeedbackPage';
+import RoadmapPage from './components/PageRoadmap/RoadmapPage';
 import './index.scss';
 
 const router = createBrowserRouter([

@@ -1,7 +1,7 @@
 import './feedback.scss';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { feedbackOpened} from '../feedbacks-list/feedbacksSlice';
+import { feedbackOpened} from '../FeedbacksList/feedbacksSlice';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useState } from 'react';

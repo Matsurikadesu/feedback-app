@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import reducer from "./components/feedbacks-list/feedbacksSlice";
+import reducer from "./components/FeedbacksList/feedbacksSlice";
 
 const stringMiddleware =() => (next) => (action) => {
     if(typeof action === 'string'){

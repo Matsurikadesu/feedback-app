@@ -32,11 +32,11 @@ const AddFeedBackPage = () => {
     }
 
     return(
-        <div className="popup">
+        <div className="page">
             <BackBtn/>
-            <div className="popup__body">
-                <img className='popup__icon' src="./add-feedback-icon.png" alt="shiny icon" />
-                <h1 className="popup__title">Create New Feedback</h1>
+            <div className="page__body">
+                <img className='page__icon' src="./add-feedback-icon.png" alt="shiny icon" />
+                <h1 className="page__title">Create New Feedback</h1>
                 <form className="form" onSubmit={addFeedback}>
                     <div className="form__element">
                         <label className="form__element-title" htmlFor="title">Feedback title</label>

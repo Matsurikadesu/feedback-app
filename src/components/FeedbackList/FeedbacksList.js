@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { feedbacksFetched } from './feedbacksSlice';
-import FeedbackItem from '../feedback-item/FeedbackItem';
-import EmptyFeedbacks from '../emptyFeedbacks/EmptyFeedbacks';
-import FeedbacksLoading from '../loading-placeholders/FeedbacksLoading';
+import FeedbackItem from '../FeedbackItem/FeedbackItem';
+import EmptyFeedbacks from '../EmptyFeedbacks/EmptyFeedbacks';
+import FeedbacksLoading from '../LoadingPlaceholders/FeedbacksLoading';
 import './FeedbacksList.scss';
 
 const FeedbackList = () => {

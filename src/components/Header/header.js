@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import './header.scss';
-import { sortingSelected } from '../feedbacks-list/feedbacksSlice';
+import { sortingSelected } from '../FeedbacksList/feedbacksSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Header = () => {

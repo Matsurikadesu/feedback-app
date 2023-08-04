@@ -1,11 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import BackBtn from '../backBtn/BackBtn';
-import '../addFeedback/add-feedback-page.scss';
+import BackBtn from '../BackBtn/BackBtn';
+import '../addFeedback/AddFeedbackPage.scss';
 import { db } from '../../firebase';
 import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useEffect } from 'react';
-import { feedbackOpened } from '../feedbacks-list/feedbacksSlice';
+import { feedbackOpened } from '../FeedbacksList/feedbacksSlice';
 
 const EditFeedbackPage = () => {
     const navigate = useNavigate();
@@ -49,11 +49,11 @@ const EditFeedbackPage = () => {
     }
     
     return(
-        <div className="popup">
+        <div className="page">
             <BackBtn/>
-            <div className="popup__body">
-                <img className='popup__icon' src="../edit-feedback-icon.png" alt="shiny icon" />
-                <h1 className="popup__title">Editing ‘{title}’</h1> 
+            <div className="page__body">
+                <img className='page__icon' src="../edit-feedback-icon.png" alt="shiny icon" />
+                <h1 className="page__title">Editing ‘{title}’</h1> 
                 <form className="form" onSubmit={onSubmitChanges}>
                     <div className="form__element">
                         <label className="form__element-title" htmlFor="title">Feedback title</label>

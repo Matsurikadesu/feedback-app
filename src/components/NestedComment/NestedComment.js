@@ -2,7 +2,7 @@ import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../firebase";
-import { feedbackOpened } from "../feedbacks-list/feedbacksSlice";
+import { feedbackOpened } from "../FeedbacksList/feedbacksSlice";
 
 const NestedComment = ({text, replying, id, parentId}) => {
     const dispatch = useDispatch(); 

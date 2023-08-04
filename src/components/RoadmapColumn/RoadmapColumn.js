@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import RoadmapFeedback from "../roadmap-feedback/RoadmapFeedback";
+import RoadmapFeedback from "../RoadmapFeedback/RoadmapFeedback";
 
 const RoadmapColumn = ({title, description, filter}) => {
     const feedbacks = useSelector(state => state.feedbacks)

@@ -1,5 +1,5 @@
-import FeedbackList from "../feedbacks-list/FeedbacksList";
-import Header from "../header/header";
+import FeedbackList from "../FeedbacksList/FeedbacksList";
+import Header from "../Header/Header";
 
 const Main = () => {
     return (

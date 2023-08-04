@@ -3,9 +3,9 @@ import { db } from "../../firebase";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { feedbacksFetched } from "../feedbacks-list/feedbacksSlice";
-import BackBtn from "../backBtn/BackBtn";
-import RoadmapColumn from "../roadmap-column/RoadmapColumn";
+import { feedbacksFetched } from "../FeedbacksList/feedbacksSlice";
+import BackBtn from "../BackBtn/BackBtn";
+import RoadmapColumn from "../RoadmapColumn/RoadmapColumn";
 import './roadmap-page.scss';
 import '../feedback-item/feedback.scss';
 

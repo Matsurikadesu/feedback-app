@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { feedbackOpened } from "../feedbacks-list/feedbacksSlice";
+import { feedbackOpened } from "../FeedbacksList/feedbacksSlice";
 import { useDispatch } from "react-redux";
 
 

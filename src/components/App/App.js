@@ -1,5 +1,5 @@
-import Main from '../main/main';
-import Aside from '../aside/aside';
+import Main from '../Main/Main';
+import Aside from '../Aside/Aside';
 
 function App() {
   return (
