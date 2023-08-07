@@ -1,21 +1,19 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import BackBtn from '../BackBtn/BackBtn';
 import '../AddFeedback/add-feedback-page.scss';
 import { db } from '../../firebase/firebase';
-import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { useEffect } from 'react';
-import { feedbackOpened } from '../FeedbacksList/feedbacksSlice';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 
 const EditFeedbackPage = () => {
     const navigate = useNavigate();
     const optionsCategory = useSelector(state => state.tags);
     const optionsStatus = ['planned', 'in-progress', 'live'];
-    const selectOptions = (arr) => arr.map((item, index) => (<option key={index}>{item}</option>))
-    const feedbackId = window.location.href.split('/')[3];
-    const feedback = useSelector(state => state.currentFeedback);
+    const {feedbackId} = useParams();
+    const feedback = useLoaderData();
     const {title, category, description, status} = feedback;
-    const dispatch = useDispatch();
+    console.log(feedback)
+    const selectOptions = (arr) => arr.map((item, index) => (<option key={index}>{item}</option>));
 
     const onSubmitChanges = async (e) => {
         e.preventDefault();
@@ -25,24 +23,8 @@ const EditFeedbackPage = () => {
             category: category.value,
             status: status.value,
             description: description.value
-        }).then(() => navigate(`/${feedbackId}`));
+        }).then(() => navigate(`/feedbacks/${feedbackId}`));
     }
-
-    const fetchFeedback = async () => {
-        await getDoc(doc(db, 'feedback', feedbackId))
-            .then((querySnapshot) => {
-                    const feedback = querySnapshot.data();
-                    dispatch(feedbackOpened({
-                        id: feedbackId,
-                        feedback
-                    }))
-                })
-    }
-
-    useEffect(() => {
-        if(!feedback) fetchFeedback();
-        //eslint-disable-next-line
-    }, [])
 
     const onDelete = async () => {
         await deleteDoc(doc(db, `feedback/${feedbackId}`)).then(() => navigate('/'));
@@ -50,7 +32,7 @@ const EditFeedbackPage = () => {
     
     return(
         <div className="page">
-            <BackBtn/>
+            <BackBtn feedbackId={feedbackId}/>
             <div className="page__body">
                 <img className='page__icon' src="../edit-feedback-icon.png" alt="shiny icon" />
                 <h1 className="page__title">Editing ‘{title}’</h1> 

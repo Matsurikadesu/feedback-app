@@ -35,7 +35,7 @@ const FeedbackPage = () => {
         <div className="page page_feedback">
             <div className='page__header'>
                 <BackBtn/>
-                <Link className='form__btn' to={`feedbacks/${feedbackId}/edit`}>
+                <Link className='form__btn' to={'edit'}>
                     Edit Feedback
                 </Link>
             </div>
