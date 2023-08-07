@@ -3,28 +3,32 @@ import './aside.scss';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterSelected, roadmapFetched } from '../FeedbacksList/feedbacksSlice';
-console.log(1)
-const Aside = () => {
+import { useRoadmap } from '../../firebase/services';
+
+const Aside = ({feedbacks}) => {
     const dispatch = useDispatch();
     const options = ['All', 'UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
-    const feedbacks = useSelector(state => state.feedbacks);
-    const roadmap = useSelector(state => state.roadmap);
+    // const feedbacks = useSelector(state => state.feedbacks);
+    // const roadmap = useSelector(state => state.roadmap);
     const filter = useSelector(state => state.filter);
     const loadingStatus = useSelector(state => state.feedbacksLoadingStatus);
+    const {roadmap} = useRoadmap();
+    console.log(roadmap)
 
-    useEffect(() => {
-        if(feedbacks){
-            const newRoadmap = roadmap.map(item => {
-                const name = item.name;
-                return {
-                    name,
-                    amount: feedbacks.filter(item => item.status === name).length
-                }
-            });
-            if(roadmap !== newRoadmap) dispatch(roadmapFetched(newRoadmap));
-        } 
-        //eslint-disable-next-line
-    }, [feedbacks])
+    // useEffect(() => {
+    //     dispatch(roadmapFetched(roadmap));
+    //     // // if(feedbacks){
+    //     //     const newRoadmap = roadmap.map(item => {
+    //     //         const name = item.name;
+    //     //         return {
+    //     //             name,
+    //     //             amount: feedbacks.filter(item => item.status === name).length
+    //     //         }
+    //     //     });
+    //     //     if(roadmap !== newRoadmap) dispatch(roadmapFetched(newRoadmap));
+    //     // // } 
+    //     //eslint-disable-next-line
+    // }, [roadmap])
 
     const onFilterSelect = (item) => {
         dispatch(filterSelected(item))
@@ -43,10 +47,9 @@ const Aside = () => {
                 return <li className={clazz} onClick={() => onFilterSelect(item)} key={index}>{item}</li>
             })
     
-    const roadmapList = roadmap ? roadmap
-            .map((item, index) => {
-                return <li className="roadmap__item" key={index}>{item.name} <span>{loadingStatus === 'loading' ? 0 : item.amount}</span></li>
-            }) : null; 
+    const roadmapList = roadmap.map((item, index) => {
+                return <li className="roadmap__item" key={index}>{item.name} <span>{item.amount}</span></li>
+            }); 
     
 
     return(
