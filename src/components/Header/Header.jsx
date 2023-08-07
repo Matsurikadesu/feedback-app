@@ -3,20 +3,17 @@ import './header.scss';
 import { sortingSelected } from '../FeedbacksList/feedbacksSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-const Header = () => {
+const Header = ({amount}) => {
     const dispatch = useDispatch();
-    const feedbacks = useSelector(state => state.feedbacks);
     const filter = useSelector(state => state.sortingMethod);
 
-    const onSortSelected = (e) => {
-        dispatch(sortingSelected(e.target.value));
-    }
+    const onSortSelected = (e) => dispatch(sortingSelected(e.target.value));
 
     return (
         <div className="header">
             <div className="header__suggestions">
                 <img className="header__suggestions-icon" src="bulb.svg" alt="bulb"/>
-                <h3 className="header__suggestions-title">{feedbacks.length} Suggestions</h3>
+                <h3 className="header__suggestions-title">{amount} Suggestions</h3>
             </div>
             <label className="header__label" htmlFor="select">Sort by :</label>
             <select className="header__select" name="select" id="select" onChange={onSortSelected} defaultValue={filter}>

@@ -1,10 +1,12 @@
 import FeedbackList from "../FeedbacksList/FeedbacksList";
 import Header from "../Header/Header";
 
-const Main = () => {
+const Main = ({feedbacks}) => {
+    const feedbacksAmount = feedbacks.length;
+
     return (
         <main className="main">
-            <Header />
+            <Header amount={feedbacksAmount}/>
             <FeedbackList/>
         </main>
     )
