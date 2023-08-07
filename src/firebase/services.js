@@ -17,6 +17,10 @@ export const updateFeedback = (feedbackId, changes) => {
     updateDoc(doc(db, 'feedback', feedbackId), changes);
 }
 
+/**
+ * Хук получает feedbacks из базы данных, фильтруя их по category и сортируя их по выбраному фильтру
+ * @returns массив feedbacks, отфильтрованый и отсортированый 
+ */
 export const useFeedbacks = () => {
     const [feedbacks, setFeedbacks] = useState([]);
     const filter = useSelector(state => state.filter);
@@ -63,7 +67,10 @@ export const useFeedbacks = () => {
         feedbacks
     }
 }
-
+/**
+ * Хук считает количество feedbacks в базе данных по status
+ * @returns обьект roadmap, который содержит status name и количество feedbacks с этим status
+ */
 export const useRoadmap = () => {
     const [roadmap, setRoadmap] = useState([{name: 'planned', amount: 0}, {name: 'in-progress', amount: 0}, {name: 'live', amount: 0}]);
 
@@ -79,8 +86,8 @@ export const useRoadmap = () => {
         setRoadmap(newRoadmap);
     }
     useEffect(() => {
-        // getFeedbacksAmount();
-        countFeedbacks()
+        countFeedbacks();
+        //eslint-disable-next-line
     }, [])
 
     return{

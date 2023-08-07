@@ -7,7 +7,7 @@ function App() {
 
   return (
         <div className='content'>
-          <Aside feedbacks={feedbacks}/>
+          <Aside/>
           <Main feedbacks={feedbacks}/>
         </div>
     );
