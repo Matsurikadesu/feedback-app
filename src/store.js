@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import reducer from "./components/FeedbacksList/feedbacksSlice";
+import feedbacksReducer from "./components/FeedbacksList/feedbacksSlice";
+// import userReducer from "./user/userSlice";
 
 const stringMiddleware =() => (next) => (action) => {
     if(typeof action === 'string'){
@@ -11,7 +12,7 @@ const stringMiddleware =() => (next) => (action) => {
 }
 
 const store = configureStore({
-    reducer: reducer,
+    reducer: feedbacksReducer,
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(stringMiddleware),
     devTools: process.env.NODE_ENV !== 'production',
 });

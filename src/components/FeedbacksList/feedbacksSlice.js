@@ -9,7 +9,7 @@ const initialState = {
     currentFeedback: false,
     roadmap: [{name: 'planned'}, {name: 'in-progress'}, {name: 'live'}],
     comments: false,
-    user: false,
+    user: {id: '1', avatar: 'https://media.tenor.com/gIKfNZd5YkQAAAAd/pudge-dance.gif', name: 'Ящер', tag: 'Ящер'},
     filter: 'All',
     sortingMethod: 'Most Upvotes',
     tags: ['UI', 'UX', 'Enhancement', 'Bug', 'Feature']
@@ -56,9 +56,9 @@ const feedbackSlice = createSlice({
     }
 });
 
-const {actions, reducer} = feedbackSlice;
+const {actions} = feedbackSlice;
 
-export default reducer;
+export default feedbackSlice.reducer;
 export const {
     feedbacksFetching,
     feedbacksFetched,

@@ -3,7 +3,6 @@ import EmptyFeedbacks from '../EmptyFeedbacks/EmptyFeedbacks';
 import './FeedbacksList.scss';
 
 const FeedbackList = ({feedbacks}) => {
-    console.log(feedbacks)
     const elements = feedbacks.map((item, i) => (
             <FeedbackItem 
                 {...item}
