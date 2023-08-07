@@ -1,15 +1,11 @@
-import { collection, getDocs, getDoc, doc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useEffect, useState} from "react";
-import { useDispatch,  } from "react-redux";
-import { userFetched } from "../FeedbacksList/feedbacksSlice";
 import CommentsLoading from "../LoadingPlaceholders/CommentsLoading";
 import Comment from "../Comment/Comment";
 import './comment.scss';
 
-const CommentsList = ({count}) => {
-    const dispatch = useDispatch();
-    const feedbackId = window.location.href.split('/')[3];
+const CommentsList = ({count, feedbackId}) => {
     const [comments, setComments] = useState(false)
 
     const fetchComments = async () => {
@@ -20,29 +16,18 @@ const CommentsList = ({count}) => {
             })
     }
 
-    const fetchUser = async () => {
-        await getDoc(doc(db, 'users', '1'))
-            .then((querySnapshot) => {
-                const user = querySnapshot.data();
-                dispatch(userFetched(user));
-            })
-    }
-
     useEffect(() => {
         fetchComments();
-        fetchUser();
         //eslint-disable-next-line
     }, [count])
 
-    const commentsList = comments
-        ? comments.map((item, index) => (
+    const commentsList = comments && comments.map((item, index) => (
             <Comment
                 key={index}
                 id={item.id}
                 text={item.text}
                 />
         ))
-        : null;
 
     if(!comments){
         return(

@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getCountFromServer, getDocs, limit, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { db } from "./firebase";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
  * @param {*} parentId id коментария к которому добавляется ответ
  * @param {*} comment обьект коментария
  */
-export const addNewComment = (feedbackId, parentId, comment) => {
+export const addNewNestedComment = (feedbackId, parentId, comment) => {
     addDoc(collection(db, 'feedback', feedbackId, 'comments', parentId, 'nestedcomments'), comment);
 }
 
@@ -68,11 +68,11 @@ export const useFeedbacks = () => {
     }
 }
 /**
- * Хук считает количество feedbacks в базе данных по status
+ * Считает количество feedbacks в базе данных по status
  * @returns обьект roadmap, который содержит status name и количество feedbacks с этим status
  */
-export const useRoadmap = () => {
-    const [roadmap, setRoadmap] = useState([{name: 'planned', amount: 0}, {name: 'in-progress', amount: 0}, {name: 'live', amount: 0}]);
+export const getRoadmap = () => {
+    const roadmap = [{name: 'planned', amount: 0}, {name: 'in-progress', amount: 0}, {name: 'live', amount: 0}];
 
     const getFeedbacksAmountByStatus = async (status) => {
         const q = query(collection(db, 'feedback'), where('status', '==', status));
@@ -83,14 +83,16 @@ export const useRoadmap = () => {
     const countFeedbacks = async () => {
         const newRoadmap = await Promise.all(roadmap.map(async item => ({...item, amount: await getFeedbacksAmountByStatus(item.name)})))
 
-        setRoadmap(newRoadmap);
+        return newRoadmap;
     }
-    useEffect(() => {
-        countFeedbacks();
-        //eslint-disable-next-line
-    }, [])
 
-    return{
-        roadmap
-    }
+    return countFeedbacks();
+}
+
+export const fetchFeedback = async (feedbackId) => {
+    return (await getDoc(doc(db, 'feedback', feedbackId))).data();
+}
+
+export const addNewComment = (feedbackId, comment) => {
+    addDoc(collection(db, 'feedback', feedbackId, 'comment'), comment);
 }

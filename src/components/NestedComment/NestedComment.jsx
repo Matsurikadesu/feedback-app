@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { feedbackOpened } from "../FeedbacksList/feedbacksSlice";
-import { addNewComment, updateFeedback } from "../../firebase/services";
+import { addNewNestedComment, updateFeedback } from "../../firebase/services";
 
 const NestedComment = ({text, replying, id, parentId}) => {
     const dispatch = useDispatch(); 
@@ -21,7 +21,7 @@ const NestedComment = ({text, replying, id, parentId}) => {
     const addNestedComment = async (nestedcomment) => {
         setReply(false)
         dispatch(feedbackOpened({feedbackId, feedback: {...feedback, comments: feedback.comments + 1}}))
-        addNewComment(feedbackId, parentId, nestedcomment);
+        addNewNestedComment(feedbackId, parentId, nestedcomment);
         updateFeedback(feedbackId, {comments: feedback.comments + 1})
     }
 

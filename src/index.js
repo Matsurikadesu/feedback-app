@@ -13,11 +13,13 @@ import AddFeedBackPage from './components/AddFeedback/AddFeedbackPage';
 import EditFeedbackPage from './components/EditFeedbackPage/EditFeedbackPage';
 import RoadmapPage from './components/PageRoadmap/RoadmapPage';
 import './index.scss';
+import { fetchFeedback, getRoadmap } from './firebase/services';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>
+    element: <App/>,
+    loader: getRoadmap
   },
   {
     path: "/add",
@@ -29,7 +31,8 @@ const router = createBrowserRouter([
   },
   {
     path: `/feedbacks/:feedbackId`,
-    element: <FeedbackPage/>
+    element: <FeedbackPage/>,
+    loader: ({params}) => fetchFeedback(params.feedbackId)
   },
   {
     path: '/roadmap',

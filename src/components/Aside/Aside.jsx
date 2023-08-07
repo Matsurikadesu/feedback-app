@@ -1,14 +1,13 @@
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import './aside.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterSelected } from '../FeedbacksList/feedbacksSlice';
-import { useRoadmap } from '../../firebase/services';
 
 const Aside = () => {
     const dispatch = useDispatch();
     const options = ['All', 'UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
     const filter = useSelector(state => state.filter);
-    const {roadmap} = useRoadmap();
+    const roadmap = useLoaderData();
 
     const onFilterSelect = (item) => {
         dispatch(filterSelected(item))
