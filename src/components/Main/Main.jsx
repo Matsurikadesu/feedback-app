@@ -7,7 +7,7 @@ const Main = ({feedbacks}) => {
     return (
         <main className="main">
             <Header amount={feedbacksAmount}/>
-            <FeedbackList/>
+            <FeedbackList feedbacks={feedbacks}/>
         </main>
     )
 }

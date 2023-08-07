@@ -80,7 +80,7 @@ const FeedbackPage = () => {
         <div className="page page_feedback">
             <div className='page__header'>
                 <BackBtn/>
-                <Link className='form__btn' to={`/${feedbackId}/edit`}>
+                <Link className='form__btn' to={`feedbacks/${feedbackId}/edit`}>
                     Edit Feedback
                 </Link>
             </div>
