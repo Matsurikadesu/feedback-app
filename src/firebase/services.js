@@ -1,7 +1,6 @@
 import { addDoc, collection, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { db } from "./firebase";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 /** 
  * Функция добавляет новый коментарий в базу данных
@@ -21,11 +20,9 @@ export const updateFeedback = (feedbackId, changes) => {
  * Хук получает feedbacks из базы данных, фильтруя их по category и сортируя их по выбраному фильтру
  * @returns массив feedbacks, отфильтрованый и отсортированый 
  */
-export const useFeedbacks = () => {
+export const useFeedbacks = (filter, sortingMethod) => {
     const [feedbacks, setFeedbacks] = useState([]);
-    const filter = useSelector(state => state.filter);
-    const sortingMethod = useSelector(state => state.sortingMethod);
-    
+
     //подготовка массива с конфигурацией orderBy
     let order = [];
     switch(sortingMethod){
@@ -45,15 +42,15 @@ export const useFeedbacks = () => {
             order = ['upvotes', 'desc'];
             break;
     }
-    //Подготовка массива с конфигурацией where
-    const whereQuery = ['category', '==', filter];
-    if(filter === 'All') whereQuery[1] = '!=';
 
-    const ref = query(collection(db, 'feedback'), where(...whereQuery), orderBy('category'), orderBy(...order), limit(6));
+    const ref = filter !== 'All' 
+        ? query(collection(db, 'feedback'), where('category', '==', filter), orderBy('category'), orderBy(...order), limit(6))
+        : query(collection(db, 'feedback'), orderBy(...order), limit(6));
 
     const fetchFeedbacks = async () => {
         await getDocs(ref).then((querySnapshot)=>{              
                 const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
+                console.log(newData)
                 setFeedbacks(newData);
             })
         }
@@ -72,7 +69,7 @@ export const useFeedbacks = () => {
  * @returns обьект roadmap, который содержит status name и количество feedbacks с этим status
  */
 export const getRoadmap = () => {
-    const roadmap = [{name: 'planned', amount: 0}, {name: 'in-progress', amount: 0}, {name: 'live', amount: 0}];
+    const roadmap = [{name: 'planned', description: 'Ideas prioritized for research', amount: 0}, {name: 'in-progress', description: 'Currently being developed', amount: 0}, {name: 'live', description: 'Released features', amount: 0}];
 
     const getFeedbacksAmountByStatus = async (status) => {
         const q = query(collection(db, 'feedback'), where('status', '==', status));

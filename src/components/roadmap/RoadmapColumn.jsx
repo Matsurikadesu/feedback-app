@@ -1,8 +1,6 @@
-import { useSelector } from "react-redux";
 import RoadmapFeedback from "./RoadmapFeedback";
 
-const RoadmapColumn = ({title, description, filter}) => {
-    const feedbacks = useSelector(state => state.feedbacks)
+const RoadmapColumn = ({title, description, filter, feedbacks, amount}) => {
     const roadmapTasks = feedbacks.filter(item => item.status === title);
 
     let filterClass = '';
@@ -14,7 +12,7 @@ const RoadmapColumn = ({title, description, filter}) => {
     return(
         <div className={`roadmap__tasks-container ${filterClass}`}>
                 <div className="roadmap__tasks-header">
-                    <h2 className="title-lg">{title} ({roadmapTasks.length})</h2>
+                    <h2 className="title-lg">{title} ({amount})</h2>
                     <p className="text">{description}</p>
                 </div>
                 <div className="roadmap__tasks">

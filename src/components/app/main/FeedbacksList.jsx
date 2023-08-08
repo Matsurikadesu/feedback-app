@@ -7,26 +7,12 @@ const FeedbackList = ({feedbacks}) => {
             <FeedbackItem 
                 {...item}
                 initialUpvotes={item.upvotes}
-                key={i}
+                key={item.id}
                 />
             ))
 
-    // const Feedbacks = () => {
-    //     // if(feedbacksLoadingStatus === 'loading'){
-    //     //     return(
-    //     //         <FeedbacksLoading/>
-    //     //     )
-    //     // }
-    //     if(feedbacks.length > 0){
-    //         return elements;
-    //     }else{
-    //         <EmptyFeedbacks/>
-    //     }
-    // }
-
     return(
         <div className="feedback__container">
-            {/* <Feedbacks/> */}
             {feedbacks.length > 0 ? elements : <EmptyFeedbacks/> }
         </div>
     )

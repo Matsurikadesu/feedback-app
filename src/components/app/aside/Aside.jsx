@@ -9,12 +9,8 @@ const Aside = () => {
     const filter = useSelector(state => state.filter);
     const roadmap = useLoaderData();
 
-    const onFilterSelect = (item) => {
-        dispatch(filterSelected(item))
-    }
-
-    const onFilterClick = (e) => {
-        if(!e.target.classList.contains('aside__tags-item')) return;
+    const handleFilterClick = (e, item) => {
+        dispatch(filterSelected(item));
         document.querySelectorAll('.aside__tags-item').forEach(item => item.classList.remove('aside__tags-item_active'));
         e.target.classList.add('aside__tags-item_active');
     }
@@ -23,7 +19,7 @@ const Aside = () => {
             .map((item, index) => {
                 let clazz = 'aside__tags-item '
                 if(item === filter) clazz += 'aside__tags-item_active';
-                return <li className={clazz} onClick={() => onFilterSelect(item)} key={index}>{item}</li>
+                return <li className={clazz} onClick={(e) => handleFilterClick(e, item)} key={index}>{item}</li>
             })
     
     const roadmapList = roadmap
@@ -44,7 +40,7 @@ const Aside = () => {
             </button>
             <div className="aside__container">
                 <div className="aside__element">
-                    <ul className="aside__tags" onClick={onFilterClick}>
+                    <ul className="aside__tags" >
                         {optionsList}
                     </ul>
                 </div>

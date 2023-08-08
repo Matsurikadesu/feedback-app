@@ -38,7 +38,8 @@ const router = createBrowserRouter([
   },
   {
     path: '/roadmap',
-    element: <RoadmapPage/>
+    element: <RoadmapPage/>,
+    loader: getRoadmap
   },
   {
     path: '*',
