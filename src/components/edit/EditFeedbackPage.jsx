@@ -37,7 +37,7 @@ const EditFeedbackPage = () => {
             ? <div className="page">
                 <BackBtn feedbackId={feedbackId}/>
                 <div className="page__body">
-                    <img className='page__icon' src="../edit-feedback-icon.png" alt="shiny icon" />
+                    <img className='page__icon' src="/edit-feedback-icon.png" alt="shiny icon" />
                     <h1 className="page__title">Editing ‘{title}’</h1> 
                     <form className="form" onSubmit={onSubmitChanges}>
                         <div className="form__element">

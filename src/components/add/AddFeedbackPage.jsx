@@ -24,7 +24,8 @@ const AddFeedBackPage = () => {
                 category: form.category.value,
                 upvotes: 0,
                 status: 'planned',
-                comments: 0
+                comments: 0,
+                upvotedby: []
             }).then(() => navigate('/'));
         } catch (e) {
             console.error("Error adding document: ", e);
@@ -35,7 +36,7 @@ const AddFeedBackPage = () => {
         <div className="page">
             <BackBtn/>
             <div className="page__body">
-                <img className='page__icon' src="./add-feedback-icon.png" alt="shiny icon" />
+                <img className='page__icon' src="/add-feedback-icon.png" alt="shiny icon" />
                 <h1 className="page__title">Create New Feedback</h1>
                 <form className="form" onSubmit={addFeedback}>
                     <div className="form__element">
