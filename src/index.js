@@ -1,20 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import store from './store';
+import store from './store/store';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 
-import App from './components/App/App';
-import FeedbackPage from './components/FeedbackPage/FeedbackPage';
-import AddFeedBackPage from './components/AddFeedback/AddFeedbackPage';
-import EditFeedbackPage from './components/EditFeedbackPage/EditFeedbackPage';
-import RoadmapPage from './components/PageRoadmap/RoadmapPage';
+import App from './components/app/App';
+import FeedbackPage from './components/feedback/FeedbackPage';
+import AddFeedBackPage from './components/add/AddFeedbackPage';
+import EditFeedbackPage from './components/edit/EditFeedbackPage';
+import RoadmapPage from './components/roadmap/RoadmapPage';
 import './index.scss';
 import { fetchFeedback, getRoadmap } from './firebase/services';
-import ErrorPage from './components/pages/ErrorPage/ErrorPage';
+import ErrorPage from './components/errors/ErrorPage';
 
 const router = createBrowserRouter([
   {

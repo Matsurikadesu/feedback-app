@@ -90,7 +90,8 @@ export const getRoadmap = () => {
 }
 
 export const fetchFeedback = async (feedbackId) => {
-    return (await getDoc(doc(db, 'feedback', feedbackId))).data();
+    const result = (await getDoc(doc(db, 'feedback', feedbackId))).data();
+    return result ? result : false;
 }
 
 export const addNewComment = (feedbackId, comment) => {

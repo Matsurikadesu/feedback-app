@@ -1,5 +1,5 @@
-import Main from '../Main/Main';
-import Aside from '../Aside/Aside';
+import Main from './main/Main';
+import Aside from './aside/Aside';
 import { useFeedbacks } from '../../firebase/services';
 
 function App() {
