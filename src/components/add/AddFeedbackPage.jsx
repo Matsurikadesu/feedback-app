@@ -23,7 +23,7 @@ const AddFeedBackPage = () => {
                 description: form.description.value,
                 category: form.category.value,
                 upvotes: 0,
-                status: 'planned',
+                status: 'suggestion',
                 comments: 0,
                 upvotedby: []
             }).then(() => navigate('/'));

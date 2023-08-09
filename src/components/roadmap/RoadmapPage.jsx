@@ -9,7 +9,7 @@ import { useFeedbacks } from "../../firebase/services";
 const RoadmapPage = () => {
     const [filter, setFilter] = useState('in-progress');
     const roadmap = useLoaderData();
-    const {feedbacks} = useFeedbacks('All', 'Most Upvotes');
+    const {feedbacks} = useFeedbacks('All', 'Most Upvotes', true);
 
     const handleFilterClick = (e, filter) =>{
         const switchBtns = document.querySelectorAll('.roadmap__switch-item');

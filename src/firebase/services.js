@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, and, collection, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { db } from "./firebase";
 import { useEffect, useState } from "react";
 
@@ -20,7 +20,7 @@ export const updateFeedback = (feedbackId, changes) => {
  * Хук получает feedbacks из базы данных, фильтруя их по category и сортируя их по выбраному фильтру
  * @returns массив feedbacks, отфильтрованый и отсортированый 
  */
-export const useFeedbacks = (filter, sortingMethod) => {
+export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
     const [feedbacks, setFeedbacks] = useState([]);
 
     //подготовка массива с конфигурацией orderBy
@@ -43,14 +43,18 @@ export const useFeedbacks = (filter, sortingMethod) => {
             break;
     }
 
-    const ref = filter !== 'All' 
-        ? query(collection(db, 'feedback'), where('category', '==', filter), orderBy('category'), orderBy(...order), limit(6))
-        : query(collection(db, 'feedback'), orderBy(...order), limit(6));
+    const suggestionsQ = filter !== 'All' 
+        ? query(collection(db, 'feedback'), and(
+            where('category', '==', filter),
+            where('status', '==', 'suggestion')
+        ), orderBy('category'), orderBy(...order), limit(6))
+        : query(collection(db, 'feedback'), where('status', '==', 'suggestion'), orderBy(...order), limit(6))
+    
+    const roadmapQ = query(collection(db, 'feedback'), orderBy('upvotes', 'desc'));
 
     const fetchFeedbacks = async () => {
-        await getDocs(ref).then((querySnapshot)=>{              
+        await getDocs(roadmap ? roadmapQ : suggestionsQ).then((querySnapshot)=>{              
                 const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
-                console.log(newData)
                 setFeedbacks(newData);
             })
         }
