@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import feedbacksReducer from "./feedbacksSlice";
 
 
-const stringMiddleware =() => (next) => (action) => {
+const stringMiddleware = () => (next) => (action) => {
     if(typeof action === 'string'){
         return next({
             type: action

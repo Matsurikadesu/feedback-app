@@ -16,15 +16,8 @@ const feedbackSlice = createSlice({
     initialState,
     reducers: {
         feedbacksFetching: state => {state.feedbacksLoadingStatus = 'loading'},
-        feedbacksFetched: (state, action) => {
-            state.feedbacksLoadingStatus = 'idle';
-            state.feedbacks = action.payload;
-        },
+        feedbacksFetched: state => {state.feedbacksLoadingStatus = 'idle'},
         feedbacksFetchingError: state => {state.feedbacksLoadingStatus = 'error'},
-        feedbackOpened: (state, action) => {
-            state.feedbackIndex = action.payload.id;
-            state.currentFeedback = action.payload.feedback;
-        },
         commentsFetched: (state, action) => {
             state.comments = action.payload;
         },
@@ -33,12 +26,9 @@ const feedbackSlice = createSlice({
             state.user = action.payload;
         },
         commentAdded: (state, action) => {
-            state.currentFeedback.comments++;
-            if(state.comments) {
-                state.comments.push(action.payload);
-            }else{
-                state.comments = [action.payload];
-            }
+            state.comments 
+                ? state.comments.push(action.payload)
+                : state.comments = [action.payload];
         },
         filterSelected: (state, action) => {
             state.filter = action.payload;

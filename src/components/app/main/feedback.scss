@@ -41,9 +41,10 @@
     font-size: 18px;
     transition: .2s color;
 
-    &:hover{
-        color: #4661E6;
-    }
+}
+
+a.card__title:hover{
+    color: #4661E6;
 }
 
 .card__description{

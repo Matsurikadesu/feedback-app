@@ -195,6 +195,10 @@
 .roadmap__btn{
     color: $blue-main;
 
+    &:hover{
+        text-decoration-line: underline;
+    }
+
     &:visited{
         color: $blue-main;
     }

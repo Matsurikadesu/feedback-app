@@ -5,7 +5,7 @@ import CommentsLoading from "../placeholders/CommentsLoading";
 import Comment from "./Comment";
 import './comment.scss';
 
-const CommentsList = ({count, feedbackId}) => {
+const CommentsList = ({count, feedbackId, feedback}) => {
     const [comments, setComments] = useState(false)
 
     const fetchComments = async () => {
@@ -26,7 +26,7 @@ const CommentsList = ({count, feedbackId}) => {
                 key={index}
                 id={item.id}
                 text={item.text}
-                />
+                {...feedback}/>
         ))
 
     if(!comments){

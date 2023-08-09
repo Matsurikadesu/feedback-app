@@ -1,14 +1,12 @@
-import { addDoc, collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs} from "firebase/firestore";
 import { db } from "../../firebase/firebase";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import NestedComment from "./NestedComment";
-import { feedbackOpened } from "../../store/feedbacksSlice";
+import { useParams } from "react-router-dom";
 
 const Comment = ({text, id}) => {
-    const dispatch = useDispatch();
-    const feedbackId = window.location.href.split('/')[3];
-    const feedback = useSelector(state => state.currentFeedback)
+    const {feedbackId} = useParams();
     const user = useSelector(state => state.user);
     const [reply, setReply] = useState(false);
     const [nestedComments, setNested] = useState(false);
@@ -23,9 +21,7 @@ const Comment = ({text, id}) => {
     
     const addNestedComment = async (nestedcomment) => {
         setReply(false);
-        dispatch(feedbackOpened({feedbackId, feedback: {...feedback, comments: feedback.comments + 1}}))
         await addDoc(collection(db, 'feedback', feedbackId, 'comments', id, 'nestedcomments'), nestedcomment);
-        await updateDoc(doc(db, 'feedback', feedbackId), {comments: feedback.comments + 1});
         fetchNestedComments();
     }
 
@@ -58,7 +54,7 @@ const Comment = ({text, id}) => {
     useEffect(() => {
         fetchNestedComments();
         //eslint-disable-next-line
-    }, [feedback.comments])
+    }, [])
 
     return(
         <div className='comment'>

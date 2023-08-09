@@ -1,19 +1,29 @@
 import FeedbackItem from './FeedbackItem';
 import EmptyFeedbacks from '../../placeholders/EmptyFeedbacks';
 import './FeedbacksList.scss';
+import { useSelector } from 'react-redux';
+import FeedbacksLoading from '../../placeholders/FeedbacksLoading';
 
 const FeedbackList = ({feedbacks}) => {
-    const elements = feedbacks.map((item, i) => (
+    const feedbacksLoadingStatus = useSelector(state => state.feedbacksLoadingStatus);
+
+    const elements = feedbacks.length > 0 
+        ? feedbacks.map(item => (
             <FeedbackItem 
                 {...item}
                 initialUpvotes={item.upvotes}
                 key={item.id}
                 />
-            ))
+        ))
+        : <EmptyFeedbacks/>
 
     return(
         <div className="feedback__container">
-            {feedbacks.length > 0 ? elements : <EmptyFeedbacks/> }
+            {
+                feedbacksLoadingStatus === 'loading'
+                    ? <FeedbacksLoading/> 
+                    : elements
+            }
         </div>
     )
 }

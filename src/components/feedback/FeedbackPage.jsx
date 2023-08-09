@@ -33,7 +33,8 @@ const FeedbackPage = () => {
 
                     <CommentsList 
                         count={feedback.comments} 
-                        feedbackId={feedbackId}/>
+                        feedbackId={feedbackId}
+                        feedback={feedback}/>
 
                     <Form 
                         count={feedback.comments}
