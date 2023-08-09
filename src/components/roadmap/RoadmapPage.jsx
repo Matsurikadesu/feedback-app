@@ -11,12 +11,11 @@ const RoadmapPage = () => {
     const roadmap = useLoaderData();
     const {feedbacks} = useFeedbacks('All', 'Most Upvotes');
 
-    const onSelectHandler = (e) =>{
-        e.preventDefault();
+    const handleFilterClick = (e, filter) =>{
         const switchBtns = document.querySelectorAll('.roadmap__switch-item');
         switchBtns.forEach(item => item.classList.remove('roadmap__switch-item_active'));
         e.target.classList.add('roadmap__switch-item_active');
-        setFilter(e.target.textContent.split(' ')[0]);
+        setFilter(filter);
     }
 
     return(
@@ -31,18 +30,34 @@ const RoadmapPage = () => {
                 </Link>
             </div>
             <div className="roadmap__switch">
-                <button className="roadmap__switch-item title" onClick={onSelectHandler}>Planned ({roadmap[0].amount})</button>
-                <button className="roadmap__switch-item roadmap__switch-item_active title" onClick={onSelectHandler}>In-Progress ({roadmap[1].amount})</button>
-                <button className="roadmap__switch-item title" onClick={onSelectHandler}>Live ({roadmap[2].amount})</button>
+                <button 
+                    type="button" 
+                    className="roadmap__switch-item title" 
+                    onClick={(e) => handleFilterClick(e, 'planned')}>
+                        Planned ({roadmap[0].amount})
+                </button>
+
+                <button 
+                    type="button" 
+                    className="roadmap__switch-item roadmap__switch-item_active title" 
+                    onClick={(e) => handleFilterClick(e, 'in-progress')}>
+                        In-Progress ({roadmap[1].amount})
+                </button>
+
+                <button 
+                    type="button" 
+                    className="roadmap__switch-item title" 
+                    onClick={(e) => handleFilterClick(e, 'live')}>
+                        Live ({roadmap[2].amount})
+                </button>
             </div>
+
             <div className="roadmap__content">
                 {feedbacks && roadmap.map((item, index) => (
                     <RoadmapColumn
                         key={index}
-                        title={item.name}
-                        description={item.description}
-                        amount={item.amount}
-                        feedbacks={feedbacks}
+                        {...item}
+                        feedbacks={feedbacks.filter(feedback => feedback.status === item.name)}
                         filter={filter}/>
                 ))}
             </div>

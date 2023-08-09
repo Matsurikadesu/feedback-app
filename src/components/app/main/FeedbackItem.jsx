@@ -15,10 +15,10 @@ const FeedbackItem = ({title, description, initialUpvotes, category, id, comment
         e.preventDefault();
 
         if(upvotedBy.includes(userId)){
-            initialUpvotes--;
+            initialUpvotes = upvotes - 1;
             upvotedby = upvotedby.filter(item => item !== userId);
         }else{
-            initialUpvotes++;
+            initialUpvotes = upvotes + 1;
             upvotedby.push(userId);
         }
 
@@ -31,7 +31,7 @@ const FeedbackItem = ({title, description, initialUpvotes, category, id, comment
     }
 
     return(
-        <Link className="feedback__card" data-testid='feedback' to={`feedbacks/${id}`}>
+        <Link className="feedback__card" to={`feedbacks/${id}`}>
             <div className='card__info'>
                 <h3 className="card__title">{title}</h3>
                 <p className="card__description">{description}</p>

@@ -78,10 +78,27 @@
 
                 &_active{
                     opacity: 1;
-    
+                    
+                    &:first-child{
+                        &::after{
+                            background-color: #F49F85;
+                        }
+                    }
+
+                    &:nth-child(2){
+                        &::after{
+                            background-color: $purple-main;
+                        }
+                    }
+
+                    &:last-child{
+                        &::after{
+                            background-color: #62BCFA;
+                        }
+                    }
+
                     &::after{
                         height: 4px;
-                        background-color: $purple-main;
                     }
                 }
             }
