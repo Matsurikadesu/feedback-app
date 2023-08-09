@@ -4,10 +4,6 @@ const initialState = {
     feedbacksLoadingStatus: 'loading',
     feedbackPageLoadingStatus: 'loading',
     commentsLoadingStatus: 'loading',
-    feedbacks: false,
-    feedbackIndex: -1,
-    currentFeedback: false,
-    roadmap: [{name: 'planned'}, {name: 'in-progress'}, {name: 'live'}],
     comments: false,
     user: {id: '1', avatar: 'https://media.tenor.com/gIKfNZd5YkQAAAAd/pudge-dance.gif', name: 'Ящер', tag: 'Ящер'},
     filter: 'All',
@@ -28,9 +24,6 @@ const feedbackSlice = createSlice({
         feedbackOpened: (state, action) => {
             state.feedbackIndex = action.payload.id;
             state.currentFeedback = action.payload.feedback;
-        },
-        roadmapFetched: (state, action) => {
-            state.roadmap = action.payload;
         },
         commentsFetched: (state, action) => {
             state.comments = action.payload;

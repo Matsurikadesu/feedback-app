@@ -1,6 +1,7 @@
 import { addDoc, and, collection, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { db } from "./firebase";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 /** 
  * Функция добавляет новый коментарий в базу данных
@@ -14,6 +15,15 @@ export const addNewNestedComment = (feedbackId, parentId, comment) => {
 
 export const updateFeedback = (feedbackId, changes) => {
     updateDoc(doc(db, 'feedback', feedbackId), changes);
+}
+
+export const fetchFeedback = async (feedbackId) => {
+    const result = (await getDoc(doc(db, 'feedback', feedbackId))).data();
+    return result ? result : false;
+}
+
+export const addNewComment = (feedbackId, comment) => {
+    addDoc(collection(db, 'feedback', feedbackId, 'comment'), comment);
 }
 
 /**
@@ -89,12 +99,40 @@ export const getRoadmap = () => {
 
     return countFeedbacks();
 }
+/**
+ * Обновляет количество upvotes в бд
+ * @param {*} initialUpvotes текущее значение upvotes 
+ * @param {*} upvotedby пользователи, нажавшие upvote
+ * @param {*} id feedback id
+ * @returns 
+ */
+export const useUpvote = (initialUpvotes, upvotedby, id) => {
+    const userId = useSelector(state => state.user.id);
+    const [upvotes, setUpvotes] = useState(initialUpvotes);
+    const [upvotedBy, setUpvotedBy] = useState(upvotedby);
 
-export const fetchFeedback = async (feedbackId) => {
-    const result = (await getDoc(doc(db, 'feedback', feedbackId))).data();
-    return result ? result : false;
-}
+    const handleUpvote = () => {
+        if(upvotedBy.includes(userId)){
+            initialUpvotes = upvotes - 1;
+            upvotedby = upvotedby.filter(item => item !== userId);
+        }else{
+            initialUpvotes = upvotes + 1;
+            upvotedby.push(userId);
+        }
 
-export const addNewComment = (feedbackId, comment) => {
-    addDoc(collection(db, 'feedback', feedbackId, 'comment'), comment);
+        setUpvotedBy(upvotedby);
+        setUpvotes(initialUpvotes);
+        updateDoc(doc(db, 'feedback', id), {
+            upvotes: initialUpvotes,
+            upvotedby
+        })
+    }
+
+
+
+    return {
+        upvotes,
+        handleUpvote,
+        isUpvoted: upvotedBy.includes(userId)
+    }
 }

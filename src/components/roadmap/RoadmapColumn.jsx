@@ -16,6 +16,7 @@ const RoadmapColumn = ({name, description, filter, feedbacks, amount}) => {
                             feedbacks.map((item, index) => (
                                 <RoadmapFeedback
                                     {...item}
+                                    initialUpvotes={item.upvotes}
                                     key={index}/>
                             ))
                     }

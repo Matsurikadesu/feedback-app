@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 function App() {
   const filter = useSelector(state => state.filter);
   const sortingMethod = useSelector(state => state.sortingMethod);
+
   const { feedbacks } = useFeedbacks(filter, sortingMethod);
 
   return (

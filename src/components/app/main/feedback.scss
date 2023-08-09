@@ -39,6 +39,11 @@
 
 .card__title{
     font-size: 18px;
+    transition: .2s color;
+
+    &:hover{
+        color: #4661E6;
+    }
 }
 
 .card__description{
@@ -68,6 +73,7 @@
     gap: 10px;
     padding: 7px 13px 7px 16px;
     border-radius: 10px;
+    border: none;
     cursor: pointer;
 
     &:hover{
@@ -117,6 +123,4 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    background-color: inherit;
-    border: none;
 }

@@ -24,7 +24,10 @@ const FeedbackPage = () => {
                 <div className='page__body body_page'>
                     {
                         feedback
-                            ? <FeedbackCard feedback={feedback}/>
+                            ? <FeedbackCard 
+                                {...feedback}
+                                initialUpvotes={feedback.upvotes}
+                                id={feedbackId}/>
                             : <FeedbackLoading/>
                     }
 

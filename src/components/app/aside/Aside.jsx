@@ -17,9 +17,9 @@ const Aside = () => {
 
     const optionsList = options
             .map((item, index) => {
-                let clazz = 'aside__tags-item '
+                let clazz = 'aside__tags-item ';
                 if(item === filter) clazz += 'aside__tags-item_active';
-                return <li className={clazz} onClick={(e) => handleFilterClick(e, item)} key={index}>{item}</li>
+                return <li className={clazz} onClick={(e) => handleFilterClick(e, item)} key={index}>{item}</li>;
             })
     
     const roadmapList = roadmap
