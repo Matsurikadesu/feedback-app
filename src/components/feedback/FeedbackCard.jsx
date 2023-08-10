@@ -2,6 +2,7 @@ import { useUpvote } from "../../firebase/services";
 
 const FeedbackCard = ({title, description, category, initialUpvotes, comments, id, upvotedby}) => {
     const {upvotes, handleUpvote, isUpvoted} = useUpvote(initialUpvotes, upvotedby, id);
+    console.log(comments)
 
     return(
         <div className="feedback__card feedback__card_separate">

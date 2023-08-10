@@ -18,6 +18,7 @@ const EditFeedbackPage = () => {
     const onSubmitChanges = async (e) => {
         e.preventDefault();
         const {title, category, status, description} = e.target;
+
         await updateDoc(doc(db, `feedback/${feedbackId}`), {
             title: title.value,
             category: category.value,

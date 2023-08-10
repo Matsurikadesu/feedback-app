@@ -10,7 +10,20 @@ export const updateFeedback = (feedbackId, changes) => {
 }
 
 export const fetchFeedback = async (feedbackId) => {
-    const result = (await getDoc(doc(db, 'feedback', feedbackId))).data();
+    const getCommentsAmount = async (feedbackId) => {
+        const ref = collection(db, 'feedback', feedbackId, 'comments');
+        const result = await getCountFromServer(ref);
+
+        return result.data().count; 
+    }
+
+    const result = await getDoc(doc(db, 'feedback', feedbackId))
+        .then(async doc => ({
+            ...doc.data(), 
+            id: doc.id, 
+            comments: await getCommentsAmount(feedbackId)
+        }));
+
     return result ? result : false;
 }
 
@@ -158,11 +171,21 @@ export const useComments = (feedbackId) => {
     const [comments, setComments] = useState(false)
     const dispatch = useDispatch();
 
+    const getUserData = async (userId) => {
+        return await getDoc(doc(db, 'users', userId)).then(doc => ({...doc.data(), id: doc.id}));
+    }
+
     const fetchComments = async () => {
         await getDocs(collection(db, 'feedback', feedbackId, 'comments'), orderBy('timestamp'))
-            .then((querySnapshot) => {
-                const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
-                console.log(newData);
+            .then(async (querySnapshot) => {
+                const newData = await Promise.all(querySnapshot.docs.map(async (doc) => {
+                    return {
+                        ...doc.data(),
+                        id: doc.id,
+                        user: await getUserData(doc.data().user) 
+                    };
+                }))
+
                 dispatch(commentsFetched());
                 setComments(newData);
             })      
@@ -176,30 +199,5 @@ export const useComments = (feedbackId) => {
 
     return {
         comments
-    }
-}
-
-export const useUser = (userId) => {
-    const [userInfo, setUserInfo] = useState({
-        avatar: '/avatar-placeholder.svg',
-        name: 'Chunky cat',
-        tag: 'murzik'
-    });
-
-    const fetchUser = async (id) => {
-        await getDoc(doc(db, 'users', id))
-            .then((snapshot) => {
-                const user = snapshot.data();
-                setUserInfo(user);
-            })
-    }
-
-    useEffect(() => {
-        fetchUser(userId);
-        //eslint-disable-next-line
-    }, [])
-
-    return {
-        userInfo
     }
 }

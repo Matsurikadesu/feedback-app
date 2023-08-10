@@ -13,11 +13,11 @@ const RoadmapColumn = ({name, description, filter, feedbacks, amount}) => {
                 <div className="roadmap__tasks">
                     {
                         feedbacks && 
-                            feedbacks.map((item, index) => (
+                            feedbacks.map(item => (
                                 <RoadmapFeedback
                                     {...item}
                                     initialUpvotes={item.upvotes}
-                                    key={index}/>
+                                    key={item.id}/>
                             ))
                     }
                 </div>

@@ -16,7 +16,7 @@ const CommentsList = ({feedbackId}) => {
                     nestedComments={comments.filter(item => item.parentComment === comment.id)}
                     key={comment.id}
                     {...comment}
-                    userId={comment.user}
+                    userInfo={comment.user}
                     feedbackId={feedbackId}/>
             ))
         : <CommentsLoading/>

@@ -1,13 +1,11 @@
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import NestedComment from "./NestedComment";
-import { useUser } from "../../firebase/services";
 import { handleReplySubmit } from "./handleReplySubmit";
 
-const Comment = ({text, id, nestedComments, userId, feedbackId}) => {
+const Comment = ({text, id, nestedComments, userInfo, feedbackId}) => {
     const user = useSelector(state => state.user);
     const [reply, setReply] = useState(false);
-    const { userInfo } = useUser(userId);
 
     const handleOpenReplyFormClick = () => {
         reply !== id 
@@ -29,7 +27,7 @@ const Comment = ({text, id, nestedComments, userId, feedbackId}) => {
             <NestedComment 
                 {...comment} 
                 key={comment.id}
-                userId={comment.user}
+                userInfo={comment.user}
                 feedbackId={feedbackId}/>
         ));
 

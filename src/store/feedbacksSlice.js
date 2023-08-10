@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-// нужен рефакторинг
+
 const initialState = {
     feedbacksLoadingStatus: 'loading',
     commentsLoadingStatus: 'loading',
@@ -16,11 +16,11 @@ const feedbackSlice = createSlice({
     reducers: {
         feedbacksFetching: state => {state.feedbacksLoadingStatus = 'loading'},
         feedbacksFetched: state => {state.feedbacksLoadingStatus = 'idle'},
+        commentsFetched: state => {state.commentsLoadingStatus = 'idle'},
+        commentsFetching: state => {state.commentsLoadingStatus = 'loading'},
         feedbacksEmpty: (state, action) => {
             state.isEmpty = action.payload;
         },
-        commentsFetched: state => {state.commentsLoadingStatus = 'idle'},
-        commentsFetching: state => {state.commentsLoadingStatus = 'loading'},
         userFetched: (state, action) => {
             state.commentsLoadingStatus = 'idle';
             state.user = action.payload;

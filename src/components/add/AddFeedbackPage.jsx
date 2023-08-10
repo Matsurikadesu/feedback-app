@@ -9,9 +9,7 @@ const AddFeedBackPage = () => {
     const navigate = useNavigate();
     const options = useSelector(state => state.tags);
 
-    const selectOptions = options.map((item, index) => {
-        return <option key={index}>{item}</option>
-    })
+    const selectOptions = options.map((item, index) =>  <option key={index}>{item}</option>)
 
     const handleAddFeedbackFormSubmit = async (e) => {
         e.preventDefault();

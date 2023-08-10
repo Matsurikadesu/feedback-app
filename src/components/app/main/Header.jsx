@@ -10,7 +10,7 @@ const Header = () => {
     const sortingMethod = useSelector(state => state.sortingMethod);
     const filter = useSelector(state => state.filter);
     const [amount, setAmount] = useState('0');
-    
+
     const handleSortingSelectClick = (e) => dispatch(sortingSelected(e.target.value));
 
     useEffect(() => {
