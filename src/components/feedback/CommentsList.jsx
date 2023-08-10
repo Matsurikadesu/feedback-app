@@ -4,7 +4,7 @@ import './comment.scss';
 import { useComments } from "../../firebase/services";
 import { useSelector } from "react-redux";
 
-const CommentsList = ({count, feedbackId}) => {
+const CommentsList = ({feedbackId}) => {
     const commentsLoadingStatus = useSelector(state => state.commentsLoadingStatus);
     const { comments } = useComments(feedbackId);
 
@@ -13,16 +13,17 @@ const CommentsList = ({count, feedbackId}) => {
             .filter(comment => comment.parentComment === false)
             .map(comment => (
                 <Comment
-                    key={comment.id}
                     nestedComments={comments.filter(item => item.parentComment === comment.id)}
+                    key={comment.id}
                     {...comment}
-                    userId={comment.user}/>
+                    userId={comment.user}
+                    feedbackId={feedbackId}/>
             ))
         : <CommentsLoading/>
 
     return(
         <div className='comments'>
-            <b className='title'>{count} Comments</b>
+            <b className='title'>{comments.length} Comments</b>
             {commentsList}
         </div>
     )

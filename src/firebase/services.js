@@ -55,9 +55,25 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
     
     const roadmapQ = query(collection(db, 'feedback'), orderBy('upvotes', 'desc'));
 
+    const getCommentsAmount = async (feedbackId) => {
+        const ref = collection(db, 'feedback', feedbackId, 'comments');
+        const result = await getCountFromServer(ref);
+
+        return result.data().count; 
+    }
+
     const fetchFeedbacks = async () => {
-        await getDocs(roadmap ? roadmapQ : suggestionsQ).then((querySnapshot)=>{              
-                const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
+        await getDocs(roadmap ? roadmapQ : suggestionsQ).then(async (querySnapshot)=>{              
+                const newData = await Promise.all(
+                    querySnapshot.docs
+                        .map(async (doc) => 
+                            ({
+                                ...doc.data(), 
+                                id:doc.id, 
+                                comments: await getCommentsAmount(doc.id) 
+                            }))
+                );
+
                 setFeedbacks(newData);
                 dispatch(feedbacksFetched());
             })
@@ -69,6 +85,7 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
         //eslint-disable-next-line
     }, [filter, sortingMethod]);
 
+    console.log(feedbacks);
     return {
         feedbacks
     }

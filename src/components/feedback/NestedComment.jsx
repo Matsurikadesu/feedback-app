@@ -1,14 +1,11 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { useUser } from "../../firebase/services";
 import { handleReplySubmit } from "./handleReplySubmit";
 
-const NestedComment = ({text, userId, id, parentComment}) => {
+const NestedComment = ({text, userId, id, parentComment, feedbackId}) => {
     const user = useSelector(state => state.user);
     const [reply, setReply] = useState(false);
-    const {feedbackId} = useParams();
-
     const { userInfo } = useUser(userId);
 
     const handleOpenReplyFormClick = () => {

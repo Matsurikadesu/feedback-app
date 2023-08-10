@@ -31,14 +31,9 @@ const FeedbackPage = () => {
                             : <FeedbackLoading/>
                     }
 
-                    <CommentsList 
-                        count={feedback.comments} 
-                        feedbackId={feedbackId}
-                        feedback={feedback}/>
+                    <CommentsList feedbackId={feedbackId}/>
 
-                    <Form 
-                        count={feedback.comments}
-                        feedbackId={feedbackId}/>
+                    <Form feedbackId={feedbackId}/>
                 </div>
             </div>
         : <ErrorPage/>
