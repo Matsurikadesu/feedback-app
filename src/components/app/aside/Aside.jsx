@@ -11,6 +11,7 @@ const Aside = () => {
 
     const handleFilterClick = (e, item) => {
         dispatch(filterSelected(item));
+
         document.querySelectorAll('.aside__tags-item').forEach(item => item.classList.remove('aside__tags-item_active'));
         e.target.classList.add('aside__tags-item_active');
     }

@@ -2,13 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 // нужен рефакторинг
 const initialState = {
     feedbacksLoadingStatus: 'loading',
-    feedbackPageLoadingStatus: 'loading',
     commentsLoadingStatus: 'loading',
-    comments: false,
-    user: {id: '1', avatar: 'https://media.tenor.com/gIKfNZd5YkQAAAAd/pudge-dance.gif', name: 'Ящер', tag: 'Ящер'},
+    user: {id: '2', avatar: 'https://media.tenor.com/gIKfNZd5YkQAAAAd/pudge-dance.gif', name: 'Ящер', tag: 'Ящер'},
     filter: 'All',
     sortingMethod: 'Most Upvotes',
-    tags: ['UI', 'UX', 'Enhancement', 'Bug', 'Feature']
+    tags: ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'],
+    isEmpty: false
 };
 
 const feedbackSlice = createSlice({
@@ -17,18 +16,14 @@ const feedbackSlice = createSlice({
     reducers: {
         feedbacksFetching: state => {state.feedbacksLoadingStatus = 'loading'},
         feedbacksFetched: state => {state.feedbacksLoadingStatus = 'idle'},
-        feedbacksFetchingError: state => {state.feedbacksLoadingStatus = 'error'},
-        commentsFetched: (state, action) => {
-            state.comments = action.payload;
+        feedbacksEmpty: (state, action) => {
+            state.isEmpty = action.payload;
         },
+        commentsFetched: state => {state.commentsLoadingStatus = 'idle'},
+        commentsFetching: state => {state.commentsLoadingStatus = 'loading'},
         userFetched: (state, action) => {
             state.commentsLoadingStatus = 'idle';
             state.user = action.payload;
-        },
-        commentAdded: (state, action) => {
-            state.comments 
-                ? state.comments.push(action.payload)
-                : state.comments = [action.payload];
         },
         filterSelected: (state, action) => {
             state.filter = action.payload;
@@ -45,12 +40,10 @@ export default feedbackSlice.reducer;
 export const {
     feedbacksFetching,
     feedbacksFetched,
-    feedbacksFetchingError,
-    feedbackOpened,
-    roadmapFetched,
     commentsFetched,
+    commentsFetching,
     userFetched,
-    commentAdded,
     filterSelected,
-    sortingSelected
+    sortingSelected,
+    feedbacksEmpty
 } = actions;

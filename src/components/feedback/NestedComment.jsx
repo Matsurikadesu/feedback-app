@@ -1,56 +1,67 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { feedbackOpened } from "../../store/feedbacksSlice";
-import { addNewNestedComment, updateFeedback } from "../../firebase/services";
+import { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useUser } from "../../firebase/services";
+import { handleReplySubmit } from "./handleReplySubmit";
 
-const NestedComment = ({text, replying, id, parentId}) => {
-    const dispatch = useDispatch(); 
+const NestedComment = ({text, userId, id, parentComment}) => {
     const user = useSelector(state => state.user);
-    const feedbackId = window.location.href.split('/')[3];
-    const feedback = useSelector(state => state.currentFeedback);
     const [reply, setReply] = useState(false);
+    const {feedbackId} = useParams();
 
-    const onReply = () => {
-        if(reply !== id) {
-            setReply(id)
-        }else{
-            setReply(false);
+    const { userInfo } = useUser(userId);
+
+    const handleOpenReplyFormClick = () => {
+        reply !== id
+            ? setReply(id)
+            : setReply(false);
+    }
+
+    const textToShow = useMemo(() => {
+        const textArray = text.split(' ');
+        const tag = textArray.shift();
+        let content = '';
+
+        textArray.length > 1 
+            ? content = textArray.join(' ')
+            : content = textArray[0];
+
+        return {
+            tag,
+            content
         }
-    }
-
-    const addNestedComment = async (nestedcomment) => {
-        setReply(false)
-        dispatch(feedbackOpened({feedbackId, feedback: {...feedback, comments: feedback.comments + 1}}))
-        addNewNestedComment(feedbackId, parentId, nestedcomment);
-        updateFeedback(feedbackId, {comments: feedback.comments + 1})
-    }
-
-    const onReplySubmit = (e) => {
-        e.preventDefault();
-        const newNestedComment = {replyingTo: '1', user: '1', text: e.target.nestedComment.value};
-        addNestedComment(newNestedComment);
-    }
+    }, [text])
 
     return(
         <div className='comment'>
             <div className='comment__header'>
                 <div className='comment__info'>
-                    <img className='comment__info-avatar' src={user.avatar} alt={`${user.name} avatar`} />
+                    <img className='comment__info-avatar' src={userInfo.avatar} alt={`${userInfo.name} avatar`} />
                     <div className='comment__info-container'>
-                        <h3 className='comment__info-username'>{user.name}</h3>
-                        <small className='comment__info-tag'>@{user.tag}</small>
+                        <h3 className='comment__info-username'>{userInfo.name}</h3>
+                        <small className='comment__info-tag'>@{userInfo.tag}</small>
                     </div>
                 </div>
-                <button className='comment__reply' onClick={onReply}>Reply</button>
+                <button className='comment__reply' onClick={handleOpenReplyFormClick}>Reply</button>
             </div>
-            <p className='comment__text'>{replying ? <span className="reply__accent">@{user.tag}</span> : null} {text}</p>
-            {reply === id 
-                ? 
-                <form className="reply-form" onSubmit={onReplySubmit}>
-                    <textarea className="reply-form__input form__input" name="nestedComment" id="nestedComment"></textarea>
-                    <button type='submit' className="header__btn">Post Reply</button>
-                </form> 
-                : null}
+            
+            <p className='comment__text'>
+                <span className="reply__accent">
+                    {textToShow.tag}
+                </span> 
+                {' ' + textToShow.content}
+            </p>
+            
+            {
+                reply === id && 
+                    <form className="reply-form" onSubmit={(e) => handleReplySubmit(e, user, userInfo, parentComment, feedbackId)}>
+                        <textarea
+                            className="reply-form__input form__input" 
+                            name="nestedComment" 
+                            id="nestedComment"/>
+                        <button type='submit' className="header__btn">Post Reply</button>
+                    </form> 
+            }
         </div>
     )
 }

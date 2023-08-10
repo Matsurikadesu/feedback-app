@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import './header.scss';
-import { sortingSelected } from '../../../store/feedbacksSlice';
+import { feedbacksEmpty, sortingSelected } from '../../../store/feedbacksSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFeedbacksAmountByStatus } from '../../../firebase/services';
 import { useEffect, useState } from 'react';
@@ -15,7 +15,12 @@ const Header = () => {
 
     useEffect(() => {
         getFeedbacksAmountByStatus('suggestion', filter)
-            .then(data => setAmount(data));
+            .then(data => {
+                setAmount(data);
+                data ? dispatch(feedbacksEmpty(false))
+                    : dispatch(feedbacksEmpty(true));
+            });
+    //eslint-disable-next-line
     }, [filter])
 
     return (

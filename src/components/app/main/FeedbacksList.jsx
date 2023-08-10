@@ -6,8 +6,9 @@ import FeedbacksLoading from '../../placeholders/FeedbacksLoading';
 
 const FeedbackList = ({feedbacks}) => {
     const feedbacksLoadingStatus = useSelector(state => state.feedbacksLoadingStatus);
+    const isEmpty = useSelector(state => state.isEmpty);
 
-    const elements = feedbacks.length > 0 
+    const elements = !isEmpty
         ? feedbacks.map(item => (
             <FeedbackItem 
                 {...item}
@@ -20,7 +21,7 @@ const FeedbackList = ({feedbacks}) => {
     return(
         <div className="feedback__container">
             {
-                feedbacksLoadingStatus === 'loading'
+                feedbacksLoadingStatus === 'loading' && !isEmpty
                     ? <FeedbacksLoading/> 
                     : elements
             }

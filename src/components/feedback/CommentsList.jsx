@@ -1,46 +1,31 @@
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase/firebase";
-import { useEffect, useState} from "react";
 import CommentsLoading from "../placeholders/CommentsLoading";
 import Comment from "./Comment";
 import './comment.scss';
+import { useComments } from "../../firebase/services";
+import { useSelector } from "react-redux";
 
-const CommentsList = ({count, feedbackId, feedback}) => {
-    const [comments, setComments] = useState(false)
+const CommentsList = ({count, feedbackId}) => {
+    const commentsLoadingStatus = useSelector(state => state.commentsLoadingStatus);
+    const { comments } = useComments(feedbackId);
 
-    const fetchComments = async () => {
-        await getDocs(collection(db, 'feedback', feedbackId, 'comments'))
-            .then((querySnapshot) => {
-                const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
-                setComments(newData);
-            })
-    }
+    const commentsList = commentsLoadingStatus === 'idle' && comments
+        ? comments
+            .filter(comment => comment.parentComment === false)
+            .map(comment => (
+                <Comment
+                    key={comment.id}
+                    nestedComments={comments.filter(item => item.parentComment === comment.id)}
+                    {...comment}
+                    userId={comment.user}/>
+            ))
+        : <CommentsLoading/>
 
-    useEffect(() => {
-        fetchComments();
-        //eslint-disable-next-line
-    }, [count])
-
-    const commentsList = comments && comments.map((item, index) => (
-            <Comment
-                key={index}
-                id={item.id}
-                text={item.text}
-                {...feedback}/>
-        ))
-
-    if(!comments){
-        return(
-            <CommentsLoading/>
-        )
-    }else{
-        return(
-            <div className='comments'>
-                <b className='title'>{count} Comments</b>
-                {commentsList}
-            </div>
-        )
-    }
+    return(
+        <div className='comments'>
+            <b className='title'>{count} Comments</b>
+            {commentsList}
+        </div>
+    )
 }
 
 export default CommentsList;

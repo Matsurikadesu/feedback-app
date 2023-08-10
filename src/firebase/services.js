@@ -2,17 +2,8 @@ import { addDoc, and, collection, doc, getCountFromServer, getDoc, getDocs, limi
 import { db } from "./firebase";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { feedbacksFetched, feedbacksFetching } from "../store/feedbacksSlice";
+import { commentsFetched, commentsFetching, feedbacksFetched, feedbacksFetching } from "../store/feedbacksSlice";
 
-/** 
- * Функция добавляет новый коментарий в базу данных
- * @param {*} feedbackId id фидбека к которому добавляется коментарий
- * @param {*} parentId id коментария к которому добавляется ответ
- * @param {*} comment обьект коментария
- */
-export const addNewNestedComment = (feedbackId, parentId, comment) => {
-    addDoc(collection(db, 'feedback', feedbackId, 'comments', parentId, 'nestedcomments'), comment);
-}
 
 export const updateFeedback = (feedbackId, changes) => {
     updateDoc(doc(db, 'feedback', feedbackId), changes);
@@ -24,7 +15,7 @@ export const fetchFeedback = async (feedbackId) => {
 }
 
 export const addNewComment = (feedbackId, comment) => {
-    addDoc(collection(db, 'feedback', feedbackId, 'comment'), comment);
+    addDoc(collection(db, 'feedback', feedbackId, 'comments'), comment);
 }
 
 /**
@@ -86,7 +77,6 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
 export const getFeedbacksAmountByStatus = async (status, filter = 'All') => {
     let q = null;
     const ref = collection(db, 'feedback');
-    console.log(filter, '    ', status)
 
     filter === 'All'
         ? q = query(ref, where('status', '==', status))
@@ -144,5 +134,55 @@ export const useUpvote = (initialUpvotes, upvotedby, id) => {
         upvotes,
         handleUpvote,
         isUpvoted: upvotedBy.includes(userId)
+    }
+}
+
+export const useComments = (feedbackId) => {
+    const [comments, setComments] = useState(false)
+    const dispatch = useDispatch();
+
+    const fetchComments = async () => {
+        await getDocs(collection(db, 'feedback', feedbackId, 'comments'), orderBy('timestamp'))
+            .then((querySnapshot) => {
+                const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id }));
+                console.log(newData);
+                dispatch(commentsFetched());
+                setComments(newData);
+            })      
+    }
+
+    useEffect(() => {
+        dispatch(commentsFetching());
+        fetchComments();
+        //eslint-disable-next-line
+    }, [])
+
+    return {
+        comments
+    }
+}
+
+export const useUser = (userId) => {
+    const [userInfo, setUserInfo] = useState({
+        avatar: '/avatar-placeholder.svg',
+        name: 'Chunky cat',
+        tag: 'murzik'
+    });
+
+    const fetchUser = async (id) => {
+        await getDoc(doc(db, 'users', id))
+            .then((snapshot) => {
+                const user = snapshot.data();
+                setUserInfo(user);
+            })
+    }
+
+    useEffect(() => {
+        fetchUser(userId);
+        //eslint-disable-next-line
+    }, [])
+
+    return {
+        userInfo
     }
 }

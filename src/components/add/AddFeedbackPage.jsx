@@ -13,23 +13,19 @@ const AddFeedBackPage = () => {
         return <option key={index}>{item}</option>
     })
 
-    const addFeedback = async (e) => {
+    const handleAddFeedbackFormSubmit = async (e) => {
         e.preventDefault();
         const form = e.target;
         
-        try {
-            await addDoc(collection(db, "feedback"), {
-                title: form.title.value,
-                description: form.description.value,
-                category: form.category.value,
-                upvotes: 0,
-                status: 'suggestion',
-                comments: 0,
-                upvotedby: []
-            }).then(() => navigate('/'));
-        } catch (e) {
-            console.error("Error adding document: ", e);
-        }
+        await addDoc(collection(db, "feedback"), {
+            title: form.title.value,
+            description: form.description.value,
+            category: form.category.value,
+            upvotes: 0,
+            status: 'suggestion',
+            comments: 0,
+            upvotedby: []
+        }).then(() => navigate('/'));
     }
 
     return(
@@ -38,11 +34,11 @@ const AddFeedBackPage = () => {
             <div className="page__body">
                 <img className='page__icon' src="/add-feedback-icon.png" alt="shiny icon" />
                 <h1 className="page__title">Create New Feedback</h1>
-                <form className="form" onSubmit={addFeedback}>
+                <form className="form" onSubmit={handleAddFeedbackFormSubmit}>
                     <div className="form__element">
                         <label className="form__element-title" htmlFor="title">Feedback title</label>
                         <span className="form__element-description">Add a short, descriptive headline</span>
-                        <input className="form__input" type="text" name='title' id='title' required/>
+                        <input className="form__input" type="text" name='title' id='title' maxLength={40} required/>
                     </div>
                     <div className="form__element">
                         <label className="form__element-title" htmlFor="category">Category</label>
@@ -55,7 +51,7 @@ const AddFeedBackPage = () => {
                     <div className="form__element">
                         <label className="form__element-title" htmlFor="description">Feedback Detail</label>
                         <span className="form__element-description">Include any specific comments on what should be improved, added, etc.</span>
-                        <textarea className="form__input" type="text" name='description' id='description' required/>
+                        <textarea className="form__input" type="text" name='description' id='description' maxLength={75} required/>
                     </div>
 
                     <div className='form__buttons'>

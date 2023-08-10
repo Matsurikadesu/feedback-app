@@ -12,7 +12,7 @@ const EditFeedbackPage = () => {
     const feedback = useLoaderData();
     const optionsCategory = useSelector(state => state.tags);
 
-    const optionsStatus = ['planned', 'in-progress', 'live'];
+    const optionsStatus = ['suggestion', 'planned', 'in-progress', 'live'];
     const {title, category, description, status} = feedback;
 
     const onSubmitChanges = async (e) => {
@@ -43,7 +43,7 @@ const EditFeedbackPage = () => {
                         <div className="form__element">
                             <label className="form__element-title" htmlFor="title">Feedback title</label>
                             <span className="form__element-description">Add a short, descriptive headline</span>
-                            <input className="form__input" type="text" name='title' id='title' defaultValue={title} required/>
+                            <input className="form__input" type="text" name='title' id='title' defaultValue={title} maxLength={40} required/>
                         </div>
                         <div className="form__element">
                             <label className="form__element-title" htmlFor="category">Category</label>
@@ -62,7 +62,7 @@ const EditFeedbackPage = () => {
                         <div className="form__element">
                             <label className="form__element-title" htmlFor="description">Feedback Detail</label>
                             <span className="form__element-description">Include any specific comments on what should be improved, added, etc.</span>
-                            <textarea className="form__input" type="text" name='description' id='description' rows={5} defaultValue={description} required/>
+                            <textarea className="form__input" type="text" name='description' id='description' rows={5} maxLength={75} defaultValue={description} required/>
                         </div>
 
                         <div className='form__buttons'>
