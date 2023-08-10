@@ -5,9 +5,12 @@ import RoadmapColumn from "./RoadmapColumn";
 import './roadmap-page.scss';
 import '../app/main/feedback.scss';
 import { useFeedbacks } from "../../firebase/services";
+import { useSelector } from "react-redux";
+import RoadmapPlaceholder from "../placeholders/RoadmapPlaceholder";
 
 const RoadmapPage = () => {
     const [filter, setFilter] = useState('in-progress');
+    const feedbacksLoadingStatus = useSelector(state => state.feedbacksLoadingStatus);
     const roadmap = useLoaderData();
     const {feedbacks} = useFeedbacks('All', 'Most Upvotes', true);
 
@@ -29,6 +32,7 @@ const RoadmapPage = () => {
                     + Add Feedback
                 </Link>
             </div>
+
             <div className="roadmap__switch">
                 <button 
                     type="button" 
@@ -53,13 +57,17 @@ const RoadmapPage = () => {
             </div>
 
             <div className="roadmap__content">
-                {feedbacks && roadmap.map((item, index) => (
-                    <RoadmapColumn
-                        key={index}
-                        {...item}
-                        feedbacks={feedbacks.filter(feedback => feedback.status === item.name)}
-                        filter={filter}/>
-                ))}
+                { 
+                    feedbacksLoadingStatus === 'idle' 
+                        ? roadmap.map((item, index) => (
+                            <RoadmapColumn
+                                key={index}
+                                {...item}
+                                feedbacks={feedbacks.filter(feedback => feedback.status === item.name)}
+                                filter={filter}/>
+                            ))
+                        : <RoadmapPlaceholder/>
+                }
             </div>
         </div>
     )

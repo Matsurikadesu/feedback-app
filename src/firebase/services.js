@@ -98,7 +98,6 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
         //eslint-disable-next-line
     }, [filter, sortingMethod]);
 
-    console.log(feedbacks);
     return {
         feedbacks
     }
