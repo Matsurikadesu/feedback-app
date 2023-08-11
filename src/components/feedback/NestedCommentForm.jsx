@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addNewComment } from "../../firebase/services";
+import { addNewComment, updateFeedback } from "../../firebase/services";
 import { commentAdded } from "../../store/feedbacksSlice";
 import { useParams } from "react-router-dom";
 
 const NestedCommentForm = ({id, userInfo, setReply}) => {
     const dispatch = useDispatch();
     const {feedbackId} = useParams();
+    const comments = useSelector(state => state.comments);
     const user = useSelector(state => state.user);
 
     const handleReplySubmit = async (e) => {
@@ -19,6 +20,7 @@ const NestedCommentForm = ({id, userInfo, setReply}) => {
         };
 
         const commentId = await addNewComment(feedbackId, comment);
+        updateFeedback(feedbackId, {comments: comments.length + 1});
         dispatch(commentAdded({...comment, user, id: commentId}));
         setReply(false);
     }

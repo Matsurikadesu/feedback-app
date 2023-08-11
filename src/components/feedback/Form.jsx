@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addNewComment } from "../../firebase/services";
+import { addNewComment, updateFeedback } from "../../firebase/services";
 import { useState } from "react";
 import { commentAdded } from "../../store/feedbacksSlice";
 
 const Form = ({feedbackId}) => {
     const dispatch = useDispatch();
     const [counter, setCounter] = useState(250);
+    const comments = useSelector(state => state.comments)
     const user = useSelector(state => state.user);
 
     const handleAddNewCommentFormSubmit = async (e) => {
@@ -20,6 +21,7 @@ const Form = ({feedbackId}) => {
         };
 
         const commentId = await addNewComment(feedbackId, comment);
+        updateFeedback(feedbackId, {comments: comments.length + 1});
         dispatch(commentAdded({...comment, user, id: commentId}));
 
         form.reset();
