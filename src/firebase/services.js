@@ -27,8 +27,8 @@ export const fetchFeedback = async (feedbackId) => {
     return result ? result : false;
 }
 
-export const addNewComment = (feedbackId, comment) => {
-    addDoc(collection(db, 'feedback', feedbackId, 'comments'), comment);
+export const addNewComment = async (feedbackId, comment) => {
+    return await addDoc(collection(db, 'feedback', feedbackId, 'comments'), comment).then((data) => data.id);
 }
 
 /**
@@ -167,7 +167,6 @@ export const useUpvote = (initialUpvotes, upvotedby, id) => {
 }
 
 export const useComments = (feedbackId) => {
-    const [comments, setComments] = useState(false)
     const dispatch = useDispatch();
 
     const getUserData = async (userId) => {
@@ -185,8 +184,7 @@ export const useComments = (feedbackId) => {
                     };
                 }))
 
-                dispatch(commentsFetched());
-                setComments(newData);
+                dispatch(commentsFetched(newData));
             })      
     }
 
@@ -195,8 +193,4 @@ export const useComments = (feedbackId) => {
         fetchComments();
         //eslint-disable-next-line
     }, [])
-
-    return {
-        comments
-    }
 }

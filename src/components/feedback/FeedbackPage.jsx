@@ -11,7 +11,6 @@ import Form from './Form';
 const FeedbackPage = () => {
     const { feedbackId } = useParams();
     const feedback = useLoaderData();
-    console.log(feedback)
 
     return(
         feedback ? 

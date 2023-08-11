@@ -1,9 +1,7 @@
 import { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import { handleReplySubmit } from "./handleReplySubmit";
+import NestedCommentForm from "./NestedCommentForm";
 
-const NestedComment = ({text, userInfo, id, parentComment, feedbackId}) => {
-    const user = useSelector(state => state.user);
+const NestedComment = ({text, userInfo, id, parentComment}) => {
     const [reply, setReply] = useState(false);
 
     const handleOpenReplyFormClick = () => {
@@ -48,14 +46,11 @@ const NestedComment = ({text, userInfo, id, parentComment, feedbackId}) => {
             </p>
             
             {
-                reply === id && 
-                    <form className="reply-form" onSubmit={(e) => handleReplySubmit(e, user, userInfo, parentComment, feedbackId)}>
-                        <textarea
-                            className="reply-form__input form__input" 
-                            name="nestedComment" 
-                            id="nestedComment"/>
-                        <button type='submit' className="header__btn">Post Reply</button>
-                    </form> 
+                reply === id 
+                && <NestedCommentForm
+                        id={parentComment}
+                        userInfo={userInfo}
+                        setReply={setReply}/>
             }
         </div>
     )

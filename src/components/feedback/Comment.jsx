@@ -1,25 +1,14 @@
-import { useSelector } from "react-redux";
 import { useState } from "react";
 import NestedComment from "./NestedComment";
-import { handleReplySubmit } from "./handleReplySubmit";
+import NestedCommentForm from "./NestedCommentForm";
 
 const Comment = ({text, id, nestedComments, userInfo, feedbackId}) => {
-    const user = useSelector(state => state.user);
     const [reply, setReply] = useState(false);
 
     const handleOpenReplyFormClick = () => {
         reply !== id 
             ? setReply(id)
             : setReply(false);
-    }
-
-    const NestedForm = () => {
-        return(
-            <form className="reply-form" onSubmit={(e) => handleReplySubmit(e, user, userInfo, id, feedbackId)}>
-                <textarea className="reply-form__input form__input" name="nestedComment" id="nestedComment"></textarea>
-                <button type='submit' className="header__btn">Post Reply</button>
-            </form> 
-        )
     }
 
     const nestedCommentsList = nestedComments 
@@ -45,11 +34,15 @@ const Comment = ({text, id, nestedComments, userInfo, feedbackId}) => {
             </div>
             <p className='comment__text'>{text}</p>
             {
-                reply === id && <NestedForm/> 
+                reply === id 
+                    && <NestedCommentForm 
+                            id={id}
+                            userInfo={userInfo}
+                            setReply={setReply}/> 
             }
     
             { 
-                nestedCommentsList &&
+                nestedCommentsList.length !== 0 &&
                     <div className="comments__tree">
                         {nestedCommentsList}
                     </div>

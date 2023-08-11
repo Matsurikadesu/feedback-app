@@ -4,6 +4,7 @@ const initialState = {
     feedbacksLoadingStatus: 'loading',
     commentsLoadingStatus: 'loading',
     user: {id: '2', avatar: 'https://media.tenor.com/gIKfNZd5YkQAAAAd/pudge-dance.gif', name: 'Ящер', tag: 'Ящер'},
+    comments: false,
     filter: 'All',
     sortingMethod: 'Most Upvotes',
     tags: ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'],
@@ -16,8 +17,14 @@ const feedbackSlice = createSlice({
     reducers: {
         feedbacksFetching: state => {state.feedbacksLoadingStatus = 'loading'},
         feedbacksFetched: state => {state.feedbacksLoadingStatus = 'idle'},
-        commentsFetched: state => {state.commentsLoadingStatus = 'idle'},
         commentsFetching: state => {state.commentsLoadingStatus = 'loading'},
+        commentsFetched: (state, action) => {
+            state.commentsLoadingStatus = 'idle';
+            state.comments = action.payload;
+        },
+        commentAdded: (state, action) => {
+            state.comments.push(action.payload);
+        },
         feedbacksEmpty: (state, action) => {
             state.isEmpty = action.payload;
         },
@@ -42,6 +49,7 @@ export const {
     feedbacksFetched,
     commentsFetched,
     commentsFetching,
+    commentAdded,
     userFetched,
     filterSelected,
     sortingSelected,

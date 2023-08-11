@@ -1,8 +1,10 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addNewComment } from "../../firebase/services";
 import { useState } from "react";
+import { commentAdded } from "../../store/feedbacksSlice";
 
 const Form = ({feedbackId}) => {
+    const dispatch = useDispatch();
     const [counter, setCounter] = useState(250);
     const user = useSelector(state => state.user);
 
@@ -17,7 +19,10 @@ const Form = ({feedbackId}) => {
             timestamp: new Date().getTime()
         };
 
-        addNewComment(feedbackId, comment);
+        const commentId = await addNewComment(feedbackId, comment);
+        dispatch(commentAdded({...comment, user, id: commentId}));
+
+        form.reset();
     }
 
     const handleTextareaChange = (e) => {

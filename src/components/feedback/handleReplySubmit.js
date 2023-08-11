@@ -1,6 +1,7 @@
 import { addNewComment } from "../../firebase/services";
+import { commentAdded } from "../../store/feedbacksSlice";
 
-export const handleReplySubmit = (e, user, userInfo, id, feedbackId) => {
+export const handleReplySubmit = (e, user, userInfo, id, feedbackId, dispatch) => {
     e.preventDefault();
 
     const comment = {
@@ -10,5 +11,6 @@ export const handleReplySubmit = (e, user, userInfo, id, feedbackId) => {
         timestamp: new Date().getTime()
     };
 
+    dispatch(commentAdded({...comment, user}));
     addNewComment(feedbackId, comment);
 }
