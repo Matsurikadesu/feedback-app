@@ -1,8 +1,8 @@
-import { addDoc, and, collection, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, and, collection, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, startAfter, updateDoc, where } from "firebase/firestore";
 import { db } from "./firebase";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { commentsFetched, commentsFetching, feedbacksFetched, feedbacksFetching } from "../store/feedbacksSlice";
+import { commentsFetched, commentsFetching, feedbacksFetched, feedbacksFetching, feedbacksLoaded } from "../store/feedbacksSlice";
 
 
 export const updateFeedback = (feedbackId, changes) => {
@@ -38,6 +38,8 @@ export const addNewComment = async (feedbackId, comment) => {
 export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
     const dispatch = useDispatch();
     const [feedbacks, setFeedbacks] = useState([]);
+    const [lastVisible, setLastVisible] = useState(0);
+    const [fetching, setFetching] = useState(false);
 
     //подготовка массива с конфигурацией orderBy
     let order = [];
@@ -75,6 +77,34 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
         return result.data().count; 
     }
 
+    const handlePageScroll = (e) => {
+        if(e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 50) {
+            setFetching(true);
+        }
+    }
+
+    const getAdditionalFeedbacks = async () => {
+        await getDocs(query(collection(db, 'feedback'), where('status', '==', 'suggestion'), orderBy(...order), startAfter(lastVisible), limit(6))).then((data) => {
+            const newFeedbacks = data.docs.map(item => ({...item.data(), id: item.id}));
+            dispatch(feedbacksLoaded(newFeedbacks));
+        })
+    }
+
+    useEffect(() => {
+        if(fetching){
+            getAdditionalFeedbacks();
+        }
+        //eslint-disable-next-line
+    }, [fetching])
+
+    useEffect(() => {
+        document.addEventListener('scroll', handlePageScroll);
+
+        return () => {
+        document.removeEventListener('scroll', handlePageScroll);
+        }
+    }, []);
+
     const fetchFeedbacks = async () => {
         await getDocs(roadmap ? roadmapQ : suggestionsQ).then(async (querySnapshot)=>{              
                 const newData = await Promise.all(
@@ -87,8 +117,11 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
                             }))
                 );
 
+                const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+                setLastVisible(lastVisible);
+
                 setFeedbacks(newData);
-                dispatch(feedbacksFetched());
+                dispatch(feedbacksFetched(newData));
             })
         }
 

@@ -4,6 +4,7 @@ const initialState = {
     feedbacksLoadingStatus: 'loading',
     commentsLoadingStatus: 'idle',
     user: {id: '2', avatar: 'https://media.tenor.com/gIKfNZd5YkQAAAAd/pudge-dance.gif', name: 'Ящер', tag: 'Ящер'},
+    feedbacks: [],
     comments: [],
     filter: 'All',
     sortingMethod: 'Most Upvotes',
@@ -16,7 +17,13 @@ const feedbackSlice = createSlice({
     initialState,
     reducers: {
         feedbacksFetching: state => {state.feedbacksLoadingStatus = 'loading'},
-        feedbacksFetched: state => {state.feedbacksLoadingStatus = 'idle'},
+        feedbacksFetched: (state, action) => {
+            state.feedbacksLoadingStatus = 'idle';
+            state.feedbacks = action.payload;
+        },
+        feedbacksLoaded: (state, action) => {
+            state.feedbacks = state.feedbacks.concat(action.payload);
+        },
         commentsFetching: state => {state.commentsLoadingStatus = 'loading'},
         commentsFetched: (state, action) => {
             state.commentsLoadingStatus = 'idle';
@@ -53,5 +60,6 @@ export const {
     userFetched,
     filterSelected,
     sortingSelected,
+    feedbacksLoaded,
     feedbacksEmpty
 } = actions;
