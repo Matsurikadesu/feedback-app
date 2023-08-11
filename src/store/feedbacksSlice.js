@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     feedbacksLoadingStatus: 'loading',
-    commentsLoadingStatus: 'loading',
+    commentsLoadingStatus: 'idle',
     user: {id: '2', avatar: 'https://media.tenor.com/gIKfNZd5YkQAAAAd/pudge-dance.gif', name: 'Ящер', tag: 'Ящер'},
-    comments: false,
+    comments: [],
     filter: 'All',
     sortingMethod: 'Most Upvotes',
     tags: ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'],

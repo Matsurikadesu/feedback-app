@@ -4,12 +4,12 @@ import './comment.scss';
 import { useComments } from "../../firebase/services";
 import { useSelector } from "react-redux";
 
-const CommentsList = ({feedbackId}) => {
+const CommentsList = ({feedbackId, commentsAmount}) => {
     const commentsLoadingStatus = useSelector(state => state.commentsLoadingStatus);
     const comments = useSelector(state => state.comments);
-    useComments(feedbackId);
+    useComments(feedbackId, commentsAmount);
 
-    const commentsList = commentsLoadingStatus === 'idle' && comments
+    const commentsList = commentsLoadingStatus === 'idle'
         ? comments
             .filter(comment => comment.parentComment === false)
             .map(comment => (

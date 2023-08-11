@@ -166,9 +166,8 @@ export const useUpvote = (initialUpvotes, upvotedby, id) => {
     }
 }
 
-export const useComments = (feedbackId) => {
+export const useComments = (feedbackId, comments) => {
     const dispatch = useDispatch();
-
     const getUserData = async (userId) => {
         return await getDoc(doc(db, 'users', userId)).then(doc => ({...doc.data(), id: doc.id}));
     }
@@ -189,8 +188,12 @@ export const useComments = (feedbackId) => {
     }
 
     useEffect(() => {
-        dispatch(commentsFetching());
-        fetchComments();
+        if(comments){
+            dispatch(commentsFetching());
+            fetchComments();
+        }else{
+            dispatch(commentsFetched([]));
+        }
         //eslint-disable-next-line
     }, [])
 }

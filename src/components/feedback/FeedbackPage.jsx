@@ -32,7 +32,9 @@ const FeedbackPage = () => {
                             : <FeedbackLoading/>
                     }
 
-                    <CommentsList feedbackId={feedbackId}/>
+                    <CommentsList 
+                        feedbackId={feedbackId} 
+                        commentsAmount={feedback.comments}/>
 
                     <Form feedbackId={feedbackId}/>
                 </div>
