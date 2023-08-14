@@ -33,7 +33,6 @@ const FeedbackList = () => {
         amount > feedbacks.length 
             ? setHasMore(true)
             : setHasMore(false);
-        console.log(feedbacks);
     }, [amount, feedbacks]);
 
     return(

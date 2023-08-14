@@ -156,19 +156,22 @@ export const useUpvote = (initialUpvotes, upvotedby, id) => {
     const [upvotedBy, setUpvotedBy] = useState(upvotedby);
 
     const handleUpvote = () => {
+        let newUpvotedBy = upvotedBy.filter(item => item);
+        let newUpvotes = upvotes;
+
         if(upvotedBy.includes(userId)){
-            initialUpvotes = upvotes - 1;
-            upvotedby = upvotedby.filter(item => item !== userId);
+            newUpvotes = upvotes - 1;
+            newUpvotedBy = upvotedBy.filter(item => item !== userId);
         }else{
-            initialUpvotes = upvotes + 1;
-            upvotedby.push(userId);
+            newUpvotes = upvotes + 1;
+            newUpvotedBy.push(userId);
         }
 
-        setUpvotedBy(upvotedby);
-        setUpvotes(initialUpvotes);
+        setUpvotedBy(newUpvotedBy);
+        setUpvotes(newUpvotes);
         updateDoc(doc(db, 'feedback', id), {
-            upvotes: initialUpvotes,
-            upvotedby
+            upvotes: newUpvotes,
+            upvotedby: newUpvotedBy
         })
     }
 

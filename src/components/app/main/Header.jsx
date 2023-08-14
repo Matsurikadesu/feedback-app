@@ -4,14 +4,28 @@ import { feedbacksAmount, sortingSelected } from '../../../store/feedbacksSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { getFeedbacksAmountByStatus } from '../../../firebase/services';
 import { useEffect, useState } from 'react';
+import Select from './Select';
 
 const Header = () => {
     const dispatch = useDispatch();
     const sortingMethod = useSelector(state => state.sortingMethod);
     const filter = useSelector(state => state.filter);
     const [amount, setAmount] = useState('0');
+    const [selectVisible, setSelectVisible] = useState(false);
 
-    const handleSortingSelectClick = (e) => dispatch(sortingSelected(e.target.value));
+    const handleSortingSelectClick = (e) => {
+        const sorting = e.target.textContent;
+
+        if(sorting !== sortingMethod) {
+            dispatch(sortingSelected(sorting));
+            setSelectVisible(false);
+        }
+    }
+
+    const handleOpenSelectClick = () => {
+        const isVisible = !selectVisible;
+        setSelectVisible(isVisible);
+    }
 
     useEffect(() => {
         getFeedbacksAmountByStatus('suggestion', filter)
@@ -28,13 +42,20 @@ const Header = () => {
                 <img className="header__suggestions-icon" src="bulb.svg" alt="bulb"/>
                 <h3 className="header__suggestions-title">{amount} Suggestions</h3>
             </div>
-            <label className="header__label" htmlFor="select">Sort by :</label>
-            <select className="header__select" name="select" id="select" onChange={handleSortingSelectClick} defaultValue={sortingMethod}>
-                <option value="Most Upvotes">Most Upvotes</option>
-                <option value="Least Upvotes">Least Upvotes</option>
-                <option value="Most Comments">Most Comments</option>
-                <option value="Least Comments">Least Comments</option>
-            </select>
+
+            <div className="header__label">
+                <span onClick={handleOpenSelectClick} tabIndex={0}>
+                    Sort by : {sortingMethod} <img className='header__select-arrow' src='/select-white-arrow.svg' alt='select arrow'/>
+                </span>
+                {
+                    selectVisible && 
+                        <Select 
+                            onClick={handleSortingSelectClick} 
+                            currentSort={sortingMethod}
+                            setSelectVisible={setSelectVisible}/>
+                }
+            </div>
+
             <Link className="header__btn" to={'add'}>
                 + Add Feedback
             </Link>

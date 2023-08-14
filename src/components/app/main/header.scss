@@ -8,6 +8,14 @@
     align-items: center;
     color: #F2F4FE;
 
+    &__label{
+        position: relative;
+
+        span{
+            cursor: pointer;
+        }
+    }
+
     @media screen and (min-width: 768px) {
         width: 689px;
         margin: 0 auto;
