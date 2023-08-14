@@ -1,11 +1,11 @@
 import FeedbackList from "./FeedbacksList";
 import Header from "./Header";
 
-const Main = ({feedbacks}) => {
+const Main = () => {
     return (
         <main className="main">
             <Header/>
-            <FeedbackList feedbacks={feedbacks}/>
+            <FeedbackList/>
         </main>
     )
 }

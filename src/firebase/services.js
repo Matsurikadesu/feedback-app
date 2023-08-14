@@ -38,8 +38,7 @@ export const addNewComment = async (feedbackId, comment) => {
 export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
     const dispatch = useDispatch();
     const [feedbacks, setFeedbacks] = useState([]);
-    const [lastVisible, setLastVisible] = useState(0);
-    const [fetching, setFetching] = useState(false);
+    const [lastVisible, setLastVisible] = useState(null);
 
     //подготовка массива с конфигурацией orderBy
     let order = [];
@@ -77,34 +76,6 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
         return result.data().count; 
     }
 
-    const handlePageScroll = (e) => {
-        if(e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 50) {
-            setFetching(true);
-        }
-    }
-
-    const getAdditionalFeedbacks = async () => {
-        await getDocs(query(collection(db, 'feedback'), where('status', '==', 'suggestion'), orderBy(...order), startAfter(lastVisible), limit(6))).then((data) => {
-            const newFeedbacks = data.docs.map(item => ({...item.data(), id: item.id}));
-            dispatch(feedbacksLoaded(newFeedbacks));
-        })
-    }
-
-    useEffect(() => {
-        if(fetching){
-            getAdditionalFeedbacks();
-        }
-        //eslint-disable-next-line
-    }, [fetching])
-
-    useEffect(() => {
-        document.addEventListener('scroll', handlePageScroll);
-
-        return () => {
-        document.removeEventListener('scroll', handlePageScroll);
-        }
-    }, []);
-
     const fetchFeedbacks = async () => {
         await getDocs(roadmap ? roadmapQ : suggestionsQ).then(async (querySnapshot)=>{              
                 const newData = await Promise.all(
@@ -117,11 +88,9 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
                             }))
                 );
 
-                const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-                setLastVisible(lastVisible);
-
                 setFeedbacks(newData);
                 dispatch(feedbacksFetched(newData));
+                setLastVisible(querySnapshot.docs[newData.length - 1]);
             })
         }
 
@@ -131,8 +100,19 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
         //eslint-disable-next-line
     }, [filter, sortingMethod]);
 
+    const fetchAdditionalFeedbacks = async () => {
+        await getDocs(query(collection(db, 'feedback'), where('status', '==', 'suggestion'), orderBy(...order), startAfter(lastVisible), limit(6))).then((data) => {
+            const newFeedbacks = data.docs.map(item => ({...item.data(), id: item.id}));
+            const lastVisible = data.docs[newFeedbacks.length - 1];
+
+            setLastVisible(lastVisible);
+            dispatch(feedbacksLoaded(newFeedbacks));
+        })
+    }
+
     return {
-        feedbacks
+        feedbacks,
+        fetchAdditionalFeedbacks
     }
 }
 

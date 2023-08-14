@@ -9,7 +9,7 @@ const initialState = {
     filter: 'All',
     sortingMethod: 'Most Upvotes',
     tags: ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'],
-    isEmpty: false
+    amount: true
 };
 
 const feedbackSlice = createSlice({
@@ -32,8 +32,8 @@ const feedbackSlice = createSlice({
         commentAdded: (state, action) => {
             state.comments.push(action.payload);
         },
-        feedbacksEmpty: (state, action) => {
-            state.isEmpty = action.payload;
+        feedbacksAmount: (state, action) => {
+            state.amount = action.payload;
         },
         userFetched: (state, action) => {
             state.commentsLoadingStatus = 'idle';
@@ -61,5 +61,5 @@ export const {
     filterSelected,
     sortingSelected,
     feedbacksLoaded,
-    feedbacksEmpty
+    feedbacksAmount
 } = actions;

@@ -3,12 +3,23 @@ import EmptyFeedbacks from '../../placeholders/EmptyFeedbacks';
 import './FeedbacksList.scss';
 import { useSelector } from 'react-redux';
 import FeedbacksLoading from '../../placeholders/FeedbacksLoading';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useFeedbacks } from '../../../firebase/services';
+import { useEffect, useState } from 'react';
 
-const FeedbackList = ({feedbacks}) => {
-    const feedbacksLoadingStatus = useSelector(state => state.feedbacksLoadingStatus);
-    const isEmpty = useSelector(state => state.isEmpty);
+const FeedbackList = () => {
+    const [hasMore, setHasMore] = useState(true);
+    const { 
+        feedbacksLoadingStatus,
+        filter,
+        sortingMethod,
+        feedbacks,
+        amount
+    } = useSelector(state => ({...state}));
 
-    const elements = !isEmpty
+    const {fetchAdditionalFeedbacks} = useFeedbacks(filter, sortingMethod);
+
+    const elements = amount
         ? feedbacks.map(item => (
             <FeedbackItem 
                 {...item}
@@ -18,14 +29,23 @@ const FeedbackList = ({feedbacks}) => {
         ))
         : <EmptyFeedbacks/>
 
+    useEffect(() => {
+        amount > feedbacks.length 
+            ? setHasMore(true)
+            : setHasMore(false);
+        console.log(feedbacks);
+    }, [amount, feedbacks]);
+
     return(
-        <div className="feedback__container">
-            {
-                feedbacksLoadingStatus === 'loading' && !isEmpty
-                    ? <FeedbacksLoading/> 
-                    : elements
-            }
-        </div>
+        feedbacksLoadingStatus === 'loading' && amount
+            ?   <FeedbacksLoading/>
+            :   <InfiniteScroll
+                    className='feedback__container'
+                    dataLength={feedbacks.length}
+                    next={fetchAdditionalFeedbacks}
+                    hasMore={hasMore}>
+                    {elements}
+                </InfiniteScroll>
     )
 }
 
