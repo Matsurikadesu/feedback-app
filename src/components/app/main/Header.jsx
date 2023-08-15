@@ -4,9 +4,10 @@ import { feedbacksAmount, sortingSelected } from '../../../store/feedbacksSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { getFeedbacksAmountByStatus } from '../../../firebase/services';
 import { useEffect, useState } from 'react';
-import Select from './Select';
+import Select from '../../select/Select';
 
 const Header = () => {
+    const filterOptions = ['Most Upvotes', 'Least Upvotes', 'Most Comments', 'Least Comments'];
     const dispatch = useDispatch();
     const sortingMethod = useSelector(state => state.sortingMethod);
     const filter = useSelector(state => state.filter);
@@ -43,15 +44,16 @@ const Header = () => {
                 <h3 className="header__suggestions-title">{amount} Suggestions</h3>
             </div>
 
-            <div className="header__label">
+            <div className="header__label select-label">
                 <span onClick={handleOpenSelectClick} tabIndex={0}>
-                    Sort by : {sortingMethod} <img className='header__select-arrow' src='/select-white-arrow.svg' alt='select arrow'/>
+                    Sort by : {sortingMethod} <img className={selectVisible ? 'header__select-arrow header__select-arrow_active' : 'header__select-arrow'} src='/select-white-arrow.svg' alt='select arrow'/>
                 </span>
                 {
                     selectVisible && 
-                        <Select 
+                        <Select
+                            options={filterOptions}
                             onClick={handleSortingSelectClick} 
-                            currentSort={sortingMethod}
+                            currentValue={sortingMethod}
                             setSelectVisible={setSelectVisible}/>
                 }
             </div>

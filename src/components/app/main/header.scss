@@ -83,3 +83,12 @@
         font-weight: 700;
     }
 }
+
+.header__select-arrow{
+    transition: rotate .2s;
+    margin-left: 6px;
+
+    &_active{
+        rotate: -180deg;
+    }
+}

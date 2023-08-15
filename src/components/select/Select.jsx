@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import './select.scss';
 
-const Select = ({currentSort, onClick, setSelectVisible}) => {
-    const filterOptions = ['Most Upvotes', 'Least Upvotes', 'Most Comments', 'Least Comments'];
-
-    const SelectOption = ({sortName, currentSort}) => {
+const Select = ({options, currentValue, onClick, setSelectVisible}) => {
+    const SelectOption = ({option, currentValue}) => {
         return(
             <button type="button" className='select-menu__button'>
-                {sortName}{sortName === currentSort && <img src="/arrow-select.svg" alt="selected"/>}
+                {option}{option === currentValue && <img src="/arrow-select.svg" alt="selected"/>}
             </button>
         )
     }
@@ -15,7 +13,7 @@ const Select = ({currentSort, onClick, setSelectVisible}) => {
     useEffect(() => {
         const handleSelectExit = (e) => {
             const target = e.target;
-            if(target.closest('.header__label')) return;
+            if(target.closest('.select-label')) return;
             setSelectVisible(false);
         }
 
@@ -28,17 +26,17 @@ const Select = ({currentSort, onClick, setSelectVisible}) => {
     }, [])
 
 
-    const options = filterOptions
+    const elements = options
         .map((option, index) => 
             <SelectOption
                 key={index}
-                sortName={option}
-                currentSort={currentSort}/>
+                option={option}
+                currentValue={currentValue}/>
             )
 
     return(
         <div className="select-menu" onClick={onClick}>
-            {options}
+            {elements}
         </div>
     )
 }

@@ -56,6 +56,10 @@
 }
 
 .form{
+    .select-menu{
+        top: calc(100% + 16px);
+    }
+
     &__element{
         display: flex;
         flex-direction: column;
@@ -153,10 +157,30 @@
     }
 }
 
-select{
-    text-transform: capitalize;
-}
+.form__select{
+    position: relative;
+    width: 100%;
+    padding: 13px 0;
+    background-color: #F7F8FD;
+    cursor: pointer;
 
-option{
-    text-transform: capitalize;
+    &-value{
+        display: flex;
+        justify-content: space-between;
+        text-transform: capitalize;
+        padding: 0 24px;
+    }
+
+    .select-menu{
+        width: 100%;
+    }
+
+    .select-arrow{
+        rotate: 180deg;
+        transition: .2s rotate;
+
+        &_active{
+            rotate: 0deg;
+        }
+    }
 }

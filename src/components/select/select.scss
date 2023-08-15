@@ -1,4 +1,4 @@
-@import '../../abstracts/variables.scss';
+@import '../abstracts/variables.scss';
 
 .select-menu{
     position: absolute;
@@ -12,6 +12,7 @@
     top: calc(100% + 42px);
 
     &__button{
+        text-transform: capitalize;
         position: relative;
         display: flex;
         align-items: center;
