@@ -1,7 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './select.scss';
 
-const Select = ({options, currentValue, onClick, setSelectVisible}) => {
+const Select = ({options, currentValue, name, onClick = false}) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const [value, setValue] = useState(currentValue);
+
+    const handleOptionClick = (e) => {
+        const value = e.target.textContent;
+        setValue(value);
+    }
+
+    const handleSelectLableClick = () => {
+        const visible = !isVisible;
+        setIsVisible(visible);
+    }
+
     const SelectOption = ({option, currentValue}) => {
         return(
             <button type="button" className='select-menu__button'>
@@ -13,8 +26,8 @@ const Select = ({options, currentValue, onClick, setSelectVisible}) => {
     useEffect(() => {
         const handleSelectExit = (e) => {
             const target = e.target;
-            if(target.closest('.select-label')) return;
-            setSelectVisible(false);
+            if(target.closest('.select-label') || target.classList.contains('select-value')) return;
+            setIsVisible(false);
         }
 
         window.addEventListener('click', handleSelectExit);
@@ -34,10 +47,40 @@ const Select = ({options, currentValue, onClick, setSelectVisible}) => {
                 currentValue={currentValue}/>
             )
 
+    const SelectMenu = () => {
+        return(
+            isVisible && 
+                <div className="select-menu" onClick={onClick ? onClick : handleOptionClick}>
+                    {elements}
+                </div> 
+        )    
+    }
+
+    const FormSelect = () => {
+        return (
+            <div className='form__select select-label' onClick={handleSelectLableClick}>
+                <span className='form__select-value'>{value} <img className={isVisible ? 'select-arrow select-arrow_active' : 'select-arrow'} src="/arrow-select-add.svg" alt="select arrow"/></span>
+                <SelectMenu/>
+                <input type="text" name={name} id={name} value={value} readOnly hidden/>
+            </div>
+        )
+    }
+
+    const InlineSelect = () => {
+        return(
+            <>
+                <span className='select-value' onClick={handleSelectLableClick} tabIndex={0}>
+                    {currentValue} <img className={isVisible ? 'header__select-arrow header__select-arrow_active' : 'header__select-arrow'} src='/select-white-arrow.svg' alt='select arrow'/>
+                </span>
+                <SelectMenu/>
+            </>
+        )
+    }
+
     return(
-        <div className="select-menu" onClick={onClick}>
-            {elements}
-        </div>
+        onClick 
+            ? <InlineSelect/>
+            : <FormSelect/>
     )
 }
 

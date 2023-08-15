@@ -6,7 +6,6 @@ import { db } from '../../firebase/firebase';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import ErrorPage from '../errors/ErrorPage';
 import Select from '../select/Select';
-import { useState } from 'react';
 
 const EditFeedbackPage = () => {
     const navigate = useNavigate();
@@ -14,43 +13,19 @@ const EditFeedbackPage = () => {
     const feedback = useLoaderData();
     const optionsCategory = useSelector(state => state.tags);
     const {title, category, description, status} = feedback;
-    const [categorySelectVisible, setCategorySelectVisible] = useState(false);
-    const [categoryS, setCategory] = useState(category);
-    const [statusSelectVisible, setStatusSelectVisible] = useState(false);
-    const [statusS, setStatus] = useState(status);
 
     const optionsStatus = ['suggestion', 'planned', 'in-progress', 'live'];
 
     const onSubmitChanges = async (e) => {
         e.preventDefault();
-        const {title, description} = e.target;
+        const {title, description, category, status} = e.target;
 
         await updateDoc(doc(db, `feedback/${feedbackId}`), {
             title: title.value,
-            category: categoryS,
-            status: statusS,
+            category: category.value,
+            status: status.value,
             description: description.value
         }).then(() => navigate(`/feedbacks/${feedbackId}`));
-    }
-    
-    const handleOpenStatusSelectClick = () => {
-        const isVisible = !statusSelectVisible;
-        setStatusSelectVisible(isVisible);
-    }
-
-    const handleOpenCategorySelectClick = () => {
-        const isVisible = !categorySelectVisible;
-        setCategorySelectVisible(isVisible);
-    }
-
-    const handleCategorySelect = (e) => {
-        const category = e.target.textContent;
-        setCategory(category);
-    }
-    
-    const handleStatusSelect = (e) => {
-        const status = e.target.textContent;
-        setStatus(status);
     }
 
     const handleDeleteFeedbackClick = async () => {
@@ -73,30 +48,18 @@ const EditFeedbackPage = () => {
                         <div className="form__element">
                             <span className="form__element-title">Category</span>
                             <span className="form__element-description">Choose a category for your feedback</span>
-                            <div className='form__select select-label' onClick={handleOpenCategorySelectClick}>
-                                <span className='form__select-value'>{categoryS} <img className={categorySelectVisible ? 'select-arrow select-arrow_active' : 'select-arrow'} src="/arrow-select-add.svg" alt="select arrow"/></span>
-                                {
-                                    categorySelectVisible && <Select
-                                        options={optionsCategory}
-                                        currentValue={category}
-                                        setSelectVisible={setCategorySelectVisible}
-                                        onClick={handleCategorySelect}/>
-                                }
-                            </div>
+                            <Select 
+                                options={optionsCategory}
+                                currentValue={category}
+                                name='category'/>
                         </div>
                         <div className="form__element">
                             <span className="form__element-title">Update status</span>
                             <span className="form__element-description">Change feature state</span>
-                            <div className='form__select select-label' onClick={handleOpenStatusSelectClick}>
-                                <span className='form__select-value'>{statusS} <img className={statusSelectVisible ? 'select-arrow select-arrow_active' : 'select-arrow'} src="/arrow-select-add.svg" alt="select arrow"/></span>
-                                {
-                                    statusSelectVisible && <Select
-                                        options={optionsStatus}
-                                        currentValue={statusS}
-                                        setSelectVisible={setStatusSelectVisible}
-                                        onClick={handleStatusSelect}/>
-                                }
-                            </div>
+                            <Select 
+                                options={optionsStatus}
+                                currentValue={status}
+                                name='status'/>
                         </div>
                         <div className="form__element">
                             <label className="form__element-title" htmlFor="description">Feedback Detail</label>

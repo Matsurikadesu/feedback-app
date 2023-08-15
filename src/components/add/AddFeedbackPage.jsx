@@ -5,23 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import BackBtn from '../back-btn/BackBtn';
 import Select from '../select/Select';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
 
 const AddFeedBackPage = () => {
     const navigate = useNavigate();
     const options = useSelector(state => state.tags);
-    const [category, setCategory] = useState('UI');
-    const [selectVisible, setSelectVisible] = useState(false);
-
-    const handleOptionSelect = (e) => {
-        const category = e.target.textContent;
-        setCategory(category);
-    }
-
-    const handleOpenSelectClick = () => {
-        const isVisible = selectVisible;
-        setSelectVisible(!isVisible);
-    }
 
     const handleAddFeedbackFormSubmit = async (e) => {
         e.preventDefault();
@@ -30,7 +17,7 @@ const AddFeedBackPage = () => {
         await addDoc(collection(db, "feedback"), {
             title: form.title.value,
             description: form.description.value,
-            category: category,
+            category: form.category.value,
             upvotes: 0,
             status: 'suggestion',
             comments: 0,
@@ -53,16 +40,10 @@ const AddFeedBackPage = () => {
                     <div className="form__element">
                         <span className="form__element-title">Category</span>
                         <span className="form__element-description">Choose a category for your feedback</span>
-                        <div className='form__select select-label' onClick={handleOpenSelectClick}>
-                            <span className='form__select-value'>{category} <img className={selectVisible ? 'select-arrow select-arrow_active' : 'select-arrow'} src="/arrow-select-add.svg" alt="select arrow"/></span>
-                            {
-                                selectVisible && <Select
-                                    options={options}
-                                    currentValue={category}
-                                    setSelectVisible={setSelectVisible}
-                                    onClick={handleOptionSelect}/>
-                            }
-                        </div>
+                        <Select 
+                            options={options}
+                            currentValue={options[0]}
+                            name='category'/>
                     </div>
                     <div className="form__element">
                         <label className="form__element-title" htmlFor="description">Feedback Detail</label>
