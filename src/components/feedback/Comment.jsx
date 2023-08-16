@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { usePreload } from "../../hooks/usePreload";
 import NestedComment from "./NestedComment";
 import NestedCommentForm from "./NestedCommentForm";
 
 const Comment = ({text, id, nestedComments, userInfo, feedbackId}) => {
     const [reply, setReply] = useState(false);
+    const avatar = usePreload(userInfo.avatar, '/icons/avatar-placeholder.svg');
 
     const handleOpenReplyFormClick = () => {
         reply !== id 
@@ -24,7 +26,7 @@ const Comment = ({text, id, nestedComments, userInfo, feedbackId}) => {
         <div className='comment'>
             <div className='comment__header'>
                 <div className='comment__info'>
-                    <img className='comment__info-avatar' src={userInfo.avatar} alt={`${userInfo.name} avatar`} />
+                    <img className='comment__info-avatar' src={avatar} alt={`${userInfo.name} avatar`} />
                     <div className='comment__info-container'>
                         <h3 className='comment__info-username'>{userInfo.name}</h3>
                         <small className='comment__info-tag'>@{userInfo.tag}</small>
