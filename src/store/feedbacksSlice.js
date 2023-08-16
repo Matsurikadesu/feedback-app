@@ -34,10 +34,6 @@ const feedbackSlice = createSlice({
         feedbacksAmount: (state, action) => {
             state.amount = action.payload;
         },
-        userFetched: (state, action) => {
-            state.commentsLoadingStatus = 'idle';
-            state.user = action.payload;
-        },
         filterSelected: (state, action) => {
             state.filter = action.payload;
         },
@@ -56,7 +52,6 @@ export const {
     commentsFetched,
     commentsFetching,
     commentAdded,
-    userFetched,
     filterSelected,
     sortingSelected,
     feedbacksLoaded,
