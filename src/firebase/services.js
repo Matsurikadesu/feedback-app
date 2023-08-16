@@ -2,15 +2,13 @@ import { addDoc, and, collection, deleteDoc, doc, getCountFromServer, getDoc, ge
 import { db } from "./firebase";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { commentsFetched, commentsFetching, feedbacksFetched, feedbacksFetching, feedbacksLoaded } from "../store/feedbacksSlice";
-
+import { feedbacksFetched, feedbacksFetching, feedbacksLoaded } from "../store/feedbacksSlice";
 
 export const updateFeedback = async (feedbackId, changes) => {
     return await updateDoc(doc(db, 'feedback', feedbackId), changes);
 }
 
 export const addNewFeedback = async (feedback) => {
-
     return await addDoc(collection(db, "feedback"), feedback);
 }
 
@@ -40,13 +38,34 @@ export const addNewComment = async (feedbackId, comment) => {
     return await addDoc(collection(db, 'feedback', feedbackId, 'comments'), comment).then((data) => data.id);
 }
 
+export const fetchRoadmapFeedbacks = async () => {
+    const getCommentsAmount = async (feedbackId) => {
+        const ref = collection(db, 'feedback', feedbackId, 'comments');
+        const result = await getCountFromServer(ref);
+
+        return result.data().count; 
+    }
+
+    const q = query(collection(db, 'feedback'), where('status', '!=', 'suggestion'), orderBy('status'), orderBy('upvotes', 'desc'));
+    const roadmapFeedbacks = await getDocs(q)
+        .then(async (querySnapshot) => {              
+            return await Promise.all(querySnapshot.docs.map(async (doc) => ({
+                    ...doc.data(), 
+                    id: doc.id, 
+                    comments: await getCommentsAmount(doc.id) 
+                }))
+            );
+        })
+
+    return roadmapFeedbacks;
+}
+
 /**
- * Хук получает feedbacks из базы данных, фильтруя их по category и сортируя их по выбраному фильтру
- * @returns массив feedbacks, отфильтрованый и отсортированый 
+ * Хук получает feedbacks из базы данных, фильтруя их по category и сортируя их по выбраному фильтру. Полученый массив помещается в store
+ * 
  */
 export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
     const dispatch = useDispatch();
-    const [feedbacks, setFeedbacks] = useState([]);
     const [lastVisible, setLastVisible] = useState(null);
 
     //подготовка массива с конфигурацией orderBy
@@ -69,14 +88,12 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
             break;
     }
 
-    const suggestionsQ = filter !== 'All' 
+    const q = filter !== 'All' 
         ? query(collection(db, 'feedback'), and(
             where('category', '==', filter),
             where('status', '==', 'suggestion')
         ), orderBy('category'), orderBy(...order), limit(6))
         : query(collection(db, 'feedback'), where('status', '==', 'suggestion'), orderBy(...order), limit(6));
-    
-    const roadmapQ = query(collection(db, 'feedback'), orderBy('upvotes', 'desc'));
 
     const getCommentsAmount = async (feedbackId) => {
         const ref = collection(db, 'feedback', feedbackId, 'comments');
@@ -86,22 +103,17 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
     }
 
     const fetchFeedbacks = async () => {
-        await getDocs(roadmap ? roadmapQ : suggestionsQ).then(async (querySnapshot)=>{              
-                const newData = await Promise.all(
-                    querySnapshot.docs
-                        .map(async (doc) => 
-                            ({
-                                ...doc.data(), 
-                                id:doc.id, 
-                                comments: await getCommentsAmount(doc.id) 
-                            }))
-                );
+        await getDocs(q).then(async (querySnapshot)=>{              
+            const newData = await Promise.all(querySnapshot.docs.map(async (doc) => ({
+                    ...doc.data(), 
+                    id: doc.id, 
+                    comments: await getCommentsAmount(doc.id) 
+                }))
+            );
 
-                setFeedbacks(newData);
-                dispatch(feedbacksFetched(newData));
-                setLastVisible(querySnapshot.docs[newData.length - 1]);
-            })
-        }
+            dispatch(feedbacksFetched(newData));
+            setLastVisible(querySnapshot.docs[newData.length - 1]);
+        })}
 
     useEffect(() => {
         dispatch(feedbacksFetching());
@@ -110,17 +122,21 @@ export const useFeedbacks = (filter, sortingMethod, roadmap = false) => {
     }, [filter, sortingMethod]);
 
     const fetchAdditionalFeedbacks = async () => {
-        await getDocs(query(collection(db, 'feedback'), where('status', '==', 'suggestion'), orderBy(...order), startAfter(lastVisible), limit(6))).then((data) => {
-            const newFeedbacks = data.docs.map(item => ({...item.data(), id: item.id}));
-            const lastVisible = data.docs[newFeedbacks.length - 1];
+        const q = query(collection(db, 'feedback'), 
+            where('status', '==', 'suggestion'), 
+            orderBy(...order), 
+            startAfter(lastVisible), 
+            limit(6));
 
-            setLastVisible(lastVisible);
+        await getDocs(q).then((querySnapshot) => {
+            const newFeedbacks = querySnapshot.docs.map(item => ({...item.data(), id: item.id}));
+
             dispatch(feedbacksLoaded(newFeedbacks));
+            setLastVisible(querySnapshot.docs[newFeedbacks.length - 1]);
         })
     }
 
     return {
-        feedbacks,
         fetchAdditionalFeedbacks
     }
 }
@@ -142,7 +158,11 @@ export const getFeedbacksAmountByStatus = async (status, filter = 'All') => {
  * @returns обьект roadmap, который содержит status name и количество feedbacks с этим status
  */
 export const getRoadmap = () => {
-    const roadmap = [{name: 'planned', description: 'Ideas prioritized for research', amount: 0}, {name: 'in-progress', description: 'Currently being developed', amount: 0}, {name: 'live', description: 'Released features', amount: 0}];
+    const roadmap = [
+        {name: 'planned', description: 'Ideas prioritized for research', amount: 0}, 
+        {name: 'in-progress', description: 'Currently being developed', amount: 0}, 
+        {name: 'live', description: 'Released features', amount: 0}
+    ];
 
     const countFeedbacks = async () => {
         const newRoadmap = await Promise.all(roadmap.map(async item => ({...item, amount: await getFeedbacksAmountByStatus(item.name)})))
@@ -191,34 +211,21 @@ export const useUpvote = (initialUpvotes, upvotedby, id) => {
     }
 }
 
-export const useComments = (feedbackId, comments) => {
-    const dispatch = useDispatch();
-    const getUserData = async (userId) => {
+export const fetchComments = async (feedbackId) => {
+    const fetchUserData = async (userId) => {
         return await getDoc(doc(db, 'users', userId)).then(doc => ({...doc.data(), id: doc.id}));
     }
 
-    const fetchComments = async () => {
-        await getDocs(collection(db, 'feedback', feedbackId, 'comments'), orderBy('timestamp'))
-            .then(async (querySnapshot) => {
-                const newData = await Promise.all(querySnapshot.docs.map(async (doc) => {
-                    return {
-                        ...doc.data(),
-                        id: doc.id,
-                        user: await getUserData(doc.data().user) 
-                    };
-                }))
-
-                dispatch(commentsFetched(newData));
-            })      
-    }
-
-    useEffect(() => {
-        if(comments){
-            dispatch(commentsFetching());
-            fetchComments();
-        }else{
-            dispatch(commentsFetched([]));
-        }
-        //eslint-disable-next-line
-    }, [])
+    const q = query(collection(db, 'feedback', feedbackId, 'comments'), orderBy('timestamp'));
+    const fetchedComments = await getDocs(q).then(async (querySnapshot) => {
+        return await Promise.all(querySnapshot.docs.map(async (doc) => {
+            return {
+                ...doc.data(),
+                id: doc.id,
+                user: await fetchUserData(doc.data().user) 
+            };
+        }))
+    })
+    
+    return fetchedComments;
 }

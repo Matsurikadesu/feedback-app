@@ -1,18 +1,32 @@
 import { Link, useLoaderData } from "react-router-dom";
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 import BackBtn from "../back-btn/BackBtn";
 import RoadmapColumn from "./RoadmapColumn";
 import './roadmap-page.scss';
 import '../app/main/feedback.scss';
-import { useFeedbacks } from "../../firebase/services";
-import { useSelector } from "react-redux";
+import { fetchRoadmapFeedbacks } from "../../firebase/services";
+import { useDispatch, useSelector } from "react-redux";
 import RoadmapPlaceholder from "../placeholders/RoadmapPlaceholder";
+import { feedbacksFetched, feedbacksFetching } from "../../store/feedbacksSlice";
 
 const RoadmapPage = () => {
-    const [filter, setFilter] = useState('in-progress');
+    const dispatch = useDispatch();
     const feedbacksLoadingStatus = useSelector(state => state.feedbacksLoadingStatus);
+    const feedbacks = useSelector(state => state.feedbacks);
+    const [filter, setFilter] = useState('in-progress');
     const roadmap = useLoaderData();
-    const {feedbacks} = useFeedbacks('All', 'Most Upvotes', true);
+
+    const getRoadmapFeedbacks = async () => {
+        const roadmapFeedbacks = await fetchRoadmapFeedbacks();
+        dispatch(feedbacksFetched(roadmapFeedbacks));
+    }
+
+    useEffect(() => {
+        dispatch(feedbacksFetching());
+        getRoadmapFeedbacks();
+
+        //eslint-disable-next-line
+    }, [])
 
     const handleFilterClick = (e, filter) =>{
         const switchBtns = document.querySelectorAll('.roadmap__switch-item');

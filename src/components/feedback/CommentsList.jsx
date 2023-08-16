@@ -1,14 +1,31 @@
 import CommentsLoading from "../placeholders/CommentsLoading";
 import Comment from "./Comment";
 import './comment.scss';
-import { useComments } from "../../firebase/services";
-import { useSelector } from "react-redux";
+import { fetchComments } from "../../firebase/services";
+import { useDispatch, useSelector } from "react-redux";
+import { commentsFetched, commentsFetching } from "../../store/feedbacksSlice";
+import { useEffect } from "react";
 
 const CommentsList = ({feedbackId, commentsAmount}) => {
     const commentsLoadingStatus = useSelector(state => state.commentsLoadingStatus);
     const comments = useSelector(state => state.comments);
 
-    useComments(feedbackId, commentsAmount);
+    const dispatch = useDispatch();
+
+    const getComments = async () => {
+        const newComments = await fetchComments(feedbackId, comments);
+        dispatch(commentsFetched(newComments));
+    }
+    
+    useEffect(() => {
+        if(commentsAmount){
+            dispatch(commentsFetching());
+            getComments();
+        }else{
+            dispatch(commentsFetched([]));
+        }
+        //eslint-disable-next-line
+    }, [])
 
     const commentsList = commentsLoadingStatus === 'idle'
         ? comments

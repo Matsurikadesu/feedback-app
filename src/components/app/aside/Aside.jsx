@@ -12,7 +12,6 @@ const Aside = () => {
     const options = categoryOptions.filter(item => item);
     options.unshift('All');
     
-
     const handleFilterClick = (e, item) => {
         dispatch(filterSelected(item));
 
