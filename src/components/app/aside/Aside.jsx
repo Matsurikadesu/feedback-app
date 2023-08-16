@@ -1,13 +1,17 @@
-import { Link, useLoaderData } from 'react-router-dom';
 import './aside.scss';
+import { Link, useLoaderData } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterSelected } from '../../../store/feedbacksSlice';
+import { categoryOptions } from '../../../store/options';
 
 const Aside = () => {
     const dispatch = useDispatch();
-    const options = ['All', 'UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
     const filter = useSelector(state => state.filter);
     const roadmap = useLoaderData();
+
+    const options = categoryOptions.filter(item => item);
+    options.unshift('All');
+    
 
     const handleFilterClick = (e, item) => {
         dispatch(filterSelected(item));

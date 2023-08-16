@@ -30,7 +30,7 @@ const Header = () => {
     return (
         <div className="header">
             <div className="header__suggestions">
-                <img className="header__suggestions-icon" src="bulb.svg" alt="bulb"/>
+                <img className="header__suggestions-icon" src="/icons/bulb.svg" alt="bulb"/>
                 <h3 className="header__suggestions-title">{amount} Suggestions</h3>
             </div>
 

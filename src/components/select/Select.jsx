@@ -18,7 +18,7 @@ const Select = ({options, currentValue, name, onClick = false}) => {
     const SelectOption = ({option, currentValue}) => {
         return(
             <button type="button" className='select-menu__button'>
-                {option}{option === currentValue && <img src="/arrow-select.svg" alt="selected"/>}
+                {option}{option === currentValue && <img src="/icons/arrow-select.svg" alt="selected"/>}
             </button>
         )
     }
@@ -59,7 +59,7 @@ const Select = ({options, currentValue, name, onClick = false}) => {
     const FormSelect = () => {
         return (
             <div className='form__select select-label' onClick={handleSelectLableClick}>
-                <span className='form__select-value'>{value} <img className={isVisible ? 'select-arrow select-arrow_active' : 'select-arrow'} src="/arrow-select-add.svg" alt="select arrow"/></span>
+                <span className='form__select-value'>{value} <img className={isVisible ? 'select-arrow select-arrow_active' : 'select-arrow'} src="/icons/arrow-select-add.svg" alt="select arrow"/></span>
                 <SelectMenu/>
                 <input type="text" name={name} id={name} value={value} readOnly hidden/>
             </div>
@@ -70,7 +70,7 @@ const Select = ({options, currentValue, name, onClick = false}) => {
         return(
             <>
                 <span className='select-value' onClick={handleSelectLableClick} tabIndex={0}>
-                    {currentValue} <img className={isVisible ? 'header__select-arrow header__select-arrow_active' : 'header__select-arrow'} src='/select-white-arrow.svg' alt='select arrow'/>
+                    {currentValue} <img className={isVisible ? 'header__select-arrow header__select-arrow_active' : 'header__select-arrow'} src='/icons/select-white-arrow.svg' alt='select arrow'/>
                 </span>
                 <SelectMenu/>
             </>

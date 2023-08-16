@@ -3,12 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     feedbacksLoadingStatus: 'loading',
     commentsLoadingStatus: 'idle',
-    user: {id: '2', avatar: 'https://media.tenor.com/gIKfNZd5YkQAAAAd/pudge-dance.gif', name: 'Ящер', tag: 'Ящер'},
+    user: {id: '3', avatar: '/user/desu.webp', name: 'Desu', tag: 'desu123'},
     feedbacks: [],
     comments: [],
     filter: 'All',
     sortingMethod: 'Most Upvotes',
-    tags: ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'],
     amount: true
 };
 

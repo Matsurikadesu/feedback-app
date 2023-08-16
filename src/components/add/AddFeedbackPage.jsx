@@ -1,35 +1,35 @@
 import './add-feedback-page.scss';
-import { db } from "../../firebase/firebase";
-import { collection, addDoc } from "firebase/firestore";
 import { Link, useNavigate } from 'react-router-dom';
 import BackBtn from '../back-btn/BackBtn';
 import Select from '../select/Select';
-import { useSelector } from 'react-redux';
+import { categoryOptions } from '../../store/options';
+import { addNewFeedback } from '../../firebase/services';
 
 const AddFeedBackPage = () => {
     const navigate = useNavigate();
-    const options = useSelector(state => state.tags);
 
     const handleAddFeedbackFormSubmit = async (e) => {
         e.preventDefault();
-        const form = e.target;
+        const {title, description, category} = e.target;
         
-        await addDoc(collection(db, "feedback"), {
-            title: form.title.value,
-            description: form.description.value,
-            category: form.category.value,
+        const newFeedback = {
+            title: title.value,
+            description: description.value,
+            category: category.value,
             upvotes: 0,
             status: 'suggestion',
             comments: 0,
             upvotedby: []
-        }).then(() => navigate('/'));
+        }
+
+        addNewFeedback(newFeedback).then(() => navigate('/'));
     }
 
     return(
         <div className="page">
             <BackBtn/>
             <div className="page__body">
-                <img className='page__icon' src="/add-feedback-icon.png" alt="shiny icon" />
+                <img className='page__icon' src="/icons/add-feedback-icon.png" alt="shiny icon" />
                 <h1 className="page__title">Create New Feedback</h1>
                 <form className="form" onSubmit={handleAddFeedbackFormSubmit}>
                     <div className="form__element">
@@ -41,8 +41,8 @@ const AddFeedBackPage = () => {
                         <span className="form__element-title">Category</span>
                         <span className="form__element-description">Choose a category for your feedback</span>
                         <Select 
-                            options={options}
-                            currentValue={options[0]}
+                            options={categoryOptions}
+                            currentValue={categoryOptions[0]}
                             name='category'/>
                     </div>
                     <div className="form__element">

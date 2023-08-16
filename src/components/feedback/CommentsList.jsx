@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 const CommentsList = ({feedbackId, commentsAmount}) => {
     const commentsLoadingStatus = useSelector(state => state.commentsLoadingStatus);
     const comments = useSelector(state => state.comments);
+
     useComments(feedbackId, commentsAmount);
 
     const commentsList = commentsLoadingStatus === 'idle'

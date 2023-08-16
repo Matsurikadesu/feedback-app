@@ -6,7 +6,7 @@ const EmptyFeedbacks = () => {
         <div className="empty-container">
             <img 
                 className='image'
-                src="./no-item.svg" 
+                src="/icons/no-item.svg" 
                 alt="spy looking for feedbacks" />
 
             <h3 

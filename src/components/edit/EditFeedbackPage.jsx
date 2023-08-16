@@ -1,35 +1,33 @@
 import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import BackBtn from '../back-btn/BackBtn';
 import '../add/add-feedback-page.scss';
-import { db } from '../../firebase/firebase';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import ErrorPage from '../errors/ErrorPage';
 import Select from '../select/Select';
+import { deleteFeedback, updateFeedback } from '../../firebase/services';
+import { statusOptions, categoryOptions } from '../../store/options';
 
 const EditFeedbackPage = () => {
     const navigate = useNavigate();
     const {feedbackId} = useParams();
     const feedback = useLoaderData();
-    const optionsCategory = useSelector(state => state.tags);
     const {title, category, description, status} = feedback;
-
-    const optionsStatus = ['suggestion', 'planned', 'in-progress', 'live'];
 
     const onSubmitChanges = async (e) => {
         e.preventDefault();
         const {title, description, category, status} = e.target;
 
-        await updateDoc(doc(db, `feedback/${feedbackId}`), {
+        const updates = {
             title: title.value,
             category: category.value,
             status: status.value,
             description: description.value
-        }).then(() => navigate(`/feedbacks/${feedbackId}`));
+        };
+
+        updateFeedback(feedbackId, updates).then(() => navigate(`/feedbacks/${feedbackId}`));
     }
 
     const handleDeleteFeedbackClick = async () => {
-        await deleteDoc(doc(db, `feedback/${feedbackId}`)).then(() => navigate('/'));
+        deleteFeedback(feedbackId).then(() => navigate('/'));
     }
 
     return(
@@ -37,7 +35,7 @@ const EditFeedbackPage = () => {
             ? <div className="page">
                 <BackBtn feedbackId={feedbackId}/>
                 <div className="page__body">
-                    <img className='page__icon' src="/edit-feedback-icon.png" alt="shiny icon" />
+                    <img className='page__icon' src="/icons/edit-feedback-icon.png" alt="shiny icon" />
                     <h1 className="page__title">Editing ‘{title}’</h1> 
                     <form className="form" onSubmit={onSubmitChanges}>
                         <div className="form__element">
@@ -49,7 +47,7 @@ const EditFeedbackPage = () => {
                             <span className="form__element-title">Category</span>
                             <span className="form__element-description">Choose a category for your feedback</span>
                             <Select 
-                                options={optionsCategory}
+                                options={categoryOptions}
                                 currentValue={category}
                                 name='category'/>
                         </div>
@@ -57,7 +55,7 @@ const EditFeedbackPage = () => {
                             <span className="form__element-title">Update status</span>
                             <span className="form__element-description">Change feature state</span>
                             <Select 
-                                options={optionsStatus}
+                                options={statusOptions}
                                 currentValue={status}
                                 name='status'/>
                         </div>

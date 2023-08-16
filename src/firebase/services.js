@@ -1,12 +1,21 @@
-import { addDoc, and, collection, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, startAfter, updateDoc, where } from "firebase/firestore";
+import { addDoc, and, collection, deleteDoc, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, startAfter, updateDoc, where } from "firebase/firestore";
 import { db } from "./firebase";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { commentsFetched, commentsFetching, feedbacksFetched, feedbacksFetching, feedbacksLoaded } from "../store/feedbacksSlice";
 
 
-export const updateFeedback = (feedbackId, changes) => {
-    updateDoc(doc(db, 'feedback', feedbackId), changes);
+export const updateFeedback = async (feedbackId, changes) => {
+    return await updateDoc(doc(db, 'feedback', feedbackId), changes);
+}
+
+export const addNewFeedback = async (feedback) => {
+
+    return await addDoc(collection(db, "feedback"), feedback);
+}
+
+export const deleteFeedback = async (feedbackId) => {
+    return await deleteDoc(doc(db, `feedback/${feedbackId}`));
 }
 
 export const fetchFeedback = async (feedbackId) => {

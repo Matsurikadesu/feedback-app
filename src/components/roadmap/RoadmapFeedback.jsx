@@ -21,7 +21,7 @@ const RoadmapFeedback = ({title, description, initialUpvotes, category, status, 
                     <span className="card__text">{upvotes}</span>
                 </button>
                 <div className="card__comment card__btn">
-                    <img src="/comment.svg" alt="comment"/>
+                    <img src="/icons/comment.svg" alt="comment"/>
                     <span className="card__text">{comments}</span>
                 </div>
             </div>
