@@ -104,7 +104,7 @@ const EditFeedbackPage = () => {
 
                             <div className='form__buttons'>
                                 <button type='submit' className='form__btn form__btn_accept'>Save Changes</button>
-                                <Link className='form__btn' to='/'>Cancel</Link>
+                                <Link className='form__btn' to={`/feedbacks/${feedbackId}`}>Cancel</Link>
                                 <button type='button' className='form__btn form__btn_delete' onClick={handleDeleteFeedbackClick}>Delete</button>
                             </div>
                         </form>

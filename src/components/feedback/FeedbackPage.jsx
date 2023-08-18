@@ -13,7 +13,7 @@ const FeedbackPage = () => {
     const feedback = useLoaderData();
 
     return(
-        feedback ? 
+        feedback.upvotes ? 
             <div className="page page_feedback">
                 <div className='page__header'>
                     <BackBtn/>
