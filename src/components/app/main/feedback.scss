@@ -76,9 +76,14 @@ a.card__title:hover{
     border-radius: 10px;
     border: none;
     cursor: pointer;
+    transition: all .2s;
 
     &:hover{
         background-color: $light-main-hover;
+    }
+
+    path{
+        transition: stroke .2s; 
     }
 
     &_active{

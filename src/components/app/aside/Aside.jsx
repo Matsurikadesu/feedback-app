@@ -36,7 +36,7 @@ const Aside = () => {
     return(
         <div className="aside">
             <div className="aside__info">
-                <h1 className="title">Frontend Mentor</h1>
+                <h1 className="title">Feedback App</h1>
                 <p className="subtitle">Feedback Board</p>
             </div>
             <button className="aside__btn-container" onClick={(e) => e.target.closest('.aside').classList.toggle('aside_active')}>

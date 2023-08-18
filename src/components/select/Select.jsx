@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import './select.scss';
+import { useFormContext } from 'react-hook-form';
 
 const Select = ({options, currentValue, name, onClick = false}) => {
     const [isVisible, setIsVisible] = useState(false);
-    const [value, setValue] = useState(currentValue);
-
+    // const [value, setValue] = useState(currentValue);
+    const {register, setValue, getValues} = useFormContext();
     const handleOptionClick = (e) => {
         const value = e.target.textContent;
-        setValue(value);
+        setValue(name, value);
+        // setValue(value);
     }
 
     const handleSelectLableClick = () => {
@@ -58,10 +60,10 @@ const Select = ({options, currentValue, name, onClick = false}) => {
 
     const FormSelect = () => {
         return (
-            <div className='form__select select-label' onClick={handleSelectLableClick}>
-                <span className='form__select-value'>{value} <img className={isVisible ? 'select-arrow select-arrow_active' : 'select-arrow'} src="/icons/arrow-select-add.svg" alt="select arrow"/></span>
+            <div className='form__select select-label' data-testid='select' onClick={handleSelectLableClick}>
+                <span className='form__select-value'>{getValues(name) ? getValues(name) : currentValue} <img className={isVisible ? 'select-arrow select-arrow_active' : 'select-arrow'} src="/icons/arrow-select-add.svg" alt="select arrow"/></span>
                 <SelectMenu/>
-                <input type="text" name={name} id={name} value={value} readOnly hidden/>
+                <input type="text" {...register(name)} defaultValue={currentValue} readOnly hidden/>
             </div>
         )
     }
