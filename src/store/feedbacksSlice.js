@@ -4,6 +4,8 @@ const initialState = {
     feedbacksLoadingStatus: 'loading',
     commentsLoadingStatus: 'idle',
     user: {id: '3', avatar: '/user/desu.webp', name: 'Desu', tag: 'desu123'},
+    statusOptions: ['suggestion', 'planned', 'in-progress', 'live'],
+    categoryOptions: ['UI', 'UX', 'Enhancement', 'Bug', 'Feature'],
     feedbacks: [],
     comments: [],
     filter: 'All',

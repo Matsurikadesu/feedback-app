@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
 import './select.scss';
-import { useFormContext } from 'react-hook-form';
 
-const Select = ({options, currentValue, name, onClick = false}) => {
+const Select = ({options, currentValue, name, onClick = false, methods}) => {
     const [isVisible, setIsVisible] = useState(false);
-    // const [value, setValue] = useState(currentValue);
-    const {register, setValue, getValues} = useFormContext();
+    const {register, setValue, getValues} = methods;
     const handleOptionClick = (e) => {
         const value = e.target.textContent;
         setValue(name, value);
-        // setValue(value);
     }
 
     const handleSelectLableClick = () => {

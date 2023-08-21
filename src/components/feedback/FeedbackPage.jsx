@@ -1,19 +1,19 @@
 import { Link, useLoaderData, useParams } from 'react-router-dom';
 import BackBtn from '../back-btn/BackBtn';
 import CommentsList from './CommentsList';
-import FeedbackLoading from '../placeholders/FeedbackLoading';
 import FeedbackCard from './FeedbackCard';
 import '../add/add-feedback-page.scss';
 import './feedback-page.scss';
 import ErrorPage from '../errors/ErrorPage';
 import Form from './Form';
+import LoadingComponent from '../placeholders/LoadingComponent';
 
 const FeedbackPage = () => {
     const { feedbackId } = useParams();
     const feedback = useLoaderData();
 
     return(
-        feedback.upvotes ? 
+        feedback.upvotedby ? 
             <div className="page page_feedback">
                 <div className='page__header'>
                     <BackBtn/>
@@ -29,7 +29,7 @@ const FeedbackPage = () => {
                                 {...feedback}
                                 initialUpvotes={feedback.upvotes}
                                 id={feedbackId}/>
-                            : <FeedbackLoading/>
+                            : <LoadingComponent type={'feedback'}/>
                     }
 
                     <CommentsList 

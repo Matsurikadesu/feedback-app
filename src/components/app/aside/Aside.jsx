@@ -2,14 +2,13 @@ import './aside.scss';
 import { Link, useLoaderData } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterSelected } from '../../../store/feedbacksSlice';
-import { categoryOptions } from '../../../store/options';
 
 const Aside = () => {
     const dispatch = useDispatch();
-    const filter = useSelector(state => state.filter);
     const roadmap = useLoaderData();
-
-    const options = categoryOptions.filter(item => item);
+    const filter = useSelector(state => state.filter);
+    const categoryOptions = useSelector(state => state.categoryOptions);
+    const options = categoryOptions.filter(item => item); 
     options.unshift('All');
     
     const handleFilterClick = (e, item) => {

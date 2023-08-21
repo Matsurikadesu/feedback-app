@@ -1,31 +1,21 @@
-import CommentsLoading from "../placeholders/CommentsLoading";
 import Comment from "./Comment";
 import './comment.scss';
-import { fetchComments } from "../../firebase/services";
 import { useDispatch, useSelector } from "react-redux";
-import { commentsFetched, commentsFetching } from "../../store/feedbacksSlice";
+import { commentsFetched } from "../../store/feedbacksSlice";
 import { useEffect } from "react";
+import { fetchComments } from "../../store/thunks";
+import LoadingComponent from "../placeholders/LoadingComponent";
 
 const CommentsList = ({feedbackId, commentsAmount}) => {
+    const dispatch = useDispatch();
     const commentsLoadingStatus = useSelector(state => state.commentsLoadingStatus);
     const comments = useSelector(state => state.comments);
 
-    const dispatch = useDispatch();
-
-    const getComments = async () => {
-        const newComments = await fetchComments(feedbackId, comments);
-        dispatch(commentsFetched(newComments));
-    }
-    
     useEffect(() => {
-        if(commentsAmount){
-            dispatch(commentsFetching());
-            getComments();
-        }else{
-            dispatch(commentsFetched([]));
-        }
-        //eslint-disable-next-line
-    }, [])
+        commentsAmount
+            ? dispatch(fetchComments(feedbackId))
+            : dispatch(commentsFetched([]));
+    }, [commentsAmount, dispatch, feedbackId])
 
     const commentsList = commentsLoadingStatus === 'idle'
         ? comments
@@ -38,7 +28,7 @@ const CommentsList = ({feedbackId, commentsAmount}) => {
                     userInfo={comment.user}
                     feedbackId={feedbackId}/>
             ))
-        : <CommentsLoading/>
+        : <LoadingComponent type={'comments'}/>
 
     return(
         <div className='comments'>

@@ -17,10 +17,6 @@ const RoadmapPlaceholder = () => {
         }
     ];
 
-    const RoadmapFeedbackPlaceholder = () => {
-        return <div className='feedback__card feedback__card_roadmap feedback__card_placeholder'></div>
-    }
-
     const RoadmapColumnPlaceholder = ({name, description, amount}) => (
         <div className={`roadmap__tasks-container ${name !== 'in-progress' && 'roadmap__tasks-container_hidden'}`}>
                 <div className="roadmap__tasks-header">
@@ -28,9 +24,7 @@ const RoadmapPlaceholder = () => {
                     <p className="text">{description}</p>
                 </div>
                 <div className="roadmap__tasks">
-                    <RoadmapFeedbackPlaceholder/>
-                    <RoadmapFeedbackPlaceholder/>
-                    <RoadmapFeedbackPlaceholder/>
+                    {[...Array(3)].map((item, index) => <div key={index} className='feedback__card feedback__card_roadmap feedback__card_placeholder'></div>)}
                 </div>
         </div>
     )
