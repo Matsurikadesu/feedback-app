@@ -34,5 +34,6 @@ You can visit website by clicking [this link](https://github.com)
 
 1. Clone the repository: `git clone https://github.com/kanae367/feedback-app`
 2. Install all dependencies: `npm install`
-3. Replace API keys inside public.env with your keys and rename that file to .env
-4. Run the app: `npm start`
+3. cp public.env .env
+4. Enter your values instead of placeholder inside the .env file
+5. Run the app: `npm start`
