@@ -22,18 +22,19 @@ You can visit website by clicking [this link](https://github.com)
 ## Technologies used
 
 - HTML
-- Scss
+- SCSS
 - Flexbox
 - Adaptive layout
 - JS
 - React
 - React Router Dom
+- React Hook Form
 - Firebase
 
 ## How to start
 
 1. Clone the repository: `git clone https://github.com/kanae367/feedback-app`
 2. Install all dependencies: `npm install`
-3. cp public.env .env
+3. `cp public.env .env`
 4. Enter your values instead of placeholder inside the .env file
 5. Run the app: `npm start`
