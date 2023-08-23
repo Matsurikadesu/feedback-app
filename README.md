@@ -2,6 +2,8 @@
 
 This website is a product feedback app.
 
+![preview](Preview.png)
+
 ## Project Functionality
 
 User can:

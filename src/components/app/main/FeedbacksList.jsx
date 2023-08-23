@@ -41,7 +41,6 @@ const FeedbackList = () => {
             dataLength={feedbacks.length}
             next={fetchAdditionalFeedbacks}
             hasMore={hasMore}>
-
             {
                 feedbacksLoadingStatus === 'loading' && amount 
                     ? [...Array(6)].map((item, index) => <LoadingComponent key={index} type={'feedback'}/>)
