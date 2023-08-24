@@ -18,7 +18,6 @@ const EditFeedbackPage = () => {
     const methods = useForm();
 
     const onSubmitChanges = async (data) => {
-        console.log(data);
         const {title, description, category, status} = data;
 
         const updates = {
