@@ -17,7 +17,7 @@ User can:
 - Add comments and replies to a product feedback request
 - Upvote product feedback requests
 
-You can visit website by clicking [this link](https://github.com)
+You can visit website by clicking [this link](https://works.pikulinweb.ru/feedback-app)
 
 ## Technologies used
 
